@@ -1,51 +1,90 @@
+import MenuIcon from '@mui/icons-material/Menu'
+import AppBar from '@mui/material/AppBar'
+import Avatar from '@mui/material/Avatar'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Container from '@mui/material/Container'
+import IconButton from '@mui/material/IconButton'
+import Badge from '@mui/material/Badge'
+import SensorOccupiedIcon from '@mui/icons-material/SensorOccupied'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
+import Toolbar from '@mui/material/Toolbar'
+import Tooltip from '@mui/material/Tooltip'
+import Typography from '@mui/material/Typography'
 import Link from 'next/link'
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
+import * as React from 'react'
 import { useAuthContext } from '../../../contexts/AuthContext'
 
-const pages = [
-  { label: 'Message', link: '/message/userList', addUserId: false  },
-  { label: 'Schedule', link: '/actor/schedule', addUserId: true  },
-];
-const settings = [
-  { label: 'Profile', link: '/actor/users', addUserId: true },
-  { label: 'Logout', link: '/' , addUserId: false },
-];
+interface ResponsiveAppBarProps {
+  /**
+   * ユーザータイプ
+   */
+  userType?: 'actor' | 'maker'
+}
 
-const ResponsiveAppBar = () => {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+const pagesActor = [
+  { label: 'Message', link: '/message/chat', addUserId: false },
+  { label: 'Schedule', link: '/actor/schedule', addUserId: true },
+]
+const settingsActor = [
+  { label: 'Profile', link: '/actor/users', addUserId: true },
+  { label: 'Logout', link: '/', addUserId: false },
+]
+
+const pagesMaker = [
+  { label: 'Search', link: '/maker/search', addUserId: false },
+]
+const settingsMaker = [
+  { label: 'Profile', link: '/maker/users', addUserId: true },
+  { label: 'Logout', link: '/', addUserId: false },
+]
+
+/**
+ * ヘッダーメニュー
+ * @returns
+ */
+const ResponsiveAppBar = (props: ResponsiveAppBarProps) => {
+  // #region Fields
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null,
+  )
   // 認証済ユーザー
   const { authUser } = useAuthContext()
+  // ページリンク
+  const pages: { label: string; link: string; addUserId: boolean }[] =
+    props.userType == 'actor' ? pagesActor : pagesMaker
+  const settings: { label: string; link: string; addUserId: boolean }[] =
+    props.userType == 'actor' ? settingsActor : settingsMaker
+  // #endregion Fields
 
+  // #region Functions
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
+    setAnchorElNav(event.currentTarget)
+  }
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
+    setAnchorElUser(event.currentTarget)
+  }
 
   const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
+    setAnchorElNav(null)
+  }
 
   const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+    setAnchorElUser(null)
+  }
+  // #endregion Functions
 
+  // #region Views
   return (
-    <AppBar position="static" style={{ backgroundColor: '#FFB7B7', color: '#333333' }}>
+    <AppBar
+      position="static"
+      style={{
+        backgroundColor: props.userType == 'actor' ? '#FFFFFF' : '#FFFFFF',
+        color: '#333333',
+      }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -65,7 +104,6 @@ const ResponsiveAppBar = () => {
           >
             Fides
           </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -101,29 +139,44 @@ const ResponsiveAppBar = () => {
                 </MenuItem>
               ))}
             </Menu>
-          </Box>          
+          </Box>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Link
-                href={ page.addUserId ? page.link + '/' + authUser.id : page.link}
+                key={page.label}
+                href={
+                  page.addUserId ? page.link + '/' + authUser.id : page.link
+                }
                 passHref
               >
                 <Button
                   key={page.label}
                   onClick={handleCloseNavMenu}
                   sx={{ my: 2, color: 'white', display: 'block' }}
-                  style={{ backgroundColor: '#FFB7B7', color: '#333333' }}
+                  style={{
+                    backgroundColor:
+                      props.userType == 'actor' ? '#FFFFFF' : '#FFFFFF',
+                    color: '#333333',
+                  }}
                 >
                   {page.label}
                 </Button>
-              </Link>  
+              </Link>
             ))}
+          </Box>
+          {/* バッジ */}
+          <Box sx={{ flexGrow: 0 }} marginRight={2}>
+            <Tooltip title="出演依頼">
+              <Badge badgeContent={4} color="primary">
+                <SensorOccupiedIcon color="action" />
+              </Badge>
+            </Tooltip>
           </Box>
           {/* 設定メニュー */}
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip title="個人メニュー">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Remy Sharp" src="/users/ActorDefault.png" />
               </IconButton>
             </Tooltip>
             <Menu
@@ -144,7 +197,12 @@ const ResponsiveAppBar = () => {
             >
               {settings.map((setting) => (
                 <Link
-                  href={ setting.addUserId ? setting.link + '/' + authUser.id : setting.link}
+                  key={setting.label}
+                  href={
+                    setting.addUserId
+                      ? setting.link + '/' + authUser.id
+                      : setting.link
+                  }
                   passHref
                 >
                   <MenuItem key={setting.label} onClick={handleCloseUserMenu}>
@@ -157,6 +215,7 @@ const ResponsiveAppBar = () => {
         </Toolbar>
       </Container>
     </AppBar>
-  );
-};
-export default ResponsiveAppBar;
+  )
+  // #endregion Views
+}
+export default ResponsiveAppBar

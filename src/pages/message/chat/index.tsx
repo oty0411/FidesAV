@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
+import Chat from '../../../components/organisms/Chat'
 import Separator from 'components/atoms/Separator'
 import Box from 'components/layout/Box'
 import Flex from 'components/layout/Flex'
@@ -8,7 +9,6 @@ import Layout from 'components/templates/Layout'
 import MainPartLayout from 'components/templates/Layout/mainPartLayout'
 import { useAuthContext } from 'contexts/AuthContext'
 import { ApiContext, AppErrorCode, User } from 'types/userTypes'
-import Chat from './chat'
 
 const UserChatPage: NextPage = () => {
   // #region Fields
@@ -34,9 +34,9 @@ const UserChatPage: NextPage = () => {
       <MainPartLayout>
         <Separator />
         <Box>
-					<Flex flexDirection={'column'}>
-						<Chat/>
-					</Flex>
+          <Flex flexDirection={'column'}>
+            <Chat />
+          </Flex>
         </Box>
       </MainPartLayout>
     </Layout>

@@ -3,8 +3,6 @@ import Checkbox from '@mui/material/Checkbox'
 import FormControl from '@mui/material/FormControl'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import FormGroup from '@mui/material/FormGroup'
-import FormHelperText from '@mui/material/FormHelperText'
-import FormLabel from '@mui/material/FormLabel'
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Unstable_Grid2'
 import { styled } from '@mui/material/styles'
@@ -73,7 +71,11 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.primary,
 }))
 
-export default function PlayConditionList() {
+/**
+ * プレイ条件設定
+ */
+const PlayConditionSetting = () => {
+  // #region Fields
   const [state, setState] = React.useState(
     ConditionList.map((item) => {
       return {
@@ -81,14 +83,16 @@ export default function PlayConditionList() {
       }
     }),
   )
-
+  // #endregion Fields
+  // #region Functions
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setState({
       ...state,
       [event.target.name]: event.target.checked,
     })
   }
-
+  // #endregion Functions
+  // #region Views
   return (
     <Box>
       <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
@@ -122,4 +126,6 @@ export default function PlayConditionList() {
       </FormControl>
     </Box>
   )
+  // #endregion Views
 }
+export default PlayConditionSetting

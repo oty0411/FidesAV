@@ -31,8 +31,8 @@ const SigninPage: NextPage = () => {
   const handleSignin = async (user: AuthUser, err?: Error) => {
     // 認証情報コンテキストI/Fを経由して認証済みユーザをセット
     setAuthUser(user)
-    console.log("auth user is ...");
-    console.log(user);
+    console.log('auth user is ...')
+    console.log(user)
 
     if (!err) {
       // サインインに成功し、クエリが指定されている場合はそのURLに移動。

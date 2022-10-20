@@ -25,7 +25,7 @@ a {
   cursor: pointer;
   text-decoration: none;
   transition: .25s;
-  color: #0000;
+  //color: #0000;
 }
 
 ol, ul {
@@ -49,8 +49,8 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       <ThemeProvider theme={theme}>
         <GlobalSpinnerContextProvider>
           <AuthContextProvider>
-        <Component {...pageProps} />
-        </AuthContextProvider>
+            <Component {...pageProps} />
+          </AuthContextProvider>
         </GlobalSpinnerContextProvider>
       </ThemeProvider>
     </>

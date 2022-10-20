@@ -6,7 +6,7 @@ import Separator from 'components/atoms/Separator'
 import Text from 'components/atoms/Text'
 import Box from 'components/layout/Box'
 import Flex from 'components/layout/Flex'
-import UserProfile from 'components/organisms/UserProfile'
+import MakerProfile from 'components/organisms/MakerProfile'
 import Layout from 'components/templates/Layout'
 import MainPartLayout from 'components/templates/Layout/mainPartLayout'
 import { useAuthContext } from 'contexts/AuthContext'
@@ -19,7 +19,7 @@ import {
   GetObj_User,
 } from 'types/userTypes'
 
-const ActorUserPage: NextPage = () => {
+const MakerUserPage: NextPage = () => {
   // #region Fields
   const apiContext: ApiContext = {
     apiRootUrl: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost/api',
@@ -30,14 +30,6 @@ const ActorUserPage: NextPage = () => {
   const { authUser, setAuthUser } = useAuthContext()
   // ユーザー情報
   const [user, setUser] = useState<User>(GetObj_User())
-  // 表示モード
-  const view_mode_mine: boolean = (() => {
-    if (router.query.view_mode_mine === 'false') {
-      return false
-    } else {
-      return true
-    }
-  })()
   // プロフィール編集モード
   const [editMode, setEditMode] = useState<boolean>(false)
   // #endregion Fields
@@ -79,7 +71,7 @@ const ActorUserPage: NextPage = () => {
 
   // #region View
   return (
-    <Layout userType={view_mode_mine ? 'actor' : 'maker'}>
+    <Layout userType={'maker'}>
       <MainPartLayout>
         <Separator />
         <Box>
@@ -95,10 +87,9 @@ const ActorUserPage: NextPage = () => {
             </Text>
             <Box width="100%" paddingLeft={2} paddingRight={2}>
               <Flex>
-                <UserProfile
+                <MakerProfile
                   variant="normal"
                   user={user}
-                  view_mode_mine={view_mode_mine}
                   editMode={editMode}
                   onTransitToEdit={transitToEditMode}
                   onTransitToRef={transitToRefMode}
@@ -114,4 +105,4 @@ const ActorUserPage: NextPage = () => {
   // #endregion View
 }
 
-export default ActorUserPage
+export default MakerUserPage

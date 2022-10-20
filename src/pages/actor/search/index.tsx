@@ -9,7 +9,7 @@ import MainPartLayout from 'components/templates/Layout/mainPartLayout'
 import { useAuthContext } from 'contexts/AuthContext'
 import { ApiContext, AppErrorCode, User } from 'types/userTypes'
 
-const SearchPage: NextPage = () => {
+const MakerSearchPage: NextPage = () => {
   // #region Fields
   const apiContext: ApiContext = {
     apiRootUrl: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost/api',
@@ -41,4 +41,4 @@ const SearchPage: NextPage = () => {
   // #endregion View
 }
 
-export default SearchPage
+export default MakerSearchPage

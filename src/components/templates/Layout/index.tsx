@@ -4,10 +4,17 @@ import Footer from 'components/organisms/Footer'
 import Header from 'components/organisms/Header'
 
 interface LayoutProps {
+  /**
+   * ユーザータイプ
+   */
+  userType?: 'actor' | 'maker'
+  /**
+   * children
+   */
   children: React.ReactNode
 }
 
-const Layout = ({ children }: LayoutProps) => {
+const Layout = ({ userType, children }: LayoutProps) => {
   return (
     <div
       style={{
@@ -17,7 +24,7 @@ const Layout = ({ children }: LayoutProps) => {
         minHeight: '100%',
       }}
     >
-      <Header />
+      <Header userType={userType} />
       <main
         style={{
           // background: `url(${'https://beiz.jp/images_T/white/white_00036.jpg'})`,
@@ -41,7 +48,8 @@ const Layout = ({ children }: LayoutProps) => {
           // top: "100vh",
           // position: "sticky",
           //bottom: 0
-          background: 'linear-gradient(to right, #a8caba 0%, #5d4157 100%)',
+          color: '#ffffff',
+          backgroundColor: '#000000',
         }}
       >
         <Footer />

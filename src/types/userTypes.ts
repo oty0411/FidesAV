@@ -240,6 +240,7 @@ export function GetObj_User() {
     real_name: '',
     image_path: '',
     birthday: '',
+    blood_type: 0,
     height: 0,
     weight: 0,
     clothes_size: 0,
@@ -270,6 +271,7 @@ export function GetCopyObj_User(src: User) {
     real_name: src.real_name,
     image_path: src.image_path,
     birthday: src.birthday,
+    blood_type: src.blood_type,
     height: src.height,
     weight: src.weight,
     clothes_size: src.clothes_size,
@@ -282,6 +284,28 @@ export function GetCopyObj_User(src: User) {
     open: src.open,
     is_admin: src.is_admin,
     is_deleted: src.is_deleted,
+  }
+  return obj
+}
+
+// ポートフォリオ
+export type Portfolio = {
+  // ユーザーID
+  id: number
+  // タイトル
+  title: string
+  // タイトル画像パス
+  image_path: string
+  // 作品URL
+  url: string
+}
+// Portfolio型初期化オブジェクト
+export function GetObj_Portfolio() {
+  const obj: Portfolio = {
+    id: 0,
+    title: '',
+    image_path: '',
+    url: '',
   }
   return obj
 }

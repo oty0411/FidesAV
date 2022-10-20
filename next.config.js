@@ -22,4 +22,14 @@ const nextConfig = {
   })(),
 }
 
-module.exports = nextConfig
+//module.exports = nextConfig
+
+const withTM = require("next-transpile-modules")([
+  "@fullcalendar/common",
+  "@fullcalendar/daygrid",
+  "@fullcalendar/react",
+  "@fullcalendar/interaction",
+  "@fullcalendar/timegrid",
+  "@fullcalendar/list",
+])
+module.exports = withTM(nextConfig)
