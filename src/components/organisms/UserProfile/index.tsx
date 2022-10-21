@@ -7,7 +7,7 @@ import { styled } from '@mui/material/styles'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import * as React from 'react'
-import { UpdateUserProfileImage } from '../../../api/users'
+import { UpdateUserProfileImage, GetActorPlayCondition, GetActorPortfolio } from '../../../api/users'
 import { GetUrlOfImageFileInDataServer } from '../../../utils'
 import PlayConditionList from './PlayConditionList'
 import Button from 'components/atoms/Button'
@@ -21,8 +21,12 @@ import MovieTitleCardListContainer from 'containers/MovieTitleCardListContainer'
 import {
   User,
   GetCopyObj_User,
+  PlayCondition,
   Portfolio,
+  GetObj_PlayCondition,
   GetObj_Portfolio,
+  ConvertToStringBloodType,
+  ConvertToStringBreastSize,
   ApiContext,
   AppErrorCode,
 } from 'types/userTypes'
@@ -87,6 +91,8 @@ export default function UserProfile(props: UserProfileProps) {
     financial_institution_id: false,
     bank_number: false,
   })
+  // プレイ条件
+  const [playConditions, setPlayConditions] = useState<PlayCondition>(GetObj_PlayCondition())
   // 出演作
   const [portfolios, setPortfolios] = useState<Portfolio[]>([])
   // 出演作ロード中
@@ -115,64 +121,27 @@ export default function UserProfile(props: UserProfileProps) {
   // #region Functions
   // 初期化処理
   useEffect(() => {
-    // 講義一覧取得
-    //setIsLoading(true)
-    const selected: string[] = []
+    setIsLoading(true)
 
-    const portfolioList: Portfolio[] = []
-    portfolioList.push(GetObj_Portfolio())
-    portfolioList[0].id = 1
-    portfolioList[0].title =
-      'おじさんとの体液交換キスにハマった けしからんおっぱいの制服美少女 小花のん'
-    portfolioList[0].image_path = '/movie_title/1.jpg'
-    portfolioList[0].url =
-      'https://www.dmm.co.jp/digital/videoa/-/detail/=/cid=mudr00206/?dmmref=digital_top_pickup_pc&i3_ref=recommend&i3_ord=8'
-    portfolioList.push(GetObj_Portfolio())
-    portfolioList[1].id = 2
-    portfolioList[1].title =
-      'AV女優ありな先生のネチョネチョ、レロレロ 大人のベロキス誘惑接吻レクチャー'
-    portfolioList[1].image_path = '/movie_title/2.jpg'
-    portfolioList[1].url =
-      'https://www.dmm.co.jp/digital/videoa/-/detail/=/cid=midv00214/?dmmref=digital_top_pickup_pc&i3_ref=recommend&i3_ord=2'
-    portfolioList.push(GetObj_Portfolio())
-    portfolioList[2].id = 3
-    portfolioList[2].title =
-      'おじさんとの体液交換キスにハマった けしからんおっぱいの制服美少女 小花のん'
-    portfolioList[2].image_path = '/movie_title/1.jpg'
-    portfolioList[2].url =
-      'https://www.dmm.co.jp/digital/videoa/-/detail/=/cid=mudr00206/?dmmref=digital_top_pickup_pc&i3_ref=recommend&i3_ord=8'
-    portfolioList.push(GetObj_Portfolio())
-    portfolioList[3].id = 4
-    portfolioList[3].title =
-      'AV女優ありな先生のネチョネチョ、レロレロ 大人のベロキス誘惑接吻レクチャー'
-    portfolioList[3].image_path = '/movie_title/2.jpg'
-    portfolioList[3].url =
-      'https://www.dmm.co.jp/digital/videoa/-/detail/=/cid=midv00214/?dmmref=digital_top_pickup_pc&i3_ref=recommend&i3_ord=2'
-    portfolioList.push(GetObj_Portfolio())
-    portfolioList[4].id = 5
-    portfolioList[4].title =
-      'おじさんとの体液交換キスにハマった けしからんおっぱいの制服美少女 小花のん'
-    portfolioList[4].image_path = '/movie_title/1.jpg'
-    portfolioList[4].url =
-      'https://www.dmm.co.jp/digital/videoa/-/detail/=/cid=mudr00206/?dmmref=digital_top_pickup_pc&i3_ref=recommend&i3_ord=8'
-    portfolioList.push(GetObj_Portfolio())
-    portfolioList[5].id = 6
-    portfolioList[5].title =
-      'AV女優ありな先生のネチョネチョ、レロレロ 大人のベロキス誘惑接吻レクチャー'
-    portfolioList[5].image_path = '/movie_title/2.jpg'
-    portfolioList[5].url =
-      'https://www.dmm.co.jp/digital/videoa/-/detail/=/cid=midv00214/?dmmref=digital_top_pickup_pc&i3_ref=recommend&i3_ord=2'
-    setPortfolios(portfolioList)
+    // プレイ条件取得
+    GetActorPlayCondition(apiContext, userData?.id ? userData.id : 1).then((apiResult) => {
+      //console.log(apiResult);
+      if (apiResult.result.Code == AppErrorCode.Success) {
+        setPlayConditions(apiResult.data)
+        console.log(playConditions)
+      }
+    })
 
-    // SearchLectures(apiContext, selected).then((apiResult) => {
-    //   //console.log(apiResult);
-    //   if (apiResult.result.Code == AppErrorCode.Success) {
-    //     setLectures(apiResult.data)
-    //     console.log(lectures)
-    //   }
-    //   setIsLoading(false)
-    // })
-  }, [])
+    // ポートフォリオ一覧取得
+    GetActorPortfolio(apiContext, userData?.id ? userData.id : 1).then((apiResult) => {
+      //console.log(apiResult);
+      if (apiResult.result.Code == AppErrorCode.Success) {
+        setPortfolios(apiResult.data)
+        console.log(portfolios)
+      }
+      setIsLoading(false)
+    })
+  }, [userData.id])
 
   // 編集モード遷移の確認
   function confirmEntryToEditMode(): void {
@@ -216,7 +185,7 @@ export default function UserProfile(props: UserProfileProps) {
       {/* プロフィールエリア */}
       <Box>
         <Text variant="large" color={'#333333'} padding={1}>
-          佐倉絆
+          {userData?.user_name}
         </Text>
         <Flex
           flexDirection={'row'}
@@ -239,14 +208,12 @@ export default function UserProfile(props: UserProfileProps) {
                 <ShapeImage
                   shape="square"
                   quality="85"
-                  // src={GetUrlOfImageFileInDataServer(props.user?.image_path)}
-                  src={'/users/itou_mayuki.jpg'}
+                  src={GetUrlOfImageFileInDataServer(props.user?.image_path)}
                   alt={props.user?.user_name}
                   height={profileImageSize}
                   width={profileImageSize}
                 />
               ) : (
-                // <PersonIcon size={profileImageSizeNumber} />
                 <PersonIcon size={profileImageSizeNumber} />
               )}
               {props.view_mode_mine ? (
@@ -327,7 +294,7 @@ export default function UserProfile(props: UserProfileProps) {
                   <TextField
                     label="生年月日"
                     id="text-birthday"
-                    value={'1989年5月30日'}
+                    value={userData?.birthday}
                     // sx={{ m: 1, width: '25ch' }}
                     variant="standard"
                     InputLabelProps={{ shrink: true }}
@@ -337,7 +304,7 @@ export default function UserProfile(props: UserProfileProps) {
                   <TextField
                     label="血液型"
                     id="text-blood-type"
-                    value={'AB型'}
+                    value={ConvertToStringBloodType(userData?.blood_type)}
                     // sx={{ m: 1, width: '25ch' }}
                     variant="standard"
                     InputLabelProps={{ shrink: true }}
@@ -345,9 +312,9 @@ export default function UserProfile(props: UserProfileProps) {
                 </Box>
                 <Box marginTop={1}>
                   <TextField
-                    label="身長"
+                    label="身長[cm]"
                     id="text-height"
-                    value={'151cm'}
+                    value={userData?.height}
                     // sx={{ m: 1, width: '25ch' }}
                     variant="standard"
                     InputLabelProps={{ shrink: true }}
@@ -355,9 +322,10 @@ export default function UserProfile(props: UserProfileProps) {
                 </Box>
                 <Box marginTop={1}>
                   <TextField
-                    label="スリーサイズ"
+                    label="スリーサイズ[cm]"
                     id="text-3size"
-                    value={'B83(Dカップ) W59 H84'}
+                    value={`B${userData?.breast_top_size}(${ConvertToStringBreastSize(userData?.breast_size)}カップ) W${userData?.waist_size} H${userData?.hip_size}`}
+                    //value={'B83(Dカップ) W59 H84'}
                     // sx={{ m: 1, width: '25ch' }}
                     variant="standard"
                     InputLabelProps={{ shrink: true }}
@@ -374,7 +342,7 @@ export default function UserProfile(props: UserProfileProps) {
           message="プレイ条件"
           sx={{ backgroundColor: '#333333', color: '#ffffff' }}
         />
-        <PlayConditionList />
+        <PlayConditionList conditions={playConditions} />
       </Box>
       {/* 出演作エリア */}
       <Box>

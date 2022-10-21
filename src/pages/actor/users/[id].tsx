@@ -46,10 +46,10 @@ const ActorUserPage: NextPage = () => {
   // 初期化処理
   useEffect(() => {
     GetUserInformation(apiContext, authUser.id).then((apiResult) => {
-      //console.log(apiResult);
+      console.log(apiResult);
       if (apiResult.result.Code == AppErrorCode.Success) {
         setUser(apiResult.data)
-        //console.log(user)
+        console.log(user)
       }
     })
   }, [])

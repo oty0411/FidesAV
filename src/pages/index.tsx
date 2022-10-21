@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import { useAuthContext } from '../contexts/AuthContext'
-import { AuthUser } from '../types/userTypes'
+import { AuthUser, LoginUserType } from '../types/userTypes'
 import Separator from 'components/atoms/Separator'
 import Text from 'components/atoms/Text'
 import Box from 'components/layout/Box'
@@ -38,7 +38,9 @@ const SigninPage: NextPage = () => {
       // サインインに成功し、クエリが指定されている場合はそのURLに移動。
       // デフォルトはトップページに移動。
       const redurectTo =
-        (router.query['redirect_to'] as string) ?? `/actor/users/${user.id}`
+        (router.query['redirect_to'] as string) ??
+        (user.type == LoginUserType.Actor ? `/actor/users/${user.id}` :
+          (user.type == LoginUserType.Marker ? `/maker/users/${user.id}` : '/'))
 
       console.log('Redirecting', redurectTo)
       await router.push(redurectTo)

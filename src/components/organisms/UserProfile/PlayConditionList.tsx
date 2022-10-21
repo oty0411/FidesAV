@@ -10,6 +10,7 @@ import Grid from '@mui/material/Unstable_Grid2'
 import { styled } from '@mui/material/styles'
 import * as React from 'react'
 import Flex from 'components/layout/Flex'
+import { BoolWithInt, GetObj_PlayCondition, PlayCondition } from 'types/userTypes'
 
 // 条件リスト
 type Condition = {
@@ -65,6 +66,10 @@ const ConditionList: Condition[] = [
   { label: 'ダンス', id: 'dance' },
 ]
 
+interface PlayConditionListProps {
+  conditions: PlayCondition
+}
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
@@ -73,14 +78,13 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.primary,
 }))
 
-export default function PlayConditionList() {
-  const [state, setState] = React.useState(
-    ConditionList.map((item) => {
-      return {
-        id: item.id,
-      }
-    }),
-  )
+export default function PlayConditionList(props: PlayConditionListProps) {
+  // プレイ条件
+  const [state, setState] = React.useState<PlayCondition>(GetObj_PlayCondition())
+
+  React.useEffect(() => {
+    setState(props.conditions)
+  },[props.conditions])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setState({
@@ -100,18 +104,22 @@ export default function PlayConditionList() {
             alignContent={'flex-start'}
             alignItems={'flex-start'}
           >
-            {ConditionList.map((item) => {
+            {Object.entries(state).map((pair) => {
+              if (pair[0] == 'id' || pair[0] == 'user_id' || pair[0] == 'created_at' || pair[0] == 'updated_at') {
+                return
+              }
               return (
-                <Box key={item.id} minWidth={'180px'} margin={1}>
+                <Box key={pair[0]} minWidth={'180px'} margin={1}>
                   <Item>
                     <FormControlLabel
                       control={
                         <Checkbox
-                          /*checked={gilad}*/ onChange={handleChange}
-                          name={item.id}
+                          checked={pair[1] == BoolWithInt.True ? true : false}
+                          onChange={handleChange}
+                          name={pair[0]}
                         />
                       }
-                      label={item.label}
+                      label={ConditionList.find(item => item.id == pair[0])?.label}
                     />
                   </Item>
                 </Box>

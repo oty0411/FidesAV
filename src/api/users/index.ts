@@ -7,7 +7,7 @@ export const GetUserInformation = async (
   context: UserTypes.ApiContext,
   user_id: number,
 ): Promise<{ result: UserTypes.AppResult; data: UserTypes.User }> => {
-  const address = `${context.apiRootUrl.replace(/\/$/g, '')}/users/${user_id}`
+  const address = `${context.apiRootUrl.replace(/\/$/g, '')}/actor/users/${user_id}`
   const apiResult: {
     code: number
     message: string
@@ -75,6 +75,42 @@ export const UpdateUserProfileImage = async (
     'multipart/form-data',
   )
   console.log(apiResult)
+  return {
+    result: ErrorCodeTranslator.ToAppResult(apiResult.code),
+    data: apiResult.data,
+  }
+}
+
+// 女優プレイ条件取得
+export const GetActorPlayCondition = async (
+  context: UserTypes.ApiContext,
+  user_id: number,
+): Promise<{ result: UserTypes.AppResult; data: UserTypes.PlayCondition }> => {
+  const address = `${context.apiRootUrl.replace(/\/$/g, '')}/actor/${user_id}/play_conditions`
+  const apiResult: {
+    code: number
+    message: string
+    data: UserTypes.PlayCondition
+  } = await ApiRequestFetcher(address, ApiRequestType.GET, null)
+  //console.log(apiResult)
+  return {
+    result: ErrorCodeTranslator.ToAppResult(apiResult.code),
+    data: apiResult.data,
+  }
+}
+
+// 女優ポートフォリオ取得
+export const GetActorPortfolio = async (
+  context: UserTypes.ApiContext,
+  user_id: number,
+): Promise<{ result: UserTypes.AppResult; data: UserTypes.Portfolio[] }> => {
+  const address = `${context.apiRootUrl.replace(/\/$/g, '')}/actor/${user_id}/portfolios`
+  const apiResult: {
+    code: number
+    message: string
+    data: UserTypes.Portfolio[]
+  } = await ApiRequestFetcher(address, ApiRequestType.GET, null)
+  //console.log(apiResult)
   return {
     result: ErrorCodeTranslator.ToAppResult(apiResult.code),
     data: apiResult.data,

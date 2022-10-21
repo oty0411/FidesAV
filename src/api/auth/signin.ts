@@ -5,13 +5,15 @@ import { ApiRequestFetcher, ApiRequestType } from 'utils'
 
 export type SigninParams = {
   /**
+   * システムアカウントのID
+   */
+  login_id: string
+  /**
    * ユーザー名
-   * サンプルユーザーのユーザー名は "user"
    */
   email: string
   /**
    * パスワード
-   * サンプルユーザーのパスワードは "password"
    */
   password: string
 }
@@ -63,27 +65,14 @@ type AuthResult = {
 //   return true;
 // }
 
-export const signinActor = async (
+export const signin = async (
   context: UserTypes.ApiContext,
   params: SigninParams,
-): Promise<{ result: UserTypes.AppResult; data: UserTypes.User }> => {
+): Promise<{ result: UserTypes.AppResult; data: UserTypes.AuthUser }> => {
   const address = `${context.apiRootUrl.replace(/\/$/g, '')}/signin`
-  const apiResult: { code: number; message: string; data: UserTypes.User } =
+  const apiResult: { code: number; message: string; data: UserTypes.AuthUser } =
     await ApiRequestFetcher(address, ApiRequestType.POST, params)
-  console.log(apiResult)
-  return {
-    result: ErrorCodeTranslator.ToAppResult(apiResult.code),
-    data: apiResult.data,
-  }
-}
-
-export const signinMaker = async (
-  context: UserTypes.ApiContext,
-  params: SigninParams,
-): Promise<{ result: UserTypes.AppResult; data: UserTypes.User }> => {
-  const address = `${context.apiRootUrl.replace(/\/$/g, '')}/signin`
-  const apiResult: { code: number; message: string; data: UserTypes.User } =
-    await ApiRequestFetcher(address, ApiRequestType.POST, params)
+  console.log(params)
   console.log(apiResult)
   return {
     result: ErrorCodeTranslator.ToAppResult(apiResult.code),
