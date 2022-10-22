@@ -1,14 +1,14 @@
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
-import Chat from '../../../components/organisms/Chat'
+import ChatControl from '../../../components/organisms/Chat'
 import Separator from 'components/atoms/Separator'
 import Box from 'components/layout/Box'
 import Flex from 'components/layout/Flex'
 import Layout from 'components/templates/Layout'
 import MainPartLayout from 'components/templates/Layout/mainPartLayout'
 import { useAuthContext } from 'contexts/AuthContext'
-import { ApiContext, AppErrorCode, User } from 'types/userTypes'
+import { ApiContext, AppErrorCode, LoginUserType, User } from 'types/userTypes'
 
 const UserChatPage: NextPage = () => {
   // #region Fields
@@ -30,12 +30,12 @@ const UserChatPage: NextPage = () => {
 
   // #region View
   return (
-    <Layout>
+    <Layout userType={authUser.type == LoginUserType.Actor ? 'actor' : 'maker'}>
       <MainPartLayout>
         <Separator />
         <Box>
           <Flex flexDirection={'column'}>
-            <Chat />
+            <ChatControl />
           </Flex>
         </Box>
       </MainPartLayout>

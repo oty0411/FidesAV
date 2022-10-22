@@ -250,6 +250,8 @@ export enum PlayConditionChoice {
 export type User = {
   // ユーザーID
   id: number
+  // システムアカウント
+  acount_id: string
   // メールアドレス
   email: string
   // ログインパスワード
@@ -293,6 +295,7 @@ export type User = {
 export function GetObj_User() {
   const obj: User = {
     id: 0,
+    acount_id: '',
     email: 'sample@sample.com',
     password: '',
     user_name: '',
@@ -324,6 +327,7 @@ export function GetCopyObj_User(src: User) {
 
   const obj: User = {
     id: src.id,
+    acount_id: src.acount_id,
     email: src.email,
     password: src.password,
     user_name: src.user_name,
@@ -625,6 +629,88 @@ export function GetObj_Portfolio() {
   }
   return obj
 }
+
+// (通信における)送信方向
+export enum SendDirection {
+  // 不定
+  Unknown = 0,
+  // 女優⇒メーカー
+  ToMakerFromActor = 1,
+  // メーカー⇒女優
+  ToActorFromMaker = 2,
+  // 双方向
+  ToWay = 3,
+}
+
+// チャット
+export type Chat = {
+  // ID
+  id: number
+  // ユーザーID(女優)
+  actor_user_id: number
+  // ユーザーID(メーカー)
+  maker_user_id: number
+  // 送信方法
+  sender_dir: SendDirection
+  // コメント
+  comment: string
+  // 送信日時
+  send_time: string
+}
+// Chat型初期化オブジェクト
+export function GetObj_Chat() {
+  const obj: Chat = {
+    id: 0,
+    actor_user_id: 0,
+    maker_user_id: 0,
+    sender_dir: 0,
+    comment: '',
+    send_time: '',
+  }
+  return obj
+}
+
+// Chat型とUser, MakerUser型のセット
+export type ChatWithUser = {
+  chat: Chat
+  actor: User
+  maker: MakerUser
+}
+
+// ChatWithUser型初期化オブジェクト
+export function GetObj_ChatWithUser() {
+  const obj: ChatWithUser = {
+    chat: GetObj_Chat(),
+    actor: GetObj_User(),
+    maker: GetObj_MakerUser(),
+  }
+  return obj
+}
+
+// ChatWithUser型ダミーオブジェクト
+export function GetDummyObj_ChatWithUser(
+  comment: string, sendTime: string,
+  sendDir: SendDirection,
+  actorName: string, actorProfileImagePath: string,
+  makerName: string, makerProfileImagePath: string
+) {
+  const obj: ChatWithUser = {
+    chat: GetObj_Chat(),
+    actor: GetObj_User(),
+    maker: GetObj_MakerUser(),
+  }
+
+  obj.chat.comment = comment
+  obj.chat.send_time = sendTime
+  obj.chat.sender_dir = sendDir
+  obj.actor.user_name = actorName
+  obj.actor.image_path = actorProfileImagePath
+  obj.maker.maker_name = makerName
+  obj.maker.image_path = makerProfileImagePath
+
+  return obj
+}
+
 // #endregion App types
 
 // #region API

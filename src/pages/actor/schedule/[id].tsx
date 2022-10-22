@@ -18,24 +18,26 @@ import { ApiContext, AppErrorCode, User } from 'types/userTypes'
 
 const ActorSchedulePage: NextPage = () => {
   // #region Fields
-  // const apiContext: ApiContext = {
-  //   apiRootUrl: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost/api',
-  // }
+  const apiContext: ApiContext = {
+    apiRootUrl: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost/api',
+  }
   // ページルート
-  // const router = useRouter()
-  // // 認証済ユーザー
-  // const { authUser, setAuthUser } = useAuthContext()
+  const router = useRouter()
+  // 認証済ユーザー
+  const { authUser, setAuthUser } = useAuthContext()
   // #endregion Fields
 
   // #region Functions
   // 初期化処理
-  // useEffect(() => {
-  //   /*do nothing*/
-  // }, [])
+  useEffect(() => {
+    /*do nothing*/
+  }, [])
+  
   // カレンダー日付クリック時イベントハンドラ
   const handleDateClick = useCallback((arg: DateClickArg) => {
     alert(arg.dateStr)
   }, [])
+  
   // カレンダー日付選択時イベントハンドラ
   const handleDateSelect = (selectionInfo: DateSelectArg) => {
     console.log('selectionInfo: ', selectionInfo) // 選択した範囲の情報をconsoleに出力
