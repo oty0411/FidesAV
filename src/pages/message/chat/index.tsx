@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import ChatControl from '../../../components/organisms/Chat'
 import Separator from 'components/atoms/Separator'
 import Box from 'components/layout/Box'
@@ -8,7 +8,7 @@ import Flex from 'components/layout/Flex'
 import Layout from 'components/templates/Layout'
 import MainPartLayout from 'components/templates/Layout/mainPartLayout'
 import { useAuthContext } from 'contexts/AuthContext'
-import { ApiContext, AppErrorCode, LoginUserType, User } from 'types/userTypes'
+import { ApiContext, LoginUserType } from 'types/userTypes'
 
 const UserChatPage: NextPage = () => {
   // #region Fields
@@ -18,7 +18,7 @@ const UserChatPage: NextPage = () => {
   // ページルート
   const router = useRouter()
   // 認証済ユーザー
-  const { authUser, setAuthUser } = useAuthContext()
+  const { authUser } = useAuthContext()
   // #endregion Fields
 
   // #region Functions

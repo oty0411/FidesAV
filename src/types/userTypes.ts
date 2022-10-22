@@ -711,6 +711,234 @@ export function GetDummyObj_ChatWithUser(
   return obj
 }
 
+// 募集状態
+export enum RecruitingStatus {
+  // 不定
+  Unknown = 0,
+  // 募集中
+  Going = 1,
+  // 募集終了
+  Finish = 2,
+}
+
+// 女優スケジュール
+export type AcotorSchedule = {
+  // ID
+  id: number
+  // ユーザーID(女優)
+  actor_user_id: number
+  // ユーザーID(メーカー)
+  maker_user_id: number
+  // 開始時刻
+  start_time: string
+  // 終了時刻
+  end_time: string
+  // 募集中
+  recruiting: RecruitingStatus
+}
+
+// AcotorSchedule型初期化オブジェクト
+export function GetObj_AcotorSchedule() {
+  const obj: AcotorSchedule = {
+    id: 0,
+    actor_user_id: 0,
+    maker_user_id: 0,
+    start_time: '',
+    end_time: '',
+    recruiting: RecruitingStatus.Unknown,
+  }
+  return obj
+}
+
+// 出演オファー状態
+export enum OfferStatus {
+  // 不定
+  Unknown = 0,
+  // オファー中
+  Going = 1,
+  // 終了
+  Finish = 2,
+}
+
+// 出演依頼
+export type Offer = {
+  // ID
+  id: number
+  // ユーザーID(女優)
+  actor_user_id: number
+  // ユーザーID(メーカー)
+  maker_user_id: number
+  // オファー状態
+  status: OfferStatus
+  // 出演料
+  fee: number
+  // タイトル
+  title: string
+  // 企画概要
+  summary: string
+  // 撮影日時
+  date_time: string
+  // 撮影場所
+  place: string
+  // メイク付
+  makeup: BoolWithInt
+  // 貸衣裳
+  rental_costume: BoolWithInt
+  // 控室(個室)
+  private_room: BoolWithInt
+  // 控室(相部屋)
+  shared_room: BoolWithInt
+  // 送迎
+  pick_up: BoolWithInt
+  // 食事
+  meal: BoolWithInt
+  // メッセージ
+  message: string
+}
+
+// Offer型初期化オブジェクト
+export function GetObj_Offer() {
+  const obj: Offer = {
+    id: 0,
+    actor_user_id: 0,
+    maker_user_id: 0,
+    status: OfferStatus.Unknown,
+    fee: 0,
+    title: '',
+    summary: '',
+    date_time: '',
+    place: '',
+    makeup: BoolWithInt.Unknown,
+    // 貸衣裳
+    rental_costume: BoolWithInt.Unknown,
+    // 控室(個室)
+    private_room: BoolWithInt.Unknown,
+    // 控室(相部屋)
+    shared_room: BoolWithInt.Unknown,
+    // 送迎
+    pick_up: BoolWithInt.Unknown,
+    // 食事
+    meal: BoolWithInt.Unknown,
+    // メッセージ
+    message: '',
+  }
+  return obj
+}
+
+// 出演オファーレスポンス
+export enum OfferResponseType {
+  // 不定
+  Unknown = 0,
+  // 契約
+  Agreement = 1,
+  // 未契約
+  NoContract = 2,
+}
+
+// 出演依頼レスポンス
+export type OfferResponse = {
+  // ID
+  id: number
+  // 出演依頼ID
+  offer_id: number
+  // レスポンス
+  response: OfferResponseType
+  // メッセージ
+  message: string
+}
+
+// OfferResponse型初期化オブジェクト
+export function GetObj_OfferResponse() {
+  const obj: OfferResponse = {
+    id: 0,
+    offer_id: 0,
+    response: OfferResponseType.Unknown,
+    message: '',
+  }
+  return obj
+}
+
+// ユーザー評価タイプ
+export enum UserEvaluationType {
+  // 不定
+  Unknown = 0,
+  // Good
+  Good = 1,
+  // Normal
+  Normal = 2,
+  // Bad
+  Bad = 3,
+}
+
+// ユーザー評価
+export type Evaluation = {
+  // ID
+  id: number
+  // ユーザーID(女優)
+  actor_user_id: number
+  // ユーザーID(メーカー)
+  maker_user_id: number
+  // 送信方法
+  sender_dir: SendDirection
+  // 評価
+  evaluation: UserEvaluationType
+  // 評価コメント
+  comment: string
+}
+
+// Evaluation型初期化オブジェクト
+export function GetObj_Evaluation() {
+  const obj: Evaluation = {
+    id: 0,
+    actor_user_id: 0,
+    maker_user_id: 0,
+    sender_dir: SendDirection.Unknown,
+    evaluation: UserEvaluationType.Unknown,
+    comment: '',
+  }
+  return obj
+}
+
+// 違反行為通報
+export type ViolationReport = {
+  // ID
+  id: number
+  // ユーザーID(女優)
+  actor_user_id: number
+  // ユーザーID(メーカー)
+  maker_user_id: number
+  // 送信方法
+  sender_dir: SendDirection
+  // 契約違反
+  breach_contract: BoolWithInt
+  // 引き抜き交渉
+  withdrawal_negotiation: BoolWithInt
+  // 営業妨害
+  business_interruption: BoolWithInt
+  // 迷惑行為
+  nuisance: BoolWithInt
+  // その他
+  other: BoolWithInt
+  // 違反行為の説明
+  explanation_text: string
+}
+
+// ViolationReport型初期化オブジェクト
+export function GetObj_ViolationReport() {
+  const obj: ViolationReport = {
+    id: 0,
+    actor_user_id: 0,
+    maker_user_id: 0,
+    sender_dir: SendDirection.Unknown,
+    breach_contract: BoolWithInt.Unknown,
+    withdrawal_negotiation: BoolWithInt.Unknown,
+    business_interruption: BoolWithInt.Unknown,
+    nuisance: BoolWithInt.Unknown,
+    other: BoolWithInt.Unknown,
+    explanation_text: '',
+  }
+  return obj
+}
 // #endregion App types
 
 // #region API
