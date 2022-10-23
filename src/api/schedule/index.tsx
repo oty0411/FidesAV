@@ -5,13 +5,13 @@ import { ApiRequestFetcher, ApiRequestType } from 'utils'
 // スケジュール追加
 export const PostSchedule = async (
   context: UserTypes.ApiContext,
-  postData: UserTypes.AcotorSchedule,
-): Promise<{ result: UserTypes.AppResult; data: UserTypes.AcotorSchedule }> => {
+  postData: UserTypes.ActorSchedule,
+): Promise<{ result: UserTypes.AppResult; data: UserTypes.ActorSchedule }> => {
   const address = `${context.apiRootUrl.replace(/\/$/g, '')}/actor_schedules`
   const apiResult: {
     code: number
     message: string
-    data: UserTypes.AcotorSchedule
+    data: UserTypes.ActorSchedule
   } = await ApiRequestFetcher(address, ApiRequestType.POST, postData)
   //console.log(apiResult)
   return {
@@ -24,12 +24,12 @@ export const PostSchedule = async (
 export const GetSchedule = async (
   context: UserTypes.ApiContext,
   id: number,
-): Promise<{ result: UserTypes.AppResult; data: UserTypes.AcotorSchedule }> => {
+): Promise<{ result: UserTypes.AppResult; data: UserTypes.ActorSchedule }> => {
   const address = `${context.apiRootUrl.replace(/\/$/g, '')}/actor_schedules/${id}`
   const apiResult: {
     code: number
     message: string
-    data: UserTypes.AcotorSchedule
+    data: UserTypes.ActorSchedule
   } = await ApiRequestFetcher(address, ApiRequestType.GET, null)
   //console.log(apiResult)
   return {
@@ -41,13 +41,13 @@ export const GetSchedule = async (
 // スケジュール編集
 export const EditSchedule = async (
   context: UserTypes.ApiContext,
-  postData: UserTypes.AcotorSchedule,
-): Promise<{ result: UserTypes.AppResult; data: UserTypes.AcotorSchedule }> => {
+  postData: UserTypes.ActorSchedule,
+): Promise<{ result: UserTypes.AppResult; data: UserTypes.ActorSchedule }> => {
   const address = `${context.apiRootUrl.replace(/\/$/g, '')}/actor_schedules/${postData.id}`
   const apiResult: {
     code: number
     message: string
-    data: UserTypes.AcotorSchedule
+    data: UserTypes.ActorSchedule
   } = await ApiRequestFetcher(address, ApiRequestType.PUT, postData)
   //console.log(apiResult)
   return {
@@ -76,12 +76,12 @@ export const DeleteSchedule = async (
 export const GetScheduleList = async (
   context: UserTypes.ApiContext,
   userId: number,
-): Promise<{ result: UserTypes.AppResult; data: UserTypes.AcotorSchedule[] }> => {
+): Promise<{ result: UserTypes.AppResult; data: UserTypes.ActorSchedule[] }> => {
   const address = `${context.apiRootUrl.replace(/\/$/g, '')}/actor_schedules/users/${userId}`
   const apiResult: {
     code: number
     message: string
-    data: UserTypes.AcotorSchedule[]
+    data: UserTypes.ActorSchedule[]
   } = await ApiRequestFetcher(address, ApiRequestType.GET, null)
   //console.log(apiResult)
   return {
@@ -112,12 +112,12 @@ export const PostAppearanceRequest = async (
 export const GetAppearanceRequest = async (
 	context: UserTypes.ApiContext,
 	id: number,
-): Promise<{ result: UserTypes.AppResult; data: UserTypes.Offer}> => {
-	const address = `${context.apiRootUrl.replace(/\/$/g, '')}/offers/${id}`
+): Promise<{ result: UserTypes.AppResult; data: UserTypes.OfferWithOptionData}> => {
+	const address = `${context.apiRootUrl.replace(/\/$/g, '')}/offers/${id}/detail`
 	const apiResult: {
 		code: number
 		message: string
-		data: UserTypes.Offer
+		data: UserTypes.OfferWithOptionData
 	} = await ApiRequestFetcher(address, ApiRequestType.GET, null)
   //console.log(apiResult)
   return {
@@ -164,12 +164,66 @@ export const DeleteAppearanceRequest = async (
 export const GetAppearanceRequestList = async (
 	context: UserTypes.ApiContext,
 	userId: number,
-): Promise<{ result: UserTypes.AppResult; data: UserTypes.Offer[]}> => {
+): Promise<{ result: UserTypes.AppResult; data: UserTypes.OfferWithOptionData[]}> => {
 	const address = `${context.apiRootUrl.replace(/\/$/g, '')}/offers/users/${userId}`
 	const apiResult: {
 		code: number
 		message: string
-		data: UserTypes.Offer[]
+		data: UserTypes.OfferWithOptionData[]
+	} = await ApiRequestFetcher(address, ApiRequestType.GET, null)
+  //console.log(apiResult)
+  return {
+    result: ErrorCodeTranslator.ToAppResult(apiResult.code),
+    data: apiResult.data,
+  }
+}
+
+// 出演依頼レスポンスPOST
+export const PostAppearanceRequestResponse = async (
+	context: UserTypes.ApiContext,
+	postData: UserTypes.OfferResponse,
+): Promise<{ result: UserTypes.AppResult; data: UserTypes.OfferResponse}> => {
+	const address = `${context.apiRootUrl.replace(/\/$/g, '')}/offer_responses`
+	const apiResult: {
+		code: number
+		message: string
+		data: UserTypes.OfferResponse
+	} = await ApiRequestFetcher(address, ApiRequestType.POST, postData)
+  //console.log(apiResult)
+  return {
+    result: ErrorCodeTranslator.ToAppResult(apiResult.code),
+    data: apiResult.data,
+  }
+}
+
+// 出演依頼レスポンス取得
+export const GetAppearanceRequestResponse = async (
+	context: UserTypes.ApiContext,
+	id: number,
+): Promise<{ result: UserTypes.AppResult; data: UserTypes.OfferResponseWithOptionData}> => {
+	const address = `${context.apiRootUrl.replace(/\/$/g, '')}/offers/${id}/detail`
+	const apiResult: {
+		code: number
+		message: string
+		data: UserTypes.OfferResponseWithOptionData
+	} = await ApiRequestFetcher(address, ApiRequestType.GET, null)
+  //console.log(apiResult)
+  return {
+    result: ErrorCodeTranslator.ToAppResult(apiResult.code),
+    data: apiResult.data,
+  }
+}
+
+// 出演依頼レスポンス一覧取得
+export const GetAppearanceRequestResponseList = async (
+	context: UserTypes.ApiContext,
+	userId: number,
+): Promise<{ result: UserTypes.AppResult; data: UserTypes.OfferResponseWithOptionData[]}> => {
+	const address = `${context.apiRootUrl.replace(/\/$/g, '')}/offers/users/${userId}`
+	const apiResult: {
+		code: number
+		message: string
+		data: UserTypes.OfferResponseWithOptionData[]
 	} = await ApiRequestFetcher(address, ApiRequestType.GET, null)
   //console.log(apiResult)
   return {

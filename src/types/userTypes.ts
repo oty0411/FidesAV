@@ -722,7 +722,7 @@ export enum RecruitingStatus {
 }
 
 // 女優スケジュール
-export type AcotorSchedule = {
+export type ActorSchedule = {
   // ID
   id: number
   // ユーザーID(女優)
@@ -737,9 +737,9 @@ export type AcotorSchedule = {
   recruiting: RecruitingStatus
 }
 
-// AcotorSchedule型初期化オブジェクト
-export function GetObj_AcotorSchedule() {
-  const obj: AcotorSchedule = {
+// ActorSchedule型初期化オブジェクト
+export function GetObj_ActorSchedule() {
+  const obj: ActorSchedule = {
     id: 0,
     actor_user_id: 0,
     maker_user_id: 0,
@@ -764,8 +764,8 @@ export enum OfferStatus {
 export type Offer = {
   // ID
   id: number
-  // ユーザーID(女優)
-  actor_user_id: number
+  // スケジュールID(女優)
+  actor_schedule_id: number
   // ユーザーID(メーカー)
   maker_user_id: number
   // オファー状態
@@ -800,7 +800,7 @@ export type Offer = {
 export function GetObj_Offer() {
   const obj: Offer = {
     id: 0,
-    actor_user_id: 0,
+    actor_schedule_id: 0,
     maker_user_id: 0,
     status: OfferStatus.Unknown,
     fee: 0,
@@ -823,6 +823,22 @@ export function GetObj_Offer() {
     message: '',
   }
   return obj
+}
+
+// 出演依頼データ(オプションデータ付)
+export class OfferWithOptionData {
+  // 出演依頼
+  public offer: Offer
+  // 出演依頼を出した対象の女優スケジュール
+  public schedule: ActorSchedule
+  // 出演依頼を出したメーカー
+  public maker_user: MakerUser
+
+  constructor() {
+    this.offer = GetObj_Offer()
+    this.schedule = GetObj_ActorSchedule()
+    this.maker_user = GetObj_MakerUser()
+  }
 }
 
 // 出演オファーレスポンス
@@ -856,6 +872,19 @@ export function GetObj_OfferResponse() {
     message: '',
   }
   return obj
+}
+
+// 出演依頼レスポンスデータ(オプションデータ付)
+export class OfferResponseWithOptionData {
+  // 出演依頼レスポンス
+  public offer_response: OfferResponse
+  // 出演依頼
+  public offer: Offer
+
+  constructor() {
+    this.offer_response = GetObj_OfferResponse()
+    this.offer = GetObj_Offer()
+  }
 }
 
 // ユーザー評価タイプ

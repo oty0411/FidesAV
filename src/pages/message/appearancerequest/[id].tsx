@@ -11,16 +11,16 @@ import { useAuthContext } from 'contexts/AuthContext'
 import {
   ApiContext,
   AppErrorCode,
-  ActorSchedule,
-  LoginUserType,
-  GetObj_ActorSchedule,
   Offer,
-  OfferStatus,
+  OfferResponse,
+  OfferWithOptionData,
+  LoginUserType,
+  GetObj_OfferResponse,
 } from 'types/userTypes'
-import { AppearanceRequestPostForm } from 'components/organisms/AppearanceRequest'
-import { GetSchedule, PostAppearanceRequest } from 'api/schedule'
+import { GetAppearanceRequest, PostAppearanceRequestResponse } from 'api/schedule'
+import { AppearanceRequestResponsePostForm } from 'components/organisms/AppearanceRequestResponse'
 
-const AppearanceRequestPage: NextPage = () => {
+const AppearanceRequestResponsePage: NextPage = () => {
   // #region Fields
   const apiContext: ApiContext = {
     apiRootUrl: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost/api',
@@ -29,46 +29,43 @@ const AppearanceRequestPage: NextPage = () => {
   const router = useRouter()
   // 認証済ユーザー
   const { authUser } = useAuthContext()
-  // 出演依頼対象のスケジュールID
-  const target_schedule_id = Number(router.query.targetId)
-  // 出演依頼対象のスケジュール情報
-  const [targetActorSchedule, setTargetActorSchedule] = React.useState<ActorSchedule>(GetObj_ActorSchedule())
+  // 出演依頼ID
+  const offer_id = Number(router.query.id)
+  // 出演依頼情報
+  const [targetAppearanceRequest, setTargetAppearanceRequest] = React.useState<OfferWithOptionData>(new OfferWithOptionData())
   // #endregion Fields
 
   // #region Functions
   // 初期化処理
   React.useEffect(() => {
-    // 出演依頼対象スケジュール取得
-    GetSchedule(apiContext, target_schedule_id).then((apiResult) => {
+    // 出演依頼情報取得
+    GetAppearanceRequest(apiContext, offer_id).then((apiResult) => {
       console.log(apiResult);
       if (apiResult.result.Code == AppErrorCode.Success) {
-        setTargetActorSchedule(apiResult.data)
+        setTargetAppearanceRequest(apiResult.data)
       }
     })
   }, [])
 
-  // 出演依頼ポスト
-  function postAppearanceRequest(offer: Offer) {
+  // 出演依頼レスポンスポスト
+  function postAppearanceRequestResponse(response: OfferResponse) {
     // 送信確認
-    if (!confirm('出演依頼を送信しますか？')){ return }
+    if (!confirm('出演依頼の返信を送信しますか？')){ return }
 
-    // 各種IDをセット
-    offer.actor_schedule_id = targetActorSchedule.id
-    offer.maker_user_id = authUser.id
-    // ステータスをオファー中へ変更
-    offer.status = OfferStatus.Going
+    // IDをセット
+    response.offer_id = targetAppearanceRequest.offer.id
 
-    console.log(offer)
+    console.log(response)
 
     // 出演依頼送信
-    PostAppearanceRequest(apiContext, offer).then((apiResult) => {
+    PostAppearanceRequestResponse(apiContext, response).then((apiResult) => {
       console.log(apiResult);
       if (apiResult.result.Code == AppErrorCode.Success) {
-        alert('出演依頼の送信に成功しました。')
-        // 女優のスケジュール管理画面へ戻る
-        router.push(`/actor/schedule/${targetActorSchedule.actor_user_id}`)
+        alert('出演依頼の返信に成功しました。')
+        // 出演依頼INBOX画面へ戻る
+        router.push('/message/appearancerequest/inbox')
       } else {
-        alert('出演依頼の送信に失敗しました。')
+        alert('出演依頼の返信に失敗しました。')
       }
     })
   }
@@ -88,7 +85,7 @@ const AppearanceRequestPage: NextPage = () => {
               marginTop={0}
               paddingLeft={1}
             >
-              出演依頼
+              出演依頼の対処
             </Text>
             <Box width="100%" paddingLeft={2} paddingRight={2}>
               <Flex
@@ -96,7 +93,10 @@ const AppearanceRequestPage: NextPage = () => {
                 flexDirection={'column'}
                 alignItems={'center'}
               >
-                <AppearanceRequestPostForm onPost={postAppearanceRequest} />
+                <AppearanceRequestResponsePostForm
+                  offer={targetAppearanceRequest.offer}
+                  onPost={postAppearanceRequestResponse}
+                />
               </Flex>
             </Box>
           </Flex>
@@ -107,4 +107,4 @@ const AppearanceRequestPage: NextPage = () => {
   // #endregion View
 }
 
-export default AppearanceRequestPage
+export default AppearanceRequestResponsePage

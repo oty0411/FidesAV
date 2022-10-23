@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import React, { useState, useEffect, useCallback } from 'react'
+import React from 'react'
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -9,19 +9,17 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import FullCalendar, { DateSelectArg, EventClickArg } from '@fullcalendar/react'
 import allLocales from '@fullcalendar/core/locales-all'
-import jaLocale from '@fullcalendar/core/locales/ja'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
-import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction'
+import interactionPlugin from '@fullcalendar/interaction'
 import { useRouter } from 'next/router'
 import Separator from 'components/atoms/Separator'
 import Box from 'components/layout/Box'
-import Flex from 'components/layout/Flex'
 import Layout from 'components/templates/Layout'
 import MainPartLayout from 'components/templates/Layout/mainPartLayout'
 import { useAuthContext } from 'contexts/AuthContext'
-import { AcotorSchedule, ApiContext, AppErrorCode, GetObj_AcotorSchedule, LoginUserType, RecruitingStatus } from 'types/userTypes'
+import { ActorSchedule, ApiContext, AppErrorCode, GetObj_ActorSchedule, LoginUserType, RecruitingStatus } from 'types/userTypes'
 import { GetScheduleList, PostSchedule, DeleteSchedule } from 'api/schedule';
 
 const ActorSchedulePage: NextPage = () => {
@@ -32,16 +30,16 @@ const ActorSchedulePage: NextPage = () => {
   // ページルート
   const router = useRouter()
   // 認証済ユーザー
-  const { authUser, setAuthUser } = useAuthContext()
+  const { authUser } = useAuthContext()
   // 女優ID
   const actor_id = Number(router.query.id)
   // スケジュールイベントリスト
-  const [actorSchedules, setActorSchedules] = React.useState<AcotorSchedule[]>(new Array()) 
+  const [actorSchedules, setActorSchedules] = React.useState<ActorSchedule[]>(new Array())
   // #endregion Fields
 
   // #region Functions
   // 初期化処理
-  useEffect(() => {
+  React.useEffect(() => {
     // 既存イベントリスト取得
     GetScheduleList(apiContext, actor_id).then((apiResult) => {
       console.log(apiResult);
@@ -79,28 +77,24 @@ const ActorSchedulePage: NextPage = () => {
   // ダイアログで登録を選択したときのイベントハンドラ
   const handleAddEvent = () => {
 
-    // 選択した部分の選択を解除
-    const calendarApi = addEventSelectRange?.view.calendar
-    const addEventObj = {
-                title: '撮影可能',
-                start: new Date(addEventStart).toISOString(),
-                end: new Date(addEventEnd).toISOString(),
-                allDay: addEventSelectRange?.allDay,
-            }
-    console.log(addEventObj)        
-    calendarApi?.addEvent(addEventObj)
-
-    // イベント追加
-    let scheduleData = GetObj_AcotorSchedule()
+    // 新規イベント追加
+    let scheduleData = GetObj_ActorSchedule()
     scheduleData.actor_user_id = actor_id
     scheduleData.maker_user_id = 1
     scheduleData.start_time = addEventStart
     scheduleData.end_time = addEventEnd
     scheduleData.recruiting = RecruitingStatus.Going
     PostSchedule(apiContext, scheduleData).then((apiResult) => {
-      console.log(apiResult);
+      // console.log(apiResult);
       if (apiResult.result.Code == AppErrorCode.Success) {
-        //setActorSchedules(apiResult.data)
+
+        // 既存イベントリスト更新
+        GetScheduleList(apiContext, actor_id).then((apiResult) => {
+          console.log(apiResult);
+          if (apiResult.result.Code == AppErrorCode.Success) {
+            setActorSchedules(apiResult.data)
+          }
+        })
       }
     })
 
@@ -117,11 +111,11 @@ const ActorSchedulePage: NextPage = () => {
   const [opeEventArg, setOpeEventArg] = React.useState<EventClickArg>()
   // 追加済イベントクリック時イベントハンドラ
   const handleEventClick = (eventInfo: EventClickArg) => {
-    console.log('eventInfo: ', eventInfo)
-    console.log('id: ', eventInfo.event.id)
-    console.log('title: ', eventInfo.event.title)
-    console.log('start: ', eventInfo.event.start)
-    console.log('end: ', eventInfo.event.end)
+    // console.log('eventInfo: ', eventInfo)
+    // console.log('id: ', eventInfo.event.id)
+    // console.log('title: ', eventInfo.event.title)
+    // console.log('start: ', eventInfo.event.start)
+    // console.log('end: ', eventInfo.event.end)
 
     // イベント情報のバックアップ
     setOpeEventArg(eventInfo)
@@ -132,7 +126,13 @@ const ActorSchedulePage: NextPage = () => {
 
   // ダイアログで”出演依頼へ進む”を選択したときのイベントハンドラ
   const handleGoToAppearanceRequest = () => {
+    // 選択イベントの情報
+    //console.log(opeEventArg)
+
     setOpeEventDialogOpen(false);
+
+    // 出演依頼ページへ遷移
+    router.push(`/message/appearancerequest?targetId=${opeEventArg?.event.id}`)
   }
   // ダイアログで"削除"を選択したときのイベントハンドラ
   const handleDeleteEvent = () => {
@@ -149,12 +149,14 @@ const ActorSchedulePage: NextPage = () => {
     DeleteSchedule(apiContext, deleteTargetIndex).then((apiResult) => {
       console.log(apiResult);
       if (apiResult.result.Code == AppErrorCode.Success) {
-        // 画面上のイベント削除
-        opeEventArg?.event.remove()
+        // // 画面上のイベント削除
+        // opeEventArg?.event.remove()
         // ローカル上のリストからイベント削除
         const deleteTargetIndex = actorSchedules.findIndex(item => item.id == deleteTargetIndex)
+        console.log('before', actorSchedules)
         actorSchedules.splice(deleteTargetIndex, 1)
         setActorSchedules([...actorSchedules])
+        console.log('after', actorSchedules)
       }
     })
 

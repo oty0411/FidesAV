@@ -1,3 +1,4 @@
+import { styled } from '@mui/material/styles';
 import MenuIcon from '@mui/icons-material/Menu'
 import AppBar from '@mui/material/AppBar'
 import Avatar from '@mui/material/Avatar'
@@ -5,7 +6,7 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
 import IconButton from '@mui/material/IconButton'
-import Badge from '@mui/material/Badge'
+import Badge, { BadgeProps } from '@mui/material/Badge'
 import SensorOccupiedIcon from '@mui/icons-material/SensorOccupied'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
@@ -15,6 +16,9 @@ import Typography from '@mui/material/Typography'
 import Link from 'next/link'
 import * as React from 'react'
 import { useAuthContext } from '../../../contexts/AuthContext'
+import { GetUrlOfImageFileInDataServer } from 'utils';
+import { GetAppearanceRequestList } from 'api/schedule';
+import { ApiContext, AppErrorCode } from 'types/userTypes';
 
 interface ResponsiveAppBarProps {
   /**
@@ -40,12 +44,25 @@ const settingsMaker = [
   { label: 'Logout', link: '/', addUserId: false },
 ]
 
+// バッジのスタイルカスタム
+const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    right: -3,
+    top: 13,
+    border: `2px solid ${theme.palette.background.paper}`,
+    padding: '0 4px',
+  },
+}));
+
 /**
  * ヘッダーメニュー
  * @returns
  */
 const ResponsiveAppBar = (props: ResponsiveAppBarProps) => {
   // #region Fields
+  const apiContext: ApiContext = {
+    apiRootUrl: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost/api',
+  }
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null,
@@ -57,9 +74,25 @@ const ResponsiveAppBar = (props: ResponsiveAppBarProps) => {
     props.userType == 'actor' ? pagesActor : pagesMaker
   const settings: { label: string; link: string; addUserId: boolean }[] =
     props.userType == 'actor' ? settingsActor : settingsMaker
+  // 出演依頼件数
+  const [numberOfAppearanceRequests, setNumberOfAppearanceRequests] = React.useState(0);
+  
   // #endregion Fields
 
   // #region Functions
+  // 初期化処理
+  React.useEffect(() => {
+    // 出演依頼件数取得
+    GetAppearanceRequestList(apiContext, authUser.id).then((apiResult) => {
+      console.log(apiResult);
+      if (apiResult.result.Code == AppErrorCode.Success) {
+        setNumberOfAppearanceRequests(apiResult.data.length)
+      } else {
+        setNumberOfAppearanceRequests(0)
+      }
+    })
+  }, [])
+
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)
   }
@@ -164,19 +197,27 @@ const ResponsiveAppBar = (props: ResponsiveAppBarProps) => {
               </Link>
             ))}
           </Box>
-          {/* バッジ */}
+          {/* 出演依頼バッジ */}
           <Box sx={{ flexGrow: 0 }} marginRight={2}>
-            <Tooltip title="出演依頼">
-              <Badge badgeContent={4} color="primary">
-                <SensorOccupiedIcon color="action" />
-              </Badge>
-            </Tooltip>
+              <Link href={'/message/appearancerequest/inbox'} passHref>
+                <Tooltip title="出演依頼">  
+                  <IconButton
+                    aria-label="appearance_request"
+                    onClick={() => { console.log('clicked!!') }}>
+                    <StyledBadge badgeContent={numberOfAppearanceRequests} color="primary">
+                      <SensorOccupiedIcon />
+                    </StyledBadge>
+                  </IconButton>
+                </Tooltip>
+              </Link>
           </Box>
           {/* 設定メニュー */}
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="個人メニュー">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/users/ActorDefault.png" />
+                <Avatar
+                  alt="Remy Sharp"
+                  src={GetUrlOfImageFileInDataServer(authUser.profile_image_path)} />
               </IconButton>
             </Tooltip>
             <Menu

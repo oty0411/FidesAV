@@ -5,20 +5,17 @@ import Separator from 'components/atoms/Separator'
 import Text from 'components/atoms/Text'
 import Box from 'components/layout/Box'
 import Flex from 'components/layout/Flex'
-import UserProfile from 'components/organisms/UserProfile'
 import Layout from 'components/templates/Layout'
 import MainPartLayout from 'components/templates/Layout/mainPartLayout'
 import { useAuthContext } from 'contexts/AuthContext'
 import {
   ApiContext,
   AppErrorCode,
-  AuthUser,
-  GetDefaultAuthUser,
-  User,
-  GetObj_User,
+  LoginUserType,
 } from 'types/userTypes'
 import AppearanceRequestInbox from 'components/organisms/AppearanceRequestInbox'
 
+// 出演依頼INBOX
 const AppearanceRequestInboxPage: NextPage = () => {
   // #region Fields
   const apiContext: ApiContext = {
@@ -27,17 +24,7 @@ const AppearanceRequestInboxPage: NextPage = () => {
   // ページルート
   const router = useRouter()
   // 認証済ユーザー
-  const { authUser, setAuthUser } = useAuthContext()
-  // ユーザー情報
-  const [user, setUser] = useState<User>(GetObj_User())
-  // 表示モード
-  const view_mode_mine: boolean = (() => {
-    if (router.query.view_mode_mine === 'false') {
-      return false
-    } else {
-      return true
-    }
-  })()
+  const { authUser } = useAuthContext()
   // #endregion Fields
 
   // #region Functions
@@ -50,7 +37,7 @@ const AppearanceRequestInboxPage: NextPage = () => {
 
   // #region View
   return (
-    <Layout userType={view_mode_mine ? 'actor' : 'maker'}>
+    <Layout userType={authUser.type == LoginUserType.Actor ? 'actor' : 'maker'}>
       <MainPartLayout>
         <Separator />
         <Box>

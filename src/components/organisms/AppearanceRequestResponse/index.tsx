@@ -8,6 +8,8 @@ import Paper from '@mui/material/Paper'
 import InputBase from '@mui/material/InputBase'
 import TextField from '@mui/material/TextField'
 import { alpha, styled } from '@mui/material/styles'
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import * as UserTypes from '../../../types/userTypes'
@@ -16,11 +18,12 @@ import Text from 'components/atoms/Text'
 import Box from 'components/layout/Box'
 import Flex from 'components/layout/Flex'
 
-interface AppearanceRequestPostFormProps {
+interface AppearanceRequestResponsePostFormProps {
+  offer: UserTypes.Offer
   /**
    * 送信ボタンを押した時のイベントハンドラ
    */
-  onPost?: (formData: UserTypes.Offer) => void
+  onPost?: (formData: UserTypes.OfferResponse) => void
 }
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -87,18 +90,23 @@ const ConditionList: Condition[] = [
 /**
  * 出演依頼フォーム
  */
-export const AppearanceRequestPostForm = (
-  props: AppearanceRequestPostFormProps,
+export const AppearanceRequestResponsePostForm = (
+  props: AppearanceRequestResponsePostFormProps,
 ) => {
-  // React Hook Formの使用
+
+  // トグルボタンコントロールの入力値(契約する or 契約しない)
+  const [agreementValue, setAgreementValue] = React.useState(UserTypes.OfferResponseType.NoContract);
+
+  // チェックボックスの値格納
   const [checkBoxStates, setCheckBoxStates] = React.useState(
-    ConditionList.map((item) => {
-      return {
-        label: item.label,
-        id: item.id,
-        checked: false,
-      }
-    }),
+    [
+      { label: ConditionList.find(el => el.id == 'makeup')?.label, id: 'makeup', checked: props.offer.makeup == UserTypes.BoolWithInt.True ? true : false, },
+      { label: ConditionList.find(el => el.id == 'rental_costume')?.label, id: 'rental_costume', checked: props.offer.rental_costume == UserTypes.BoolWithInt.True ? true : false, },
+      { label: ConditionList.find(el => el.id == 'private_room')?.label, id: 'private_room', checked: props.offer.private_room == UserTypes.BoolWithInt.True ? true : false, },
+      { label: ConditionList.find(el => el.id == 'shared_room')?.label, id: 'shared_room', checked: props.offer.shared_room == UserTypes.BoolWithInt.True ? true : false, },
+      { label: ConditionList.find(el => el.id == 'pick_up')?.label, id: 'pick_up', checked: props.offer.pick_up == UserTypes.BoolWithInt.True ? true : false, },
+      { label: ConditionList.find(el => el.id == 'meal')?.label, id: 'meal', checked: props.offer.meal == UserTypes.BoolWithInt.True ? true : false,},
+    ]
   )
 
   const {
@@ -106,76 +114,97 @@ export const AppearanceRequestPostForm = (
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<UserTypes.Offer>({
+  } = useForm<UserTypes.OfferResponse>({
     mode: 'onBlur',
   })
 
   // Form submit時イベントハンドラ
-  const onSubmit = (formData: UserTypes.Offer) => {
-    // チェックボックスの値セット
-    // メイク付
-    formData.makeup = checkBoxStates[ConditionList.findIndex(item => item.id == 'makeup')].checked
-      ? UserTypes.BoolWithInt.True : UserTypes.BoolWithInt.False
-    // 貸衣裳
-    formData.rental_costume = checkBoxStates[ConditionList.findIndex(item => item.id == 'rental_costume')].checked
-      ? UserTypes.BoolWithInt.True : UserTypes.BoolWithInt.False
-    // 控室(個室)
-    formData.private_room = checkBoxStates[ConditionList.findIndex(item => item.id == 'private_room')].checked
-      ? UserTypes.BoolWithInt.True : UserTypes.BoolWithInt.False
-    // 控室(相部屋)
-    formData.shared_room = checkBoxStates[ConditionList.findIndex(item => item.id == 'shared_room')].checked
-      ? UserTypes.BoolWithInt.True : UserTypes.BoolWithInt.False
-    // 送迎
-    formData.pick_up = checkBoxStates[ConditionList.findIndex(item => item.id == 'pick_up')].checked
-      ? UserTypes.BoolWithInt.True : UserTypes.BoolWithInt.False
-    // 食事
-    formData.meal = checkBoxStates[ConditionList.findIndex(item => item.id == 'meal')].checked
-      ? UserTypes.BoolWithInt.True : UserTypes.BoolWithInt.False
-
+  const onSubmit = (formData: UserTypes.OfferResponse) => {
+    // レスポンスセット
+    formData.response = agreementValue
     //console.log(formData)
     props.onPost && props.onPost(formData)
   }
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //console.log(event)
-    checkBoxStates[checkBoxStates.findIndex(item => item.id == event.target.name)].checked = event.target.checked
-    setCheckBoxStates([...checkBoxStates])
-    //console.log(checkBoxStates)
-  }
+  const handleChange = (
+    event: React.MouseEvent<HTMLElement>,
+    newAlignment: UserTypes.OfferResponseType,
+  ) => {
+    setAgreementValue(newAlignment);
+    //console.log(agreementValue)
+  };
 
   return (
     <Box marginLeft={2}>
       <Flex justifyContent={'center'} flexDirection={'column'}>
         {/*情報入力フォーム*/}
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Box marginBottom={1}>
+          <Box marginTop={1}>
+            <TextField
+              {...register('message', { required: true })}
+              id="outlined-multiline-flexible"
+              label="依頼者へのメッセージ"
+              multiline
+              fullWidth
+              color="primary"
+              variant="outlined"
+              // maxRows={4}
+              rows={3}
+              focused
+              InputLabelProps={{ shrink: true }}
+            />
+            {errors.message && (
+              <Text color="danger" variant="small" paddingLeft={1}>
+                依頼者へのメッセージの入力は必須です
+              </Text>
+            )}
+          </Box>
+          <Box marginTop={1}>
+            <Flex justifyContent={'center'}>
+              <ToggleButtonGroup
+                color="primary"
+                value={agreementValue}
+                exclusive
+                onChange={handleChange}
+                aria-label="Platform"
+              >
+                <ToggleButton value={UserTypes.OfferResponseType.Agreement}>契約する</ToggleButton>
+                <ToggleButton value={UserTypes.OfferResponseType.NoContract}>契約しない</ToggleButton>
+              </ToggleButtonGroup>
+            </Flex>  
+          </Box>  
+          {/* 送信ボタン */}
+          <Box margin={2}>
+            <Flex justifyContent={'center'}>
+              <Button type="submit">送信</Button>
+            </Flex>
+          </Box>
+        </form>
+        {/*出演依頼内容*/}
+        <Box>
+          <SnackbarContent
+            message="出演依頼内容"
+            sx={{ backgroundColor: '#333333', color: '#ffffff' }}
+          />
+          <Box marginBottom={1} marginLeft={3}>
             <Flex justifyContent={'flex-start'} flexDirection={'column'}>
               {/*出演料*/}
-              <Box marginTop={0}>
+              <Box marginTop={2}>
                 <TextField
-                  {...register('fee', { required: true })}
                   label="出演料[円]"
-                  // value={'1,000,000円'}
+                  value={props.offer.fee}
                   fullWidth
                   variant="standard"
                   color="primary"
                   focused
                   InputLabelProps={{ shrink: true }}
                 />
-                {errors.fee && (
-                  <Text color="danger" variant="small" paddingLeft={1}>
-                    出演料の入力は必須です
-                  </Text>
-                )}
               </Box>
               {/*タイトル*/}
               <Box marginTop={1}>
                 <TextField
-                  {...register('title', { required: true })}
                   label="タイトル"
-                  // value={
-                  //   'AV女優ありな先生のネチョネチョ、レロレロ 大人のベロキス誘惑接吻レクチャー'
-                  // }
+                  value={props.offer.title}
                   multiline
                   fullWidth
                   variant="standard"
@@ -183,16 +212,10 @@ export const AppearanceRequestPostForm = (
                   focused
                   InputLabelProps={{ shrink: true }}
                 />
-                {errors.title && (
-                  <Text color="danger" variant="small" paddingLeft={1}>
-                    タイトルの入力は必須です
-                  </Text>
-                )}
               </Box>
               {/*企画概要*/}
               <Box marginTop={1}>
                 <TextField
-                  {...register('summary', { required: true })}
                   id="outlined-multiline-flexible"
                   label="企画概要"
                   multiline
@@ -201,53 +224,35 @@ export const AppearanceRequestPostForm = (
                   variant="standard"
                   // maxRows={4}
                   rows={3}
-                  // value={
-                  //   '甘く、激しく誘惑接吻レクチャー！！ヨダレだらだら唾液ねっちょりレロレロ…キスで求め合う超濃厚エクスタシー！見つめて感じる大人の接吻SEX！キスの女神、ありーな。やっぱりエロい。舌を絡ませて唾液交換、唇を重ね合ってピストン！！ヨダレたっぷりベロキス6コーナー3本番！！キスがへたっぴなアナタのために…優しくてエロい手ほどきキスリードSEX！！'
-                  // }
+                  value={props.offer.summary}
                   focused
                   InputLabelProps={{ shrink: true }}
                 />
-                {errors.fee && (
-                  <Text color="danger" variant="small" paddingLeft={1}>
-                    企画概要の入力は必須です
-                  </Text>
-                )}
               </Box>
               {/*撮影日時*/}
               <Box marginTop={1}>
                 <TextField
-                  {...register('date_time', { required: true })}
-                  label="撮影日時 (例)2022/10/28 10:00 - 2022/10/28 18:00"
-                  // value={'2022/10/28 10:00 - 2022/10/28 18:00'}
+                  label="撮影日 (例)2022/10/28 10:00 - 2022/10/28 18:00"
+                  value={props.offer.date_time}
                   fullWidth
                   variant="standard"
                   color="primary"
                   focused
                   InputLabelProps={{ shrink: true }}
                 />
-                {errors.date_time && (
-                  <Text color="danger" variant="small" paddingLeft={1}>
-                    撮影日時の入力は必須です
-                  </Text>
-                )}
               </Box>
-              {/*撮影場所*/}
+              {/*撮影場所(jyuusyo 
+                )*/}
               <Box marginTop={1}>
                 <TextField
-                  {...register('place', { required: true })}
                   label="撮影場所(住所)"
-                  // value={'福岡県福岡市中央区大名 1-3-41'}
+                  value={props.offer.place}
                   fullWidth
                   variant="standard"
                   color="primary"
                   focused
                   InputLabelProps={{ shrink: true }}
                 />
-                {errors.place && (
-                  <Text color="danger" variant="small" paddingLeft={1}>
-                    撮影場所の入力は必須です
-                  </Text>
-                )}
               </Box>
               {/*その他条件*/}
               <Box marginTop={2}>
@@ -280,7 +285,6 @@ export const AppearanceRequestPostForm = (
                                 control={
                                   <Checkbox
                                     checked={item.checked}
-                                    onChange={handleChange}
                                     name={item.id}
                                   />
                                 }
@@ -297,36 +301,22 @@ export const AppearanceRequestPostForm = (
               {/*メッセージ*/}
               <Box marginTop={1}>
                 <TextField
-                  {...register('message', { required: true })}
                   id="outlined-multiline-flexible"
-                  label="メッセージ"
+                  label="依頼者からのメッセージ"
                   multiline
                   fullWidth
                   color="primary"
                   variant="outlined"
                   // maxRows={4}
                   rows={3}
-                  // value={
-                  //   '正式に出演依頼を提出させていただきます。どうぞよろしくお願いいたします。'
-                  // }
+                  value={props.offer.message}
                   focused
                   InputLabelProps={{ shrink: true }}
                 />
-                {errors.message && (
-                  <Text color="danger" variant="small" paddingLeft={1}>
-                    メッセージの入力は必須です
-                  </Text>
-                )}
-              </Box>
-              {/* 申請ボタン */}
-              <Box margin={2}>
-                <Flex justifyContent={'center'}>
-                  <Button type="submit">送信</Button>
-                </Flex>
               </Box>
             </Flex>
           </Box>
-        </form>
+        </Box>  
       </Flex>
     </Box>
   )
