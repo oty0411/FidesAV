@@ -1,6 +1,6 @@
 // #region Error code
 
-import { stringify } from "querystring"
+import { stringify } from 'querystring'
 
 /**
  * エラーコード
@@ -504,7 +504,6 @@ export type PlayCondition = {
   fist: BoolWithInt
   // ダンス
   dance: BoolWithInt
-  
 }
 // PlayCondition型初期化オブジェクト
 export function GetObj_PlayCondition() {
@@ -689,10 +688,13 @@ export function GetObj_ChatWithUser() {
 
 // ChatWithUser型ダミーオブジェクト
 export function GetDummyObj_ChatWithUser(
-  comment: string, sendTime: string,
+  comment: string,
+  sendTime: string,
   sendDir: SendDirection,
-  actorName: string, actorProfileImagePath: string,
-  makerName: string, makerProfileImagePath: string
+  actorName: string,
+  actorProfileImagePath: string,
+  makerName: string,
+  makerProfileImagePath: string,
 ) {
   const obj: ChatWithUser = {
     chat: GetObj_Chat(),
@@ -965,6 +967,77 @@ export function GetObj_ViolationReport() {
     nuisance: BoolWithInt.Unknown,
     other: BoolWithInt.Unknown,
     explanation_text: '',
+  }
+  return obj
+}
+
+// ユーザー通知
+export enum UserNoticeType {
+  // 不定
+  Unknown = 0,
+  // 通知
+  Notice = 1,
+  // お知らせ
+  News = 2,
+}
+
+// 既読ステータス
+export enum AlreadyReadStatus {
+  // 不定
+  Unknown = 0,
+  // 未読
+  False = 1,
+  // 既読
+  True = 2,
+}
+
+// 通知カテゴリ
+export enum NoticeCategory {
+  // 不定
+  Unknown = 0,
+  // 未読
+  Normal = 1,
+  // 出演依頼
+  AppearanceRequest = 2,
+  // 出演依頼
+  AppearanceRequestResponse = 3,
+  // 取引完了
+  TransactionCompleted = 4,
+}
+
+// ユーザー通知
+export type UserNotice = {
+  // ID
+  id: number
+  // ユーザータイプ
+  user_type: LoginUserType
+  // ユーザーID
+  user_id: number
+  // 通知タイプ
+  type: UserNoticeType
+  // 既読
+  already_read: AlreadyReadStatus
+  // カテゴリ
+  category: NoticeCategory
+  // 情報ID
+  information_id: number
+  // タイトル
+  title: string
+  // サブタイトル
+  sub_title: string
+}
+// UserNotice型初期化オブジェクト
+export function GetObj_UserNotice() {
+  const obj: UserNotice = {
+    id: 0,
+    user_type: LoginUserType.Unknown,
+    user_id: 0,
+    type: UserNoticeType.Unknown,
+    already_read: AlreadyReadStatus.Unknown,
+    category: NoticeCategory.Unknown,
+    information_id: 0,
+    title: '',
+    sub_title: '',
   }
   return obj
 }

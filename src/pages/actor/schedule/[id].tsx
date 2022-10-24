@@ -1,12 +1,12 @@
 import type { NextPage } from 'next'
 import React from 'react'
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button'
+import TextField from '@mui/material/TextField'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
 import FullCalendar, { DateSelectArg, EventClickArg } from '@fullcalendar/react'
 import allLocales from '@fullcalendar/core/locales-all'
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -19,8 +19,15 @@ import Box from 'components/layout/Box'
 import Layout from 'components/templates/Layout'
 import MainPartLayout from 'components/templates/Layout/mainPartLayout'
 import { useAuthContext } from 'contexts/AuthContext'
-import { ActorSchedule, ApiContext, AppErrorCode, GetObj_ActorSchedule, LoginUserType, RecruitingStatus } from 'types/userTypes'
-import { GetScheduleList, PostSchedule, DeleteSchedule } from 'api/schedule';
+import {
+  ActorSchedule,
+  ApiContext,
+  AppErrorCode,
+  GetObj_ActorSchedule,
+  LoginUserType,
+  RecruitingStatus,
+} from 'types/userTypes'
+import { GetScheduleList, PostSchedule, DeleteSchedule } from 'api/schedule'
 
 const ActorSchedulePage: NextPage = () => {
   // #region Fields
@@ -34,7 +41,9 @@ const ActorSchedulePage: NextPage = () => {
   // 女優ID
   const actor_id = Number(router.query.id)
   // スケジュールイベントリスト
-  const [actorSchedules, setActorSchedules] = React.useState<ActorSchedule[]>(new Array())
+  const [actorSchedules, setActorSchedules] = React.useState<ActorSchedule[]>(
+    [],
+  )
   // #endregion Fields
 
   // #region Functions
@@ -42,19 +51,20 @@ const ActorSchedulePage: NextPage = () => {
   React.useEffect(() => {
     // 既存イベントリスト取得
     GetScheduleList(apiContext, actor_id).then((apiResult) => {
-      console.log(apiResult);
+      console.log(apiResult)
       if (apiResult.result.Code == AppErrorCode.Success) {
         setActorSchedules(apiResult.data)
         console.log(actorSchedules)
       }
     })
   }, [])
-  
+
   // #region Add Event Controls
-  const [addEventSelectRange, setAddEventSelectRange] = React.useState<DateSelectArg>()
+  const [addEventSelectRange, setAddEventSelectRange] =
+    React.useState<DateSelectArg>()
   // イベント登録時に必要な情報を一時保存するステート
-  const [addEventStart, setAddEventStart] = React.useState('');
-  const [addEventEnd, setAddEventEnd] = React.useState('');
+  const [addEventStart, setAddEventStart] = React.useState('')
+  const [addEventEnd, setAddEventEnd] = React.useState('')
 
   // カレンダー日付選択時イベントハンドラ
   const handleDateSelect = (selectionInfo: DateSelectArg) => {
@@ -65,20 +75,19 @@ const ActorSchedulePage: NextPage = () => {
     setAddEventEnd(new Date(selectionInfo.end).toLocaleString())
 
     // ダイアログオープン
-    setAddEventDialogOpen(true);
-    
+    setAddEventDialogOpen(true)
+
     // 選択した部分の選択を解除
-    const calendarApi = selectionInfo.view.calendar 
+    const calendarApi = selectionInfo.view.calendar
     calendarApi.unselect()
   }
 
   // イベント追加時のダイアログオープンフラグ
-  const [addEventDialogOpen, setAddEventDialogOpen] = React.useState(false);
+  const [addEventDialogOpen, setAddEventDialogOpen] = React.useState(false)
   // ダイアログで登録を選択したときのイベントハンドラ
   const handleAddEvent = () => {
-
     // 新規イベント追加
-    let scheduleData = GetObj_ActorSchedule()
+    const scheduleData = GetObj_ActorSchedule()
     scheduleData.actor_user_id = actor_id
     scheduleData.maker_user_id = 1
     scheduleData.start_time = addEventStart
@@ -87,10 +96,9 @@ const ActorSchedulePage: NextPage = () => {
     PostSchedule(apiContext, scheduleData).then((apiResult) => {
       // console.log(apiResult);
       if (apiResult.result.Code == AppErrorCode.Success) {
-
         // 既存イベントリスト更新
         GetScheduleList(apiContext, actor_id).then((apiResult) => {
-          console.log(apiResult);
+          console.log(apiResult)
           if (apiResult.result.Code == AppErrorCode.Success) {
             setActorSchedules(apiResult.data)
           }
@@ -98,16 +106,16 @@ const ActorSchedulePage: NextPage = () => {
       }
     })
 
-    setAddEventDialogOpen(false);
+    setAddEventDialogOpen(false)
   }
   // ダイアログで中止を選択したときのイベントハンドラ
   const handleAddEventDialogClose = () => {
-    setAddEventDialogOpen(false);
+    setAddEventDialogOpen(false)
   }
   // #endregion Add Event Controls
 
   // #region Edit Event Controls
-  const [opeEventDialogOpen, setOpeEventDialogOpen] = React.useState(false);
+  const [opeEventDialogOpen, setOpeEventDialogOpen] = React.useState(false)
   const [opeEventArg, setOpeEventArg] = React.useState<EventClickArg>()
   // 追加済イベントクリック時イベントハンドラ
   const handleEventClick = (eventInfo: EventClickArg) => {
@@ -129,30 +137,30 @@ const ActorSchedulePage: NextPage = () => {
     // 選択イベントの情報
     //console.log(opeEventArg)
 
-    setOpeEventDialogOpen(false);
+    setOpeEventDialogOpen(false)
 
     // 出演依頼ページへ遷移
     router.push(`/message/appearancerequest?targetId=${opeEventArg?.event.id}`)
   }
   // ダイアログで"削除"を選択したときのイベントハンドラ
   const handleDeleteEvent = () => {
-
     // イベント削除の確認
-    if (!confirm('本当にイベントを削除しますか?'))
-    {
-      setOpeEventDialogOpen(false);
+    if (!confirm('本当にイベントを削除しますか?')) {
+      setOpeEventDialogOpen(false)
       return
     }
 
     // イベント削除
     const deleteTargetIndex = Number(opeEventArg?.event.id)
     DeleteSchedule(apiContext, deleteTargetIndex).then((apiResult) => {
-      console.log(apiResult);
+      console.log(apiResult)
       if (apiResult.result.Code == AppErrorCode.Success) {
         // // 画面上のイベント削除
         // opeEventArg?.event.remove()
         // ローカル上のリストからイベント削除
-        const deleteTargetIndex = actorSchedules.findIndex(item => item.id == deleteTargetIndex)
+        const deleteTargetIndex = actorSchedules.findIndex(
+          (item) => item.id == deleteTargetIndex,
+        )
         console.log('before', actorSchedules)
         actorSchedules.splice(deleteTargetIndex, 1)
         setActorSchedules([...actorSchedules])
@@ -160,11 +168,11 @@ const ActorSchedulePage: NextPage = () => {
       }
     })
 
-    setOpeEventDialogOpen(false);
+    setOpeEventDialogOpen(false)
   }
   // ダイアログで"中止"を選択したときのイベントハンドラ
   const handleOpeEventDialogClose = () => {
-    setOpeEventDialogOpen(false);
+    setOpeEventDialogOpen(false)
   }
   // #endregion Edit Event Controls
   // #endregion Functions
@@ -186,13 +194,13 @@ const ActorSchedulePage: NextPage = () => {
             locales={allLocales}
             locale="ja"
             events={actorSchedules.map((item) => {
-              return ({
+              return {
                 id: String(item.id),
                 title: item.maker_user_id != 1 ? '契約済撮影日' : '撮影可能',
                 start: new Date(item.start_time).toISOString(),
                 end: new Date(item.end_time).toISOString(),
                 allDay: false,
-              })
+              }
             })}
             //events={'https://fullcalendar.io/api/demo-feeds/events.json'}
             // 日付クリックイベント
@@ -246,7 +254,7 @@ const ActorSchedulePage: NextPage = () => {
               // type="email"
               fullWidth
               variant="standard"
-            />  
+            />
           </DialogContent>
           <DialogActions>
             <Button onClick={handleAddEvent}>登録</Button>
@@ -257,10 +265,14 @@ const ActorSchedulePage: NextPage = () => {
         <Dialog open={opeEventDialogOpen} onClose={handleOpeEventDialogClose}>
           <DialogTitle>イベント操作</DialogTitle>
           <DialogContent>
-            <DialogContentText>イベントに対する操作を選択してください</DialogContentText> 
+            <DialogContentText>
+              イベントに対する操作を選択してください
+            </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleGoToAppearanceRequest}>出演依頼へ進む</Button>
+            <Button onClick={handleGoToAppearanceRequest}>
+              出演依頼へ進む
+            </Button>
             <Button onClick={handleDeleteEvent}>削除</Button>
             <Button onClick={handleOpeEventDialogClose}>キャンセル</Button>
           </DialogActions>

@@ -17,7 +17,10 @@ import {
   LoginUserType,
   GetObj_OfferResponse,
 } from 'types/userTypes'
-import { GetAppearanceRequest, PostAppearanceRequestResponse } from 'api/schedule'
+import {
+  GetAppearanceRequest,
+  PostAppearanceRequestResponse,
+} from 'api/schedule'
 import { AppearanceRequestResponsePostForm } from 'components/organisms/AppearanceRequestResponse'
 
 const AppearanceRequestResponsePage: NextPage = () => {
@@ -32,7 +35,8 @@ const AppearanceRequestResponsePage: NextPage = () => {
   // 出演依頼ID
   const offer_id = Number(router.query.id)
   // 出演依頼情報
-  const [targetAppearanceRequest, setTargetAppearanceRequest] = React.useState<OfferWithOptionData>(new OfferWithOptionData())
+  const [targetAppearanceRequest, setTargetAppearanceRequest] =
+    React.useState<OfferWithOptionData>(new OfferWithOptionData())
   // #endregion Fields
 
   // #region Functions
@@ -40,7 +44,7 @@ const AppearanceRequestResponsePage: NextPage = () => {
   React.useEffect(() => {
     // 出演依頼情報取得
     GetAppearanceRequest(apiContext, offer_id).then((apiResult) => {
-      console.log(apiResult);
+      console.log(apiResult)
       if (apiResult.result.Code == AppErrorCode.Success) {
         setTargetAppearanceRequest(apiResult.data)
       }
@@ -50,7 +54,9 @@ const AppearanceRequestResponsePage: NextPage = () => {
   // 出演依頼レスポンスポスト
   function postAppearanceRequestResponse(response: OfferResponse) {
     // 送信確認
-    if (!confirm('出演依頼の返信を送信しますか？')){ return }
+    if (!confirm('出演依頼の返信を送信しますか？')) {
+      return
+    }
 
     // IDをセット
     response.offer_id = targetAppearanceRequest.offer.id
@@ -59,7 +65,7 @@ const AppearanceRequestResponsePage: NextPage = () => {
 
     // 出演依頼送信
     PostAppearanceRequestResponse(apiContext, response).then((apiResult) => {
-      console.log(apiResult);
+      console.log(apiResult)
       if (apiResult.result.Code == AppErrorCode.Success) {
         alert('出演依頼の返信に成功しました。')
         // 出演依頼INBOX画面へ戻る

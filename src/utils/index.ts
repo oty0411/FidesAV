@@ -70,7 +70,7 @@ export const ApiRequestFetcher = async (
       },
     }
   }
-  console.log('api route: ',resource)
+  console.log('api route: ', resource)
   const res = await fetch(resource, init)
   const jsonData = await res.json()
 

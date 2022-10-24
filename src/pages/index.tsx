@@ -39,8 +39,11 @@ const SigninPage: NextPage = () => {
       // デフォルトはトップページに移動。
       const redurectTo =
         (router.query['redirect_to'] as string) ??
-        (user.type == LoginUserType.Actor ? `/actor/users/${user.id}` :
-          (user.type == LoginUserType.Marker ? `/maker/users/${user.id}` : '/'))
+        (user.type == LoginUserType.Actor
+          ? `/actor/users/${user.id}`
+          : user.type == LoginUserType.Marker
+          ? `/maker/users/${user.id}`
+          : '/')
 
       console.log('Redirecting', redurectTo)
       await router.push(redurectTo)

@@ -32,7 +32,8 @@ const AppearanceRequestPage: NextPage = () => {
   // 出演依頼対象のスケジュールID
   const target_schedule_id = Number(router.query.targetId)
   // 出演依頼対象のスケジュール情報
-  const [targetActorSchedule, setTargetActorSchedule] = React.useState<ActorSchedule>(GetObj_ActorSchedule())
+  const [targetActorSchedule, setTargetActorSchedule] =
+    React.useState<ActorSchedule>(GetObj_ActorSchedule())
   // #endregion Fields
 
   // #region Functions
@@ -40,7 +41,7 @@ const AppearanceRequestPage: NextPage = () => {
   React.useEffect(() => {
     // 出演依頼対象スケジュール取得
     GetSchedule(apiContext, target_schedule_id).then((apiResult) => {
-      console.log(apiResult);
+      console.log(apiResult)
       if (apiResult.result.Code == AppErrorCode.Success) {
         setTargetActorSchedule(apiResult.data)
       }
@@ -50,7 +51,9 @@ const AppearanceRequestPage: NextPage = () => {
   // 出演依頼ポスト
   function postAppearanceRequest(offer: Offer) {
     // 送信確認
-    if (!confirm('出演依頼を送信しますか？')){ return }
+    if (!confirm('出演依頼を送信しますか？')) {
+      return
+    }
 
     // 各種IDをセット
     offer.actor_schedule_id = targetActorSchedule.id
@@ -62,7 +65,7 @@ const AppearanceRequestPage: NextPage = () => {
 
     // 出演依頼送信
     PostAppearanceRequest(apiContext, offer).then((apiResult) => {
-      console.log(apiResult);
+      console.log(apiResult)
       if (apiResult.result.Code == AppErrorCode.Success) {
         alert('出演依頼の送信に成功しました。')
         // 女優のスケジュール管理画面へ戻る

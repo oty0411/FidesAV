@@ -8,8 +8,8 @@ import Paper from '@mui/material/Paper'
 import InputBase from '@mui/material/InputBase'
 import TextField from '@mui/material/TextField'
 import { alpha, styled } from '@mui/material/styles'
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import ToggleButton from '@mui/material/ToggleButton'
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import * as UserTypes from '../../../types/userTypes'
@@ -93,20 +93,14 @@ const ConditionList: Condition[] = [
 export const AppearanceRequestResponsePostForm = (
   props: AppearanceRequestResponsePostFormProps,
 ) => {
-
   // トグルボタンコントロールの入力値(契約する or 契約しない)
-  const [agreementValue, setAgreementValue] = React.useState(UserTypes.OfferResponseType.NoContract);
+  const [agreementValue, setAgreementValue] = React.useState(
+    UserTypes.OfferResponseType.NoContract,
+  )
 
   // チェックボックスの値格納
   const [checkBoxStates, setCheckBoxStates] = React.useState(
-    [
-      { label: ConditionList.find(el => el.id == 'makeup')?.label, id: 'makeup', checked: props.offer.makeup == UserTypes.BoolWithInt.True ? true : false, },
-      { label: ConditionList.find(el => el.id == 'rental_costume')?.label, id: 'rental_costume', checked: props.offer.rental_costume == UserTypes.BoolWithInt.True ? true : false, },
-      { label: ConditionList.find(el => el.id == 'private_room')?.label, id: 'private_room', checked: props.offer.private_room == UserTypes.BoolWithInt.True ? true : false, },
-      { label: ConditionList.find(el => el.id == 'shared_room')?.label, id: 'shared_room', checked: props.offer.shared_room == UserTypes.BoolWithInt.True ? true : false, },
-      { label: ConditionList.find(el => el.id == 'pick_up')?.label, id: 'pick_up', checked: props.offer.pick_up == UserTypes.BoolWithInt.True ? true : false, },
-      { label: ConditionList.find(el => el.id == 'meal')?.label, id: 'meal', checked: props.offer.meal == UserTypes.BoolWithInt.True ? true : false,},
-    ]
+    getCheckBoxStates(props.offer),
   )
 
   const {
@@ -117,6 +111,49 @@ export const AppearanceRequestResponsePostForm = (
   } = useForm<UserTypes.OfferResponse>({
     mode: 'onBlur',
   })
+
+  // チェックボックス値取得
+  function getCheckBoxStates(offer: UserTypes.Offer) {
+    return [
+      {
+        label: ConditionList.find((el) => el.id == 'makeup')?.label,
+        id: 'makeup',
+        checked: offer.makeup == UserTypes.BoolWithInt.True ? true : false,
+      },
+      {
+        label: ConditionList.find((el) => el.id == 'rental_costume')?.label,
+        id: 'rental_costume',
+        checked:
+          offer.rental_costume == UserTypes.BoolWithInt.True ? true : false,
+      },
+      {
+        label: ConditionList.find((el) => el.id == 'private_room')?.label,
+        id: 'private_room',
+        checked:
+          offer.private_room == UserTypes.BoolWithInt.True ? true : false,
+      },
+      {
+        label: ConditionList.find((el) => el.id == 'shared_room')?.label,
+        id: 'shared_room',
+        checked: offer.shared_room == UserTypes.BoolWithInt.True ? true : false,
+      },
+      {
+        label: ConditionList.find((el) => el.id == 'pick_up')?.label,
+        id: 'pick_up',
+        checked: offer.pick_up == UserTypes.BoolWithInt.True ? true : false,
+      },
+      {
+        label: ConditionList.find((el) => el.id == 'meal')?.label,
+        id: 'meal',
+        checked: offer.meal == UserTypes.BoolWithInt.True ? true : false,
+      },
+    ]
+  }
+
+  // チェックボックス値の更新
+  React.useEffect(() => {
+    setCheckBoxStates([...getCheckBoxStates(props.offer)])
+  }, [props.offer])
 
   // Form submit時イベントハンドラ
   const onSubmit = (formData: UserTypes.OfferResponse) => {
@@ -130,9 +167,9 @@ export const AppearanceRequestResponsePostForm = (
     event: React.MouseEvent<HTMLElement>,
     newAlignment: UserTypes.OfferResponseType,
   ) => {
-    setAgreementValue(newAlignment);
+    setAgreementValue(newAlignment)
     //console.log(agreementValue)
-  };
+  }
 
   return (
     <Box marginLeft={2}>
@@ -168,11 +205,15 @@ export const AppearanceRequestResponsePostForm = (
                 onChange={handleChange}
                 aria-label="Platform"
               >
-                <ToggleButton value={UserTypes.OfferResponseType.Agreement}>契約する</ToggleButton>
-                <ToggleButton value={UserTypes.OfferResponseType.NoContract}>契約しない</ToggleButton>
+                <ToggleButton value={UserTypes.OfferResponseType.Agreement}>
+                  契約する
+                </ToggleButton>
+                <ToggleButton value={UserTypes.OfferResponseType.NoContract}>
+                  契約しない
+                </ToggleButton>
               </ToggleButtonGroup>
-            </Flex>  
-          </Box>  
+            </Flex>
+          </Box>
           {/* 送信ボタン */}
           <Box margin={2}>
             <Flex justifyContent={'center'}>
@@ -316,7 +357,7 @@ export const AppearanceRequestResponsePostForm = (
               </Box>
             </Flex>
           </Box>
-        </Box>  
+        </Box>
       </Flex>
     </Box>
   )

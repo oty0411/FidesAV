@@ -43,7 +43,7 @@ const MovieTitleCardListContainer = ({
             alignItems={'flex-start'}
           >
             {portfolios.map((p) => (
-              <Box key = { p.id } margin = {1}>
+              <Box key={p.id} margin={1}>
                 <Button
                   onClick={() => {
                     window.open(p.url)
@@ -51,7 +51,11 @@ const MovieTitleCardListContainer = ({
                   backgroundColor={'#ffffff'}
                 >
                   {/* 動画タイトルカード */}
-                  <Card title={p.title} imageUrl={GetUrlOfImageFileInDataServer(p.image_path)} url={p.url} />
+                  <Card
+                    title={p.title}
+                    imageUrl={GetUrlOfImageFileInDataServer(p.image_path)}
+                    url={p.url}
+                  />
                 </Button>
               </Box>
             ))}

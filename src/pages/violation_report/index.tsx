@@ -1,23 +1,23 @@
 import type { NextPage } from 'next'
 import * as React from 'react'
 import SnackbarContent from '@mui/material/SnackbarContent'
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
-import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
-import MoodBadIcon from '@mui/icons-material/MoodBad';
-import Checkbox from '@mui/material/Checkbox';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
-import FormGroup from '@mui/material/FormGroup';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+import Button from '@mui/material/Button'
+import ButtonGroup from '@mui/material/ButtonGroup'
+import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied'
+import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied'
+import MoodBadIcon from '@mui/icons-material/MoodBad'
+import Checkbox from '@mui/material/Checkbox'
+import Radio from '@mui/material/Radio'
+import RadioGroup from '@mui/material/RadioGroup'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import FormControl from '@mui/material/FormControl'
+import FormLabel from '@mui/material/FormLabel'
+import FormGroup from '@mui/material/FormGroup'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
 import TextField from '@mui/material/TextField'
 import Separator from 'components/atoms/Separator'
 import Text from 'components/atoms/Text'
@@ -26,17 +26,15 @@ import Flex from 'components/layout/Flex'
 import Layout from 'components/templates/Layout'
 import * as ST_Button from 'components/atoms/Button'
 import MainPartLayout from 'components/templates/Layout/mainPartLayout'
-import {
-  ApiContext,
-} from 'types/userTypes'
+import { ApiContext } from 'types/userTypes'
 
 /**違反リスト */
 const violationList = [
-	{ label: 1, text: '契約違反' },
-	{ label: 2, text: '引き抜き交渉' },
-	{label: 3, text: '営業妨害' },
-	{label: 4, text: '迷惑行為' },
-	{label: 5, text: 'その他'},
+  { label: 1, text: '契約違反' },
+  { label: 2, text: '引き抜き交渉' },
+  { label: 3, text: '営業妨害' },
+  { label: 4, text: '迷惑行為' },
+  { label: 5, text: 'その他' },
 ]
 
 const ViolationReportPage: NextPage = () => {
@@ -44,29 +42,43 @@ const ViolationReportPage: NextPage = () => {
   const apiContext: ApiContext = {
     apiRootUrl: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost/api',
   }
-  const [checked, setChecked] = React.useState(false);
+  const [checked, setChecked] = React.useState(false)
 
   // 評価ボタン
   const evaluationButtons = [
-    <Button key="good" color="error" size="large" startIcon={<SentimentVerySatisfiedIcon />}>
+    <Button
+      key="good"
+      color="error"
+      size="large"
+      startIcon={<SentimentVerySatisfiedIcon />}
+    >
       <Box marginRight={1}>GOOD</Box>
       <FormControlLabel value="1" control={<Radio />} label="" />
     </Button>,
-    <Button key="normal" color="warning" size="large" startIcon={<SentimentSatisfiedIcon />}>
+    <Button
+      key="normal"
+      color="warning"
+      size="large"
+      startIcon={<SentimentSatisfiedIcon />}
+    >
       <Box marginRight={1}>NORMAL</Box>
       <FormControlLabel value="2" control={<Radio />} label="" />
     </Button>,
     <Button key="bad" color="primary" size="large" startIcon={<MoodBadIcon />}>
       <Box marginRight={1}>BAD</Box>
-      <FormControlLabel value="3" control={<Radio color="default"/>} label="" />
+      <FormControlLabel
+        value="3"
+        control={<Radio color="default" />}
+        label=""
+      />
     </Button>,
-];
+  ]
   // #endregion Fields
 
   // #region Functions
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked);
-  };
+    setChecked(event.target.checked)
+  }
   // #endregion Functions
 
   // #region View
@@ -98,32 +110,38 @@ const ViolationReportPage: NextPage = () => {
                     sx={{ backgroundColor: '#333333', color: '#ffffff' }}
                   />
                   <Box marginTop={2} marginLeft={2}>
-                    <Flex flexDirection={'column'} justifyContent={'center'} alignItems={'center'} flexWrap={'wrap'}>
-											{violationList.map(item => {
-												return (
-													<ListItem
-														key={item.label}
-														disablePadding
-													>
-														<ListItemButton role={undefined} dense>
-															<ListItemIcon>
-																<Checkbox
-																	edge="start"
-																	// checked={checked.indexOf('1') !== -1}
-																	tabIndex={-1}
-																	disableRipple
-																	inputProps={{ 'aria-labelledby': `checkbox-list-label-1` }}
-																/>
-															</ListItemIcon>
-															<ListItemText id={'1'} primary={item.text} />
-														</ListItemButton>
-														</ListItem>
-												)
-											})}
-                      <Box width='100%' marginTop={2}>
+                    <Flex
+                      flexDirection={'column'}
+                      justifyContent={'center'}
+                      alignItems={'center'}
+                      flexWrap={'wrap'}
+                    >
+                      {violationList.map((item) => {
+                        return (
+                          <ListItem key={item.label} disablePadding>
+                            <ListItemButton role={undefined} dense>
+                              <ListItemIcon>
+                                <Checkbox
+                                  edge="start"
+                                  // checked={checked.indexOf('1') !== -1}
+                                  tabIndex={-1}
+                                  disableRipple
+                                  inputProps={{
+                                    'aria-labelledby': `checkbox-list-label-1`,
+                                  }}
+                                />
+                              </ListItemIcon>
+                              <ListItemText id={'1'} primary={item.text} />
+                            </ListItemButton>
+                          </ListItem>
+                        )
+                      })}
+                      <Box width="100%" marginTop={2}>
                         <TextField
                           label="違反行為の説明"
-                          value={'出演料が振込期日までに振り込まれていません。\n担当者から遅延の連絡もなく、現在連絡がつかない状況です。'}
+                          value={
+                            '出演料が振込期日までに振り込まれていません。\n担当者から遅延の連絡もなく、現在連絡がつかない状況です。'
+                          }
                           multiline
                           fullWidth
                           variant="outlined"
@@ -134,15 +152,15 @@ const ViolationReportPage: NextPage = () => {
                           InputLabelProps={{ shrink: true }}
                         />
                       </Box>
-                    </Flex>  
+                    </Flex>
                   </Box>
                 </Box>
                 {/* 取引完了&評価投稿 */}
-								<Box width="100%" marginTop={2}>
-									<Text>記載内容に偽りがないことを確認してください</Text>
+                <Box width="100%" marginTop={2}>
+                  <Text>記載内容に偽りがないことを確認してください</Text>
                   <ST_Button.default
                     marginTop={1}
-										onClick={() => {
+                    onClick={() => {
                       /*do nothing*/
                     }}
                     backgroundColor={'#333333'}
@@ -153,7 +171,7 @@ const ViolationReportPage: NextPage = () => {
                     </Text>
                   </ST_Button.default>
                 </Box>
-               </Flex>
+              </Flex>
             </Box>
           </Flex>
         </Box>

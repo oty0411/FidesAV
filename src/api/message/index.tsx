@@ -22,27 +22,56 @@ export const PostChatMessage = async (
 
 // 対全ユーザーチャットメッセージ取得
 export const GetChatMessageForAllUsers = async (
-	context: UserTypes.ApiContext,
-	user_id: number,
-	user_type: UserTypes.LoginUserType,
+  context: UserTypes.ApiContext,
+  user_id: number,
+  user_type: UserTypes.LoginUserType,
 ): Promise<{
-	result: UserTypes.AppResult;
-	data: {
-		pairName: string,
-		pairImagePath: string,
-		chats: UserTypes.ChatWithUser[]
-	}[]
+  result: UserTypes.AppResult
+  data: {
+    pairName: string
+    pairImagePath: string
+    chats: UserTypes.ChatWithUser[]
+  }[]
 }> => {
-	const address = `${context.apiRootUrl.replace(/\/$/g, '')}/chats/users/${user_id}`
-	const apiResult: {
-		code: number
-		message: string
-		data: {
-			pairName: string,
-			pairImagePath: string,
-			chats: UserTypes.ChatWithUser[]
-		}[]
-	} = await ApiRequestFetcher(address, ApiRequestType.POST, { user_type: user_type })
+  const address = `${context.apiRootUrl.replace(
+    /\/$/g,
+    '',
+  )}/chats/users/${user_id}`
+  const apiResult: {
+    code: number
+    message: string
+    data: {
+      pairName: string
+      pairImagePath: string
+      chats: UserTypes.ChatWithUser[]
+    }[]
+  } = await ApiRequestFetcher(address, ApiRequestType.POST, {
+    user_type: user_type,
+  })
+  //console.log(apiResult)
+  return {
+    result: ErrorCodeTranslator.ToAppResult(apiResult.code),
+    data: apiResult.data,
+  }
+}
+
+// 受信済み通知一覧取得
+export const GetNoticeList = async (
+  context: UserTypes.ApiContext,
+  userId: number,
+): Promise<{
+  result: UserTypes.AppResult
+  data: UserTypes.UserNotice[]
+}> => {
+  const address = `${context.apiRootUrl.replace(
+    /\/$/g,
+    '',
+  )}/user_notices${userId}`
+  const apiResult: {
+    code: number
+    message: string
+    data: UserTypes.UserNotice[]
+  } = await ApiRequestFetcher(address, ApiRequestType.GET, null)
   //console.log(apiResult)
   return {
     result: ErrorCodeTranslator.ToAppResult(apiResult.code),

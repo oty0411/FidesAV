@@ -1,4 +1,4 @@
-import { styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles'
 import MenuIcon from '@mui/icons-material/Menu'
 import AppBar from '@mui/material/AppBar'
 import Avatar from '@mui/material/Avatar'
@@ -8,6 +8,7 @@ import Container from '@mui/material/Container'
 import IconButton from '@mui/material/IconButton'
 import Badge, { BadgeProps } from '@mui/material/Badge'
 import SensorOccupiedIcon from '@mui/icons-material/SensorOccupied'
+import EmailIcon from '@mui/icons-material/Email'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import Toolbar from '@mui/material/Toolbar'
@@ -16,9 +17,9 @@ import Typography from '@mui/material/Typography'
 import Link from 'next/link'
 import * as React from 'react'
 import { useAuthContext } from '../../../contexts/AuthContext'
-import { GetUrlOfImageFileInDataServer } from 'utils';
-import { GetAppearanceRequestList } from 'api/schedule';
-import { ApiContext, AppErrorCode } from 'types/userTypes';
+import { GetUrlOfImageFileInDataServer } from 'utils'
+import { GetAppearanceRequestList } from 'api/schedule'
+import { ApiContext, AppErrorCode } from 'types/userTypes'
 
 interface ResponsiveAppBarProps {
   /**
@@ -52,7 +53,7 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
     border: `2px solid ${theme.palette.background.paper}`,
     padding: '0 4px',
   },
-}));
+}))
 
 /**
  * ヘッダーメニュー
@@ -75,8 +76,9 @@ const ResponsiveAppBar = (props: ResponsiveAppBarProps) => {
   const settings: { label: string; link: string; addUserId: boolean }[] =
     props.userType == 'actor' ? settingsActor : settingsMaker
   // 出演依頼件数
-  const [numberOfAppearanceRequests, setNumberOfAppearanceRequests] = React.useState(0);
-  
+  const [numberOfAppearanceRequests, setNumberOfAppearanceRequests] =
+    React.useState(0)
+
   // #endregion Fields
 
   // #region Functions
@@ -84,7 +86,7 @@ const ResponsiveAppBar = (props: ResponsiveAppBarProps) => {
   React.useEffect(() => {
     // 出演依頼件数取得
     GetAppearanceRequestList(apiContext, authUser.id).then((apiResult) => {
-      console.log(apiResult);
+      console.log(apiResult)
       if (apiResult.result.Code == AppErrorCode.Success) {
         setNumberOfAppearanceRequests(apiResult.data.length)
       } else {
@@ -199,17 +201,30 @@ const ResponsiveAppBar = (props: ResponsiveAppBarProps) => {
           </Box>
           {/* 出演依頼バッジ */}
           <Box sx={{ flexGrow: 0 }} marginRight={2}>
-              <Link href={'/message/appearancerequest/inbox'} passHref>
-                <Tooltip title="出演依頼">  
-                  <IconButton
-                    aria-label="appearance_request"
-                    onClick={() => { console.log('clicked!!') }}>
-                    <StyledBadge badgeContent={numberOfAppearanceRequests} color="primary">
-                      <SensorOccupiedIcon />
-                    </StyledBadge>
-                  </IconButton>
-                </Tooltip>
-              </Link>
+            <Link href={'/message/inbox'} passHref>
+              <Tooltip title="メール">
+                <IconButton aria-label="mail-box">
+                  <StyledBadge badgeContent={1} color="primary">
+                    <EmailIcon />
+                  </StyledBadge>
+                </IconButton>
+              </Tooltip>
+            </Link>
+          </Box>
+          {/* 出演依頼バッジ */}
+          <Box sx={{ flexGrow: 0 }} marginRight={2}>
+            <Link href={'/message/appearancerequest/inbox'} passHref>
+              <Tooltip title="出演依頼">
+                <IconButton aria-label="appearance_request">
+                  <StyledBadge
+                    badgeContent={numberOfAppearanceRequests}
+                    color="primary"
+                  >
+                    <SensorOccupiedIcon />
+                  </StyledBadge>
+                </IconButton>
+              </Tooltip>
+            </Link>
           </Box>
           {/* 設定メニュー */}
           <Box sx={{ flexGrow: 0 }}>
@@ -217,7 +232,10 @@ const ResponsiveAppBar = (props: ResponsiveAppBarProps) => {
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar
                   alt="Remy Sharp"
-                  src={GetUrlOfImageFileInDataServer(authUser.profile_image_path)} />
+                  src={GetUrlOfImageFileInDataServer(
+                    authUser.profile_image_path,
+                  )}
+                />
               </IconButton>
             </Tooltip>
             <Menu

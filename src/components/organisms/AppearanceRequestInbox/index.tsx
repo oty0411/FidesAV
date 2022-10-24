@@ -3,7 +3,7 @@ import * as React from 'react'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import Divider from '@mui/material/Divider'
-import ListItemButton from '@mui/material/ListItemButton';
+import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import ListItemAvatar from '@mui/material/ListItemAvatar'
 import Avatar from '@mui/material/Avatar'
@@ -14,7 +14,6 @@ import { GetAppearanceRequestList } from 'api/schedule'
 import { GetUrlOfImageFileInDataServer } from 'utils'
 
 export default function AppearanceRequestInbox() {
-
   // #region Fields
   const apiContext: ApiContext = {
     apiRootUrl: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost/api',
@@ -24,7 +23,9 @@ export default function AppearanceRequestInbox() {
   // 認証済ユーザー
   const { authUser } = useAuthContext()
   // 出演依頼一覧
-  const [appearanceRequests, setAppearanceRequests] = React.useState<OfferWithOptionData[]>(new Array());
+  const [appearanceRequests, setAppearanceRequests] = React.useState<
+    OfferWithOptionData[]
+  >([])
   // #endregion Fields
 
   // #region Functions
@@ -32,7 +33,7 @@ export default function AppearanceRequestInbox() {
   React.useEffect(() => {
     // 出演依頼一覧取得
     GetAppearanceRequestList(apiContext, 6).then((apiResult) => {
-      console.log(apiResult);
+      console.log(apiResult)
       if (apiResult.result.Code == AppErrorCode.Success) {
         setAppearanceRequests(apiResult.data)
       }
@@ -51,11 +52,14 @@ export default function AppearanceRequestInbox() {
               <ListItemButton
                 onClick={() => {
                   router.push(`/message/appearancerequest/${item.offer.id}`)
-                }}>
+                }}
+              >
                 <ListItemAvatar>
-                  <Avatar 
+                  <Avatar
                     alt={item.maker_user.maker_name}
-                    src={GetUrlOfImageFileInDataServer(item.maker_user.image_path)}
+                    src={GetUrlOfImageFileInDataServer(
+                      item.maker_user.image_path,
+                    )}
                   />
                 </ListItemAvatar>
                 <ListItemText
@@ -70,7 +74,7 @@ export default function AppearanceRequestInbox() {
                       >
                         出演金額: {item.offer.fee}[円]
                       </Typography>
-                      <Divider variant="inset"/>
+                      <Divider variant="inset" />
                       <Typography
                         sx={{ display: 'inline' }}
                         component="span"
@@ -79,7 +83,7 @@ export default function AppearanceRequestInbox() {
                       >
                         タイトル: {item.offer.title}
                       </Typography>
-                      <Divider variant="inset"/>
+                      <Divider variant="inset" />
                       <Typography
                         sx={{ display: 'inline' }}
                         component="span"
@@ -94,7 +98,7 @@ export default function AppearanceRequestInbox() {
               </ListItemButton>
             </ListItem>
             <Divider variant="inset" component="li" />
-          </>
+          </>,
         ]
       })}
     </List>

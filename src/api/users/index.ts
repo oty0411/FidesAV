@@ -7,7 +7,10 @@ export const GetUserInformation = async (
   context: UserTypes.ApiContext,
   user_id: number,
 ): Promise<{ result: UserTypes.AppResult; data: UserTypes.User }> => {
-  const address = `${context.apiRootUrl.replace(/\/$/g, '')}/actor/users/${user_id}`
+  const address = `${context.apiRootUrl.replace(
+    /\/$/g,
+    '',
+  )}/actor/users/${user_id}`
   const apiResult: {
     code: number
     message: string
@@ -86,7 +89,10 @@ export const GetActorPlayCondition = async (
   context: UserTypes.ApiContext,
   user_id: number,
 ): Promise<{ result: UserTypes.AppResult; data: UserTypes.PlayCondition }> => {
-  const address = `${context.apiRootUrl.replace(/\/$/g, '')}/actor/${user_id}/play_conditions`
+  const address = `${context.apiRootUrl.replace(
+    /\/$/g,
+    '',
+  )}/actor/${user_id}/play_conditions`
   const apiResult: {
     code: number
     message: string
@@ -104,7 +110,10 @@ export const GetActorPortfolio = async (
   context: UserTypes.ApiContext,
   user_id: number,
 ): Promise<{ result: UserTypes.AppResult; data: UserTypes.Portfolio[] }> => {
-  const address = `${context.apiRootUrl.replace(/\/$/g, '')}/actor/${user_id}/portfolios`
+  const address = `${context.apiRootUrl.replace(
+    /\/$/g,
+    '',
+  )}/actor/${user_id}/portfolios`
   const apiResult: {
     code: number
     message: string

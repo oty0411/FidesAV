@@ -10,7 +10,11 @@ import Grid from '@mui/material/Unstable_Grid2'
 import { styled } from '@mui/material/styles'
 import * as React from 'react'
 import Flex from 'components/layout/Flex'
-import { BoolWithInt, GetObj_PlayCondition, PlayCondition } from 'types/userTypes'
+import {
+  BoolWithInt,
+  GetObj_PlayCondition,
+  PlayCondition,
+} from 'types/userTypes'
 
 // 条件リスト
 type Condition = {
@@ -80,11 +84,13 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function PlayConditionList(props: PlayConditionListProps) {
   // プレイ条件
-  const [state, setState] = React.useState<PlayCondition>(GetObj_PlayCondition())
+  const [state, setState] = React.useState<PlayCondition>(
+    GetObj_PlayCondition(),
+  )
 
   React.useEffect(() => {
     setState(props.conditions)
-  },[props.conditions])
+  }, [props.conditions])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setState({
@@ -105,7 +111,12 @@ export default function PlayConditionList(props: PlayConditionListProps) {
             alignItems={'flex-start'}
           >
             {Object.entries(state).map((pair) => {
-              if (pair[0] == 'id' || pair[0] == 'user_id' || pair[0] == 'created_at' || pair[0] == 'updated_at') {
+              if (
+                pair[0] == 'id' ||
+                pair[0] == 'user_id' ||
+                pair[0] == 'created_at' ||
+                pair[0] == 'updated_at'
+              ) {
                 return
               }
               return (
@@ -119,7 +130,9 @@ export default function PlayConditionList(props: PlayConditionListProps) {
                           name={pair[0]}
                         />
                       }
-                      label={ConditionList.find(item => item.id == pair[0])?.label}
+                      label={
+                        ConditionList.find((item) => item.id == pair[0])?.label
+                      }
                     />
                   </Item>
                 </Box>

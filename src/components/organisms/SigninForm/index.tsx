@@ -1,10 +1,10 @@
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
+import Radio from '@mui/material/Radio'
+import RadioGroup from '@mui/material/RadioGroup'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import FormControl from '@mui/material/FormControl'
+import FormLabel from '@mui/material/FormLabel'
 import Button from 'components/atoms/Button'
 import Input from 'components/atoms/Input'
 import Text from 'components/atoms/Text'
@@ -20,10 +20,7 @@ interface SigninFormProps {
   /**
    * サインインボタンを押した時のイベントハンドラ
    */
-  onSignin?: (
-    system_acount_id: string,
-    email: string,
-    password: string) => void
+  onSignin?: (system_acount_id: string, email: string, password: string) => void
 }
 
 /**
@@ -42,7 +39,6 @@ const SigninForm = ({ onSignin }: SigninFormProps) => {
 
   // #region Functions
   const onSubmit = (data: SigninFormData) => {
-    
     const { system_acount_id, email, password } = data
     onSignin && onSignin(system_acount_id, email, password)
   }

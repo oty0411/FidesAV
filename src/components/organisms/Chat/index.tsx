@@ -21,7 +21,7 @@ import {
   GetObj_ChatWithUser,
   ApiContext,
   AppErrorCode,
-  GetObj_Chat
+  GetObj_Chat,
 } from 'types/userTypes'
 import { PostChatMessage, GetChatMessageForAllUsers } from 'api/message'
 import { Typography } from '@mui/material'
@@ -49,135 +49,292 @@ const useStyles = makeStyles({
 
   iconLeft: {
     display: 'flex',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
   },
 
   iconRight: {
     display: 'flex',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
 })
 
 // ダミーデータ
 const dummyChats: ChatWithUser[] = [
-  GetDummyObj_ChatWithUser("Hey man, What's up ?", '2022年10月29日 11:34:56',
+  GetDummyObj_ChatWithUser(
+    "Hey man, What's up ?",
+    '2022年10月29日 11:34:56',
     SendDirection.ToActorFromMaker,
-    'Alice', "https://material-ui.com/static/images/avatar/3.jpg",
-    'Remy Sharp', "https://material-ui.com/static/images/avatar/1.jpg"),
-  GetDummyObj_ChatWithUser("Hey, Iam Good! What about you ?", '2022年10月29日 12:34:56',
+    'Alice',
+    'https://material-ui.com/static/images/avatar/3.jpg',
+    'Remy Sharp',
+    'https://material-ui.com/static/images/avatar/1.jpg',
+  ),
+  GetDummyObj_ChatWithUser(
+    'Hey, Iam Good! What about you ?',
+    '2022年10月29日 12:34:56',
     SendDirection.ToMakerFromActor,
-    'Alice', "https://material-ui.com/static/images/avatar/3.jpg", 
-    'Remy Sharp', "https://material-ui.com/static/images/avatar/1.jpg"),
-  GetDummyObj_ChatWithUser("Cool. i am good, let's catch up!", '2022年10月29日 13:34:56',
+    'Alice',
+    'https://material-ui.com/static/images/avatar/3.jpg',
+    'Remy Sharp',
+    'https://material-ui.com/static/images/avatar/1.jpg',
+  ),
+  GetDummyObj_ChatWithUser(
+    "Cool. i am good, let's catch up!",
+    '2022年10月29日 13:34:56',
     SendDirection.ToActorFromMaker,
-    'Alice', "https://material-ui.com/static/images/avatar/3.jpg",
-    'Remy Sharp', "https://material-ui.com/static/images/avatar/1.jpg"),
+    'Alice',
+    'https://material-ui.com/static/images/avatar/3.jpg',
+    'Remy Sharp',
+    'https://material-ui.com/static/images/avatar/1.jpg',
+  ),
   // #region 折りたたみ
-  GetDummyObj_ChatWithUser("Hey man, What's up ?", '2022年10月29日 11:34:56',
+  GetDummyObj_ChatWithUser(
+    "Hey man, What's up ?",
+    '2022年10月29日 11:34:56',
     SendDirection.ToActorFromMaker,
-    'Alice', "https://material-ui.com/static/images/avatar/3.jpg",
-    'Remy Sharp', "https://material-ui.com/static/images/avatar/1.jpg"),
-  GetDummyObj_ChatWithUser("Hey, Iam Good! What about you ?", '2022年10月29日 12:34:56',
+    'Alice',
+    'https://material-ui.com/static/images/avatar/3.jpg',
+    'Remy Sharp',
+    'https://material-ui.com/static/images/avatar/1.jpg',
+  ),
+  GetDummyObj_ChatWithUser(
+    'Hey, Iam Good! What about you ?',
+    '2022年10月29日 12:34:56',
     SendDirection.ToMakerFromActor,
-    'Alice', "https://material-ui.com/static/images/avatar/3.jpg", 
-    'Remy Sharp', "https://material-ui.com/static/images/avatar/1.jpg"),
-  GetDummyObj_ChatWithUser("Cool. i am good, let's catch up!", '2022年10月29日 13:34:56',
+    'Alice',
+    'https://material-ui.com/static/images/avatar/3.jpg',
+    'Remy Sharp',
+    'https://material-ui.com/static/images/avatar/1.jpg',
+  ),
+  GetDummyObj_ChatWithUser(
+    "Cool. i am good, let's catch up!",
+    '2022年10月29日 13:34:56',
     SendDirection.ToActorFromMaker,
-    'Alice', "https://material-ui.com/static/images/avatar/3.jpg",
-    'Remy Sharp', "https://material-ui.com/static/images/avatar/1.jpg"),GetDummyObj_ChatWithUser("Hey man, What's up ?", '2022年10月29日 11:34:56',
+    'Alice',
+    'https://material-ui.com/static/images/avatar/3.jpg',
+    'Remy Sharp',
+    'https://material-ui.com/static/images/avatar/1.jpg',
+  ),
+  GetDummyObj_ChatWithUser(
+    "Hey man, What's up ?",
+    '2022年10月29日 11:34:56',
     SendDirection.ToActorFromMaker,
-    'Alice', "https://material-ui.com/static/images/avatar/3.jpg",
-    'Remy Sharp', "https://material-ui.com/static/images/avatar/1.jpg"),
-  GetDummyObj_ChatWithUser("Hey, Iam Good! What about you ?", '2022年10月29日 12:34:56',
+    'Alice',
+    'https://material-ui.com/static/images/avatar/3.jpg',
+    'Remy Sharp',
+    'https://material-ui.com/static/images/avatar/1.jpg',
+  ),
+  GetDummyObj_ChatWithUser(
+    'Hey, Iam Good! What about you ?',
+    '2022年10月29日 12:34:56',
     SendDirection.ToMakerFromActor,
-    'Alice', "https://material-ui.com/static/images/avatar/3.jpg", 
-    'Remy Sharp', "https://material-ui.com/static/images/avatar/1.jpg"),
-  GetDummyObj_ChatWithUser("Cool. i am good, let's catch up!", '2022年10月29日 13:34:56',
+    'Alice',
+    'https://material-ui.com/static/images/avatar/3.jpg',
+    'Remy Sharp',
+    'https://material-ui.com/static/images/avatar/1.jpg',
+  ),
+  GetDummyObj_ChatWithUser(
+    "Cool. i am good, let's catch up!",
+    '2022年10月29日 13:34:56',
     SendDirection.ToActorFromMaker,
-    'Alice', "https://material-ui.com/static/images/avatar/3.jpg",
-    'Remy Sharp', "https://material-ui.com/static/images/avatar/1.jpg"),GetDummyObj_ChatWithUser("Hey man, What's up ?", '2022年10月29日 11:34:56',
+    'Alice',
+    'https://material-ui.com/static/images/avatar/3.jpg',
+    'Remy Sharp',
+    'https://material-ui.com/static/images/avatar/1.jpg',
+  ),
+  GetDummyObj_ChatWithUser(
+    "Hey man, What's up ?",
+    '2022年10月29日 11:34:56',
     SendDirection.ToActorFromMaker,
-    'Alice', "https://material-ui.com/static/images/avatar/3.jpg",
-    'Remy Sharp', "https://material-ui.com/static/images/avatar/1.jpg"),
-  GetDummyObj_ChatWithUser("Hey, Iam Good! What about you ?", '2022年10月29日 12:34:56',
+    'Alice',
+    'https://material-ui.com/static/images/avatar/3.jpg',
+    'Remy Sharp',
+    'https://material-ui.com/static/images/avatar/1.jpg',
+  ),
+  GetDummyObj_ChatWithUser(
+    'Hey, Iam Good! What about you ?',
+    '2022年10月29日 12:34:56',
     SendDirection.ToMakerFromActor,
-    'Alice', "https://material-ui.com/static/images/avatar/3.jpg", 
-    'Remy Sharp', "https://material-ui.com/static/images/avatar/1.jpg"),
-  GetDummyObj_ChatWithUser("Cool. i am good, let's catch up!", '2022年10月29日 13:34:56',
+    'Alice',
+    'https://material-ui.com/static/images/avatar/3.jpg',
+    'Remy Sharp',
+    'https://material-ui.com/static/images/avatar/1.jpg',
+  ),
+  GetDummyObj_ChatWithUser(
+    "Cool. i am good, let's catch up!",
+    '2022年10月29日 13:34:56',
     SendDirection.ToActorFromMaker,
-    'Alice', "https://material-ui.com/static/images/avatar/3.jpg",
-    'Remy Sharp', "https://material-ui.com/static/images/avatar/1.jpg"),GetDummyObj_ChatWithUser("Hey man, What's up ?", '2022年10月29日 11:34:56',
+    'Alice',
+    'https://material-ui.com/static/images/avatar/3.jpg',
+    'Remy Sharp',
+    'https://material-ui.com/static/images/avatar/1.jpg',
+  ),
+  GetDummyObj_ChatWithUser(
+    "Hey man, What's up ?",
+    '2022年10月29日 11:34:56',
     SendDirection.ToActorFromMaker,
-    'Alice', "https://material-ui.com/static/images/avatar/3.jpg",
-    'Remy Sharp', "https://material-ui.com/static/images/avatar/1.jpg"),
-  GetDummyObj_ChatWithUser("Hey, Iam Good! What about you ?", '2022年10月29日 12:34:56',
+    'Alice',
+    'https://material-ui.com/static/images/avatar/3.jpg',
+    'Remy Sharp',
+    'https://material-ui.com/static/images/avatar/1.jpg',
+  ),
+  GetDummyObj_ChatWithUser(
+    'Hey, Iam Good! What about you ?',
+    '2022年10月29日 12:34:56',
     SendDirection.ToMakerFromActor,
-    'Alice', "https://material-ui.com/static/images/avatar/3.jpg", 
-    'Remy Sharp', "https://material-ui.com/static/images/avatar/1.jpg"),
-  GetDummyObj_ChatWithUser("Cool. i am good, let's catch up!", '2022年10月29日 13:34:56',
+    'Alice',
+    'https://material-ui.com/static/images/avatar/3.jpg',
+    'Remy Sharp',
+    'https://material-ui.com/static/images/avatar/1.jpg',
+  ),
+  GetDummyObj_ChatWithUser(
+    "Cool. i am good, let's catch up!",
+    '2022年10月29日 13:34:56',
     SendDirection.ToActorFromMaker,
-    'Alice', "https://material-ui.com/static/images/avatar/3.jpg",
-    'Remy Sharp', "https://material-ui.com/static/images/avatar/1.jpg"),GetDummyObj_ChatWithUser("Hey man, What's up ?", '2022年10月29日 11:34:56',
+    'Alice',
+    'https://material-ui.com/static/images/avatar/3.jpg',
+    'Remy Sharp',
+    'https://material-ui.com/static/images/avatar/1.jpg',
+  ),
+  GetDummyObj_ChatWithUser(
+    "Hey man, What's up ?",
+    '2022年10月29日 11:34:56',
     SendDirection.ToActorFromMaker,
-    'Alice', "https://material-ui.com/static/images/avatar/3.jpg",
-    'Remy Sharp', "https://material-ui.com/static/images/avatar/1.jpg"),
-  GetDummyObj_ChatWithUser("Hey, Iam Good! What about you ?", '2022年10月29日 12:34:56',
+    'Alice',
+    'https://material-ui.com/static/images/avatar/3.jpg',
+    'Remy Sharp',
+    'https://material-ui.com/static/images/avatar/1.jpg',
+  ),
+  GetDummyObj_ChatWithUser(
+    'Hey, Iam Good! What about you ?',
+    '2022年10月29日 12:34:56',
     SendDirection.ToMakerFromActor,
-    'Alice', "https://material-ui.com/static/images/avatar/3.jpg", 
-    'Remy Sharp', "https://material-ui.com/static/images/avatar/1.jpg"),
-  GetDummyObj_ChatWithUser("Cool. i am good, let's catch up!", '2022年10月29日 13:34:56',
+    'Alice',
+    'https://material-ui.com/static/images/avatar/3.jpg',
+    'Remy Sharp',
+    'https://material-ui.com/static/images/avatar/1.jpg',
+  ),
+  GetDummyObj_ChatWithUser(
+    "Cool. i am good, let's catch up!",
+    '2022年10月29日 13:34:56',
     SendDirection.ToActorFromMaker,
-    'Alice', "https://material-ui.com/static/images/avatar/3.jpg",
-    'Remy Sharp', "https://material-ui.com/static/images/avatar/1.jpg"),GetDummyObj_ChatWithUser("Hey man, What's up ?", '2022年10月29日 11:34:56',
+    'Alice',
+    'https://material-ui.com/static/images/avatar/3.jpg',
+    'Remy Sharp',
+    'https://material-ui.com/static/images/avatar/1.jpg',
+  ),
+  GetDummyObj_ChatWithUser(
+    "Hey man, What's up ?",
+    '2022年10月29日 11:34:56',
     SendDirection.ToActorFromMaker,
-    'Alice', "https://material-ui.com/static/images/avatar/3.jpg",
-    'Remy Sharp', "https://material-ui.com/static/images/avatar/1.jpg"),
-  GetDummyObj_ChatWithUser("Hey, Iam Good! What about you ?", '2022年10月29日 12:34:56',
+    'Alice',
+    'https://material-ui.com/static/images/avatar/3.jpg',
+    'Remy Sharp',
+    'https://material-ui.com/static/images/avatar/1.jpg',
+  ),
+  GetDummyObj_ChatWithUser(
+    'Hey, Iam Good! What about you ?',
+    '2022年10月29日 12:34:56',
     SendDirection.ToMakerFromActor,
-    'Alice', "https://material-ui.com/static/images/avatar/3.jpg", 
-    'Remy Sharp', "https://material-ui.com/static/images/avatar/1.jpg"),
-  GetDummyObj_ChatWithUser("Cool. i am good, let's catch up!", '2022年10月29日 13:34:56',
+    'Alice',
+    'https://material-ui.com/static/images/avatar/3.jpg',
+    'Remy Sharp',
+    'https://material-ui.com/static/images/avatar/1.jpg',
+  ),
+  GetDummyObj_ChatWithUser(
+    "Cool. i am good, let's catch up!",
+    '2022年10月29日 13:34:56',
     SendDirection.ToActorFromMaker,
-    'Alice', "https://material-ui.com/static/images/avatar/3.jpg",
-    'Remy Sharp', "https://material-ui.com/static/images/avatar/1.jpg"),GetDummyObj_ChatWithUser("Hey man, What's up ?", '2022年10月29日 11:34:56',
+    'Alice',
+    'https://material-ui.com/static/images/avatar/3.jpg',
+    'Remy Sharp',
+    'https://material-ui.com/static/images/avatar/1.jpg',
+  ),
+  GetDummyObj_ChatWithUser(
+    "Hey man, What's up ?",
+    '2022年10月29日 11:34:56',
     SendDirection.ToActorFromMaker,
-    'Alice', "https://material-ui.com/static/images/avatar/3.jpg",
-    'Remy Sharp', "https://material-ui.com/static/images/avatar/1.jpg"),
-  GetDummyObj_ChatWithUser("Hey, Iam Good! What about you ?", '2022年10月29日 12:34:56',
+    'Alice',
+    'https://material-ui.com/static/images/avatar/3.jpg',
+    'Remy Sharp',
+    'https://material-ui.com/static/images/avatar/1.jpg',
+  ),
+  GetDummyObj_ChatWithUser(
+    'Hey, Iam Good! What about you ?',
+    '2022年10月29日 12:34:56',
     SendDirection.ToMakerFromActor,
-    'Alice', "https://material-ui.com/static/images/avatar/3.jpg", 
-    'Remy Sharp', "https://material-ui.com/static/images/avatar/1.jpg"),
-  GetDummyObj_ChatWithUser("Cool. i am good, let's catch up!", '2022年10月29日 13:34:56',
+    'Alice',
+    'https://material-ui.com/static/images/avatar/3.jpg',
+    'Remy Sharp',
+    'https://material-ui.com/static/images/avatar/1.jpg',
+  ),
+  GetDummyObj_ChatWithUser(
+    "Cool. i am good, let's catch up!",
+    '2022年10月29日 13:34:56',
     SendDirection.ToActorFromMaker,
-    'Alice', "https://material-ui.com/static/images/avatar/3.jpg",
-    'Remy Sharp', "https://material-ui.com/static/images/avatar/1.jpg"),
+    'Alice',
+    'https://material-ui.com/static/images/avatar/3.jpg',
+    'Remy Sharp',
+    'https://material-ui.com/static/images/avatar/1.jpg',
+  ),
   // #endregion 折りたたみ
 ]
 const dummyChats2: ChatWithUser[] = [
-  GetDummyObj_ChatWithUser("Hey man, What's up ?", '2022年10月29日 11:34:56',
+  GetDummyObj_ChatWithUser(
+    "Hey man, What's up ?",
+    '2022年10月29日 11:34:56',
     SendDirection.ToMakerFromActor,
-    'Alice', "https://material-ui.com/static/images/avatar/3.jpg",
-    'Remy Sharp', "https://material-ui.com/static/images/avatar/1.jpg"),
-  GetDummyObj_ChatWithUser("Hey, Iam Good! What about you ?", '2022年10月29日 12:34:56',
+    'Alice',
+    'https://material-ui.com/static/images/avatar/3.jpg',
+    'Remy Sharp',
+    'https://material-ui.com/static/images/avatar/1.jpg',
+  ),
+  GetDummyObj_ChatWithUser(
+    'Hey, Iam Good! What about you ?',
+    '2022年10月29日 12:34:56',
     SendDirection.ToMakerFromActor,
-    'Alice', "https://material-ui.com/static/images/avatar/3.jpg", 
-    'Remy Sharp', "https://material-ui.com/static/images/avatar/1.jpg"),
-  GetDummyObj_ChatWithUser("Cool. i am good, let's catch up!", '2022年10月29日 13:34:56',
+    'Alice',
+    'https://material-ui.com/static/images/avatar/3.jpg',
+    'Remy Sharp',
+    'https://material-ui.com/static/images/avatar/1.jpg',
+  ),
+  GetDummyObj_ChatWithUser(
+    "Cool. i am good, let's catch up!",
+    '2022年10月29日 13:34:56',
     SendDirection.ToActorFromMaker,
-    'Alice', "https://material-ui.com/static/images/avatar/3.jpg",
-    'Remy Sharp', "https://material-ui.com/static/images/avatar/1.jpg"),
+    'Alice',
+    'https://material-ui.com/static/images/avatar/3.jpg',
+    'Remy Sharp',
+    'https://material-ui.com/static/images/avatar/1.jpg',
+  ),
 ]
 
 // ダミーデータ
-const dummyChatList: { pairName: string, pairImagePath: string, chats: ChatWithUser[] }[] = [
-  { pairName: 'RemySharp', pairImagePath: "https://material-ui.com/static/images/avatar/1.jpg", chats: dummyChats },
-  { pairName: 'Alice', pairImagePath: "https://material-ui.com/static/images/avatar/3.jpg", chats: dummyChats },
-  { pairName: 'Cindy Baker', pairImagePath: "https://material-ui.com/static/images/avatar/2.jpg", chats: dummyChats2 },  
+const dummyChatList: {
+  pairName: string
+  pairImagePath: string
+  chats: ChatWithUser[]
+}[] = [
+  {
+    pairName: 'RemySharp',
+    pairImagePath: 'https://material-ui.com/static/images/avatar/1.jpg',
+    chats: dummyChats,
+  },
+  {
+    pairName: 'Alice',
+    pairImagePath: 'https://material-ui.com/static/images/avatar/3.jpg',
+    chats: dummyChats,
+  },
+  {
+    pairName: 'Cindy Baker',
+    pairImagePath: 'https://material-ui.com/static/images/avatar/2.jpg',
+    chats: dummyChats2,
+  },
 ]
 
 /**
  * チャット管理画面
- * @returns 
+ * @returns
  */
 const ChatControl = () => {
   // #region Fields
@@ -187,51 +344,65 @@ const ChatControl = () => {
   // スタイル
   const classes = useStyles()
   // 認証済ユーザー
-  const { authUser} = useAuthContext()
+  const { authUser } = useAuthContext()
   // 対全ユーザーチャットリスト
-  const [allUserChatList, setAllUserChatList] = React.useState<{
-    pairName: string,
-    pairImagePath: string,
-    chats: ChatWithUser[]
-  }[]>([])
+  const [allUserChatList, setAllUserChatList] = React.useState<
+    {
+      pairName: string
+      pairImagePath: string
+      chats: ChatWithUser[]
+    }[]
+  >([])
   // 選択ユーザーチャットリスト
   const [sellectedUserChatList, setSellectedUserChatList] = React.useState<{
-    pairName: string,
-    pairImagePath: string,
+    pairName: string
+    pairImagePath: string
     chats: ChatWithUser[]
   }>({ pairName: '', pairImagePath: '', chats: [GetObj_ChatWithUser()] })
   // 送信メッセージ
-  const [sendText, setSendText] = React.useState('');
+  const [sendText, setSendText] = React.useState('')
   // #endregion Fields
 
   // #region Functions
   // 初期化処理
   React.useEffect(() => {
-    
     // 定期的にチャット履歴を取得するようにする
     const intervalId = setInterval(() => {
-      GetChatMessageForAllUsers(apiContext, authUser.id, authUser.type).then((apiResult) => {
-        console.log(apiResult);
-        if (apiResult.result.Code == AppErrorCode.Success) {
-          setAllUserChatList(apiResult.data)
-          console.log(allUserChatList)
-          let newObj = { pairName: '', pairImagePath: '', chats: GetObj_ChatWithUser() }
-          setSellectedUserChatList(Object.assign(newObj, apiResult.data[0]))
-          //console.log('chats: ', sellectedUserChatList)
-        }
-      })
-    }, 2000);
+      GetChatMessageForAllUsers(apiContext, authUser.id, authUser.type).then(
+        (apiResult) => {
+          console.log(apiResult)
+          if (apiResult.result.Code == AppErrorCode.Success) {
+            setAllUserChatList(apiResult.data)
+            console.log(allUserChatList)
+            const newObj = {
+              pairName: '',
+              pairImagePath: '',
+              chats: GetObj_ChatWithUser(),
+            }
+            setSellectedUserChatList(Object.assign(newObj, apiResult.data[0]))
+            //console.log('chats: ', sellectedUserChatList)
+          }
+        },
+      )
+    }, 2000)
     return () => {
-      clearInterval(intervalId);
-    };
-
+      clearInterval(intervalId)
+    }
   }, [])
 
   // リスト上のユーザークリック時のイベントハンドラ
   const userClickHandler = (keyUser: string) => {
-    const selectedIndex = allUserChatList.findIndex(item => item.pairName == keyUser)
-    let newObj = { pairName: '', pairImagePath: '', chats: GetObj_ChatWithUser() }
-    setSellectedUserChatList(Object.assign(newObj, allUserChatList[selectedIndex]))
+    const selectedIndex = allUserChatList.findIndex(
+      (item) => item.pairName == keyUser,
+    )
+    const newObj = {
+      pairName: '',
+      pairImagePath: '',
+      chats: GetObj_ChatWithUser(),
+    }
+    setSellectedUserChatList(
+      Object.assign(newObj, allUserChatList[selectedIndex]),
+    )
     // console.log('partnerName: ', keyUser)
     // console.log(sellectedUserChatList)
   }
@@ -241,20 +412,27 @@ const ChatControl = () => {
     /** do something */
     console.log(sendText)
 
-    let chat = GetObj_Chat()
-    chat.actor_user_id = authUser.type == LoginUserType.Actor ? authUser.id : sellectedUserChatList.chats[0].actor.id 
-    chat.maker_user_id = authUser.type == LoginUserType.Marker ? authUser.id : sellectedUserChatList.chats[0].maker.id
-    chat.sender_dir = authUser.type == LoginUserType.Actor
-      ? SendDirection.ToMakerFromActor
-      : SendDirection.ToActorFromMaker
+    const chat = GetObj_Chat()
+    chat.actor_user_id =
+      authUser.type == LoginUserType.Actor
+        ? authUser.id
+        : sellectedUserChatList.chats[0].actor.id
+    chat.maker_user_id =
+      authUser.type == LoginUserType.Marker
+        ? authUser.id
+        : sellectedUserChatList.chats[0].maker.id
+    chat.sender_dir =
+      authUser.type == LoginUserType.Actor
+        ? SendDirection.ToMakerFromActor
+        : SendDirection.ToActorFromMaker
     chat.comment = sendText
-    chat.send_time = new Date(Date.now()).toLocaleString()//'2022/9/30 14:10:00'
+    chat.send_time = new Date(Date.now()).toLocaleString() //'2022/9/30 14:10:00'
 
     console.log(chat)
 
     // チャットメッセージ送信
     PostChatMessage(apiContext, chat).then((apiResult) => {
-      console.log(apiResult);
+      console.log(apiResult)
       if (apiResult.result.Code == AppErrorCode.Success) {
         // チャット履歴へ追加
         sellectedUserChatList.chats.push(apiResult.data)
@@ -262,7 +440,7 @@ const ChatControl = () => {
         // メッセージクリア
         setSendText('')
       }
-    })    
+    })
   }
   // #endregion Functions
 
@@ -272,20 +450,27 @@ const ChatControl = () => {
         {/* チャット相手リスト */}
         <Grid item xs={3} className={classes.borderRight500}>
           <List>
-            {allUserChatList != null && allUserChatList.map(item => {
-              return (
-                <ListItem button key={item.pairName} onClick={() => userClickHandler(item.pairName)}>
-                  <ListItemIcon>
-                    <Avatar
-                      sx={{ width: 70, height: 70 }}
-                      alt={item.pairName}
-                      src={GetUrlOfImageFileInDataServer(item.pairImagePath)}
-                    />
-                  </ListItemIcon>
-                  <ListItemText primary={item.pairName}>{item.pairName}</ListItemText>
-                </ListItem>
-              )
-            })}
+            {allUserChatList != null &&
+              allUserChatList.map((item) => {
+                return (
+                  <ListItem
+                    button
+                    key={item.pairName}
+                    onClick={() => userClickHandler(item.pairName)}
+                  >
+                    <ListItemIcon>
+                      <Avatar
+                        sx={{ width: 70, height: 70 }}
+                        alt={item.pairName}
+                        src={GetUrlOfImageFileInDataServer(item.pairImagePath)}
+                      />
+                    </ListItemIcon>
+                    <ListItemText primary={item.pairName}>
+                      {item.pairName}
+                    </ListItemText>
+                  </ListItem>
+                )
+              })}
           </List>
         </Grid>
         {/* チャット内容 */}
@@ -293,61 +478,85 @@ const ChatControl = () => {
           {/* 送信済みチャット表示 */}
           <List className={classes.messageArea}>
             {sellectedUserChatList != null &&
-              sellectedUserChatList.chats != null && Array.isArray(sellectedUserChatList.chats) &&
-                sellectedUserChatList.chats.map((item, index) => {
-              return (
-                <ListItem key={index}>
-                  <Grid container>
-                    <Grid item xs={12}>
-                      <ListItemIcon className={
-                        (
-                          ((authUser.type == LoginUserType.Actor) && (item.chat.sender_dir == SendDirection.ToMakerFromActor)) ||
-                          ((authUser.type == LoginUserType.Marker) && (item.chat.sender_dir == SendDirection.ToActorFromMaker))
-                        ) ? classes.iconRight : classes.iconLeft
-                      }>
-                        <Avatar 
-                          sx={{ width: 70, height: 70 }}
-                          alt={
-                            item.chat.sender_dir == SendDirection.ToMakerFromActor
-                              ? item.actor.user_name
-                              : item.maker.maker_name
+              sellectedUserChatList.chats != null &&
+              Array.isArray(sellectedUserChatList.chats) &&
+              sellectedUserChatList.chats.map((item, index) => {
+                return (
+                  <ListItem key={index}>
+                    <Grid container>
+                      <Grid item xs={12}>
+                        <ListItemIcon
+                          className={
+                            (authUser.type == LoginUserType.Actor &&
+                              item.chat.sender_dir ==
+                                SendDirection.ToMakerFromActor) ||
+                            (authUser.type == LoginUserType.Marker &&
+                              item.chat.sender_dir ==
+                                SendDirection.ToActorFromMaker)
+                              ? classes.iconRight
+                              : classes.iconLeft
                           }
-                          src={
-                            item.chat.sender_dir == SendDirection.ToMakerFromActor
-                              ? GetUrlOfImageFileInDataServer(item.actor.image_path)
-                              : GetUrlOfImageFileInDataServer(item.maker.image_path)
+                        >
+                          <Avatar
+                            sx={{ width: 70, height: 70 }}
+                            alt={
+                              item.chat.sender_dir ==
+                              SendDirection.ToMakerFromActor
+                                ? item.actor.user_name
+                                : item.maker.maker_name
+                            }
+                            src={
+                              item.chat.sender_dir ==
+                              SendDirection.ToMakerFromActor
+                                ? GetUrlOfImageFileInDataServer(
+                                    item.actor.image_path,
+                                  )
+                                : GetUrlOfImageFileInDataServer(
+                                    item.maker.image_path,
+                                  )
+                            }
+                          />
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={
+                            <Typography
+                              style={{ fontSize: '30px' }}
+                              textAlign={
+                                (authUser.type == LoginUserType.Actor &&
+                                  item.chat.sender_dir ==
+                                    SendDirection.ToMakerFromActor) ||
+                                (authUser.type == LoginUserType.Marker &&
+                                  item.chat.sender_dir ==
+                                    SendDirection.ToActorFromMaker)
+                                  ? 'right'
+                                  : 'left'
+                              }
+                            >
+                              {item.chat.comment}
+                            </Typography>
                           }
-                        />
-                      </ListItemIcon>
-                      <ListItemText
-                        primary={
-                          <Typography
-                            style={{ fontSize: '30px' }}
-                            textAlign={
-                              (
-                                ((authUser.type == LoginUserType.Actor) && (item.chat.sender_dir == SendDirection.ToMakerFromActor)) ||
-                                ((authUser.type == LoginUserType.Marker) && (item.chat.sender_dir == SendDirection.ToActorFromMaker))
-                              ) ? 'right' : 'left'}
-                          >
-                            {item.chat.comment}
-                          </Typography>
-                        }
-                        secondary={
-                          <Typography
-                            textAlign={
-                              (
-                                ((authUser.type == LoginUserType.Actor) && (item.chat.sender_dir == SendDirection.ToMakerFromActor)) ||
-                                ((authUser.type == LoginUserType.Marker) && (item.chat.sender_dir == SendDirection.ToActorFromMaker))
-                              ) ? 'right' : 'left'}
-                          >
-                            {item.chat.send_time}
-                          </Typography>
-                      }></ListItemText>
+                          secondary={
+                            <Typography
+                              textAlign={
+                                (authUser.type == LoginUserType.Actor &&
+                                  item.chat.sender_dir ==
+                                    SendDirection.ToMakerFromActor) ||
+                                (authUser.type == LoginUserType.Marker &&
+                                  item.chat.sender_dir ==
+                                    SendDirection.ToActorFromMaker)
+                                  ? 'right'
+                                  : 'left'
+                              }
+                            >
+                              {item.chat.send_time}
+                            </Typography>
+                          }
+                        ></ListItemText>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </ListItem>
-              )
-            })}
+                  </ListItem>
+                )
+              })}
           </List>
           <Divider />
           {/* 送信操作 */}
@@ -367,7 +576,9 @@ const ChatControl = () => {
               <Fab
                 color="primary"
                 aria-label="add"
-                onClick={() => { sendButtonClickHandler() }}
+                onClick={() => {
+                  sendButtonClickHandler()
+                }}
               >
                 <SendIcon />
               </Fab>

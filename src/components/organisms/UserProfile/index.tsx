@@ -7,7 +7,11 @@ import { styled } from '@mui/material/styles'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import * as React from 'react'
-import { UpdateUserProfileImage, GetActorPlayCondition, GetActorPortfolio } from '../../../api/users'
+import {
+  UpdateUserProfileImage,
+  GetActorPlayCondition,
+  GetActorPortfolio,
+} from '../../../api/users'
 import { GetUrlOfImageFileInDataServer } from '../../../utils'
 import PlayConditionList from './PlayConditionList'
 import Button from 'components/atoms/Button'
@@ -29,6 +33,7 @@ import {
   ConvertToStringBreastSize,
   ApiContext,
   AppErrorCode,
+  GetObj_User,
 } from 'types/userTypes'
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -83,7 +88,7 @@ export default function UserProfile(props: UserProfileProps) {
     apiRootUrl: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost/api',
   }
   const router = useRouter()
-  const userData = GetCopyObj_User(props.user)
+  const [userData, setUserData] = React.useState<User>(GetObj_User())
   const [values, setValues] = React.useState<User>(props.user)
   const [showPasswords, setshowPasswords] = React.useState<ShowPasswordGroup>({
     password: false,
@@ -92,7 +97,9 @@ export default function UserProfile(props: UserProfileProps) {
     bank_number: false,
   })
   // プレイ条件
-  const [playConditions, setPlayConditions] = useState<PlayCondition>(GetObj_PlayCondition())
+  const [playConditions, setPlayConditions] = useState<PlayCondition>(
+    GetObj_PlayCondition(),
+  )
   // 出演作
   const [portfolios, setPortfolios] = useState<Portfolio[]>([])
   // 出演作ロード中
@@ -123,25 +130,31 @@ export default function UserProfile(props: UserProfileProps) {
   useEffect(() => {
     setIsLoading(true)
 
+    setUserData(props.user)
+
     // プレイ条件取得
-    GetActorPlayCondition(apiContext, userData?.id ? userData.id : 1).then((apiResult) => {
-      //console.log(apiResult);
-      if (apiResult.result.Code == AppErrorCode.Success) {
-        setPlayConditions(apiResult.data)
-        console.log(playConditions)
-      }
-    })
+    GetActorPlayCondition(apiContext, userData?.id ? userData.id : 1).then(
+      (apiResult) => {
+        //console.log(apiResult);
+        if (apiResult.result.Code == AppErrorCode.Success) {
+          setPlayConditions(apiResult.data)
+          console.log(playConditions)
+        }
+      },
+    )
 
     // ポートフォリオ一覧取得
-    GetActorPortfolio(apiContext, userData?.id ? userData.id : 1).then((apiResult) => {
-      //console.log(apiResult);
-      if (apiResult.result.Code == AppErrorCode.Success) {
-        setPortfolios(apiResult.data)
-        console.log(portfolios)
-      }
-      setIsLoading(false)
-    })
-  }, [userData.id])
+    GetActorPortfolio(apiContext, userData?.id ? userData.id : 1).then(
+      (apiResult) => {
+        //console.log(apiResult);
+        if (apiResult.result.Code == AppErrorCode.Success) {
+          setPortfolios(apiResult.data)
+          console.log(portfolios)
+        }
+        setIsLoading(false)
+      },
+    )
+  }, [props.user])
 
   // 編集モード遷移の確認
   function confirmEntryToEditMode(): void {
@@ -324,7 +337,11 @@ export default function UserProfile(props: UserProfileProps) {
                   <TextField
                     label="スリーサイズ[cm]"
                     id="text-3size"
-                    value={`B${userData?.breast_top_size}(${ConvertToStringBreastSize(userData?.breast_size)}カップ) W${userData?.waist_size} H${userData?.hip_size}`}
+                    value={`B${
+                      userData?.breast_top_size
+                    }(${ConvertToStringBreastSize(
+                      userData?.breast_size,
+                    )}カップ) W${userData?.waist_size} H${userData?.hip_size}`}
                     //value={'B83(Dカップ) W59 H84'}
                     // sx={{ m: 1, width: '25ch' }}
                     variant="standard"

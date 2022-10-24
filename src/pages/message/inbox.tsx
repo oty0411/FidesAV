@@ -9,10 +9,10 @@ import Layout from 'components/templates/Layout'
 import MainPartLayout from 'components/templates/Layout/mainPartLayout'
 import { useAuthContext } from 'contexts/AuthContext'
 import { ApiContext, AppErrorCode, LoginUserType } from 'types/userTypes'
-import AppearanceRequestInbox from 'components/organisms/AppearanceRequestInbox'
+import MailInbox from 'components/organisms/MailInbox'
 
-// 出演依頼INBOX
-const AppearanceRequestInboxPage: NextPage = () => {
+// メールINBOX
+const MailInboxPage: NextPage = () => {
   // #region Fields
   const apiContext: ApiContext = {
     apiRootUrl: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost/api',
@@ -45,7 +45,7 @@ const AppearanceRequestInboxPage: NextPage = () => {
               marginTop={0}
               paddingLeft={1}
             >
-              出演依頼 INBOX
+              メール INBOX
             </Text>
             <Box width="100%" paddingLeft={2} paddingRight={2}>
               <Flex
@@ -53,7 +53,7 @@ const AppearanceRequestInboxPage: NextPage = () => {
                 flexDirection={'column'}
                 alignItems={'center'}
               >
-                <AppearanceRequestInbox />
+                <MailInbox />
               </Flex>
             </Box>
           </Flex>
@@ -64,4 +64,4 @@ const AppearanceRequestInboxPage: NextPage = () => {
   // #endregion View
 }
 
-export default AppearanceRequestInboxPage
+export default MailInboxPage

@@ -33,11 +33,12 @@ const SigninFormContainer = ({ onSignin }: SigninFormContainerProps) => {
   const handleSignin = async (
     system_acount_id: string,
     email: string,
-    password: string) => {
+    password: string,
+  ) => {
     try {
       // ローディングスピナーを表示する
       setGlobalSpinner(true)
-      
+
       // サインインパラメータ(両ユーザータイプで共通)
       const targetUser: SigninParams = {
         login_id: system_acount_id,

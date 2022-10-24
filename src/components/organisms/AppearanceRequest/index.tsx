@@ -114,23 +114,41 @@ export const AppearanceRequestPostForm = (
   const onSubmit = (formData: UserTypes.Offer) => {
     // チェックボックスの値セット
     // メイク付
-    formData.makeup = checkBoxStates[ConditionList.findIndex(item => item.id == 'makeup')].checked
-      ? UserTypes.BoolWithInt.True : UserTypes.BoolWithInt.False
+    formData.makeup = checkBoxStates[
+      ConditionList.findIndex((item) => item.id == 'makeup')
+    ].checked
+      ? UserTypes.BoolWithInt.True
+      : UserTypes.BoolWithInt.False
     // 貸衣裳
-    formData.rental_costume = checkBoxStates[ConditionList.findIndex(item => item.id == 'rental_costume')].checked
-      ? UserTypes.BoolWithInt.True : UserTypes.BoolWithInt.False
+    formData.rental_costume = checkBoxStates[
+      ConditionList.findIndex((item) => item.id == 'rental_costume')
+    ].checked
+      ? UserTypes.BoolWithInt.True
+      : UserTypes.BoolWithInt.False
     // 控室(個室)
-    formData.private_room = checkBoxStates[ConditionList.findIndex(item => item.id == 'private_room')].checked
-      ? UserTypes.BoolWithInt.True : UserTypes.BoolWithInt.False
+    formData.private_room = checkBoxStates[
+      ConditionList.findIndex((item) => item.id == 'private_room')
+    ].checked
+      ? UserTypes.BoolWithInt.True
+      : UserTypes.BoolWithInt.False
     // 控室(相部屋)
-    formData.shared_room = checkBoxStates[ConditionList.findIndex(item => item.id == 'shared_room')].checked
-      ? UserTypes.BoolWithInt.True : UserTypes.BoolWithInt.False
+    formData.shared_room = checkBoxStates[
+      ConditionList.findIndex((item) => item.id == 'shared_room')
+    ].checked
+      ? UserTypes.BoolWithInt.True
+      : UserTypes.BoolWithInt.False
     // 送迎
-    formData.pick_up = checkBoxStates[ConditionList.findIndex(item => item.id == 'pick_up')].checked
-      ? UserTypes.BoolWithInt.True : UserTypes.BoolWithInt.False
+    formData.pick_up = checkBoxStates[
+      ConditionList.findIndex((item) => item.id == 'pick_up')
+    ].checked
+      ? UserTypes.BoolWithInt.True
+      : UserTypes.BoolWithInt.False
     // 食事
-    formData.meal = checkBoxStates[ConditionList.findIndex(item => item.id == 'meal')].checked
-      ? UserTypes.BoolWithInt.True : UserTypes.BoolWithInt.False
+    formData.meal = checkBoxStates[
+      ConditionList.findIndex((item) => item.id == 'meal')
+    ].checked
+      ? UserTypes.BoolWithInt.True
+      : UserTypes.BoolWithInt.False
 
     //console.log(formData)
     props.onPost && props.onPost(formData)
@@ -138,7 +156,9 @@ export const AppearanceRequestPostForm = (
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     //console.log(event)
-    checkBoxStates[checkBoxStates.findIndex(item => item.id == event.target.name)].checked = event.target.checked
+    checkBoxStates[
+      checkBoxStates.findIndex((item) => item.id == event.target.name)
+    ].checked = event.target.checked
     setCheckBoxStates([...checkBoxStates])
     //console.log(checkBoxStates)
   }
