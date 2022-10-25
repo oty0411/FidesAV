@@ -4,6 +4,7 @@ import RectLoader from 'components/atoms/RectLoader'
 import Box from 'components/layout/Box'
 import Flex from 'components/layout/Flex'
 import Card from 'components/organisms/ActorCard'
+import { GetUrlOfImageFileInDataServer } from 'utils'
 
 interface ActorCardListProps {
   isLoading: boolean
@@ -45,7 +46,14 @@ const ActorCardListContainer = ({ isLoading, actors }: ActorCardListProps) => {
                 >
                   <a>
                     {/* 女優カード */}
-                    <Card title={p.user_name} imageUrl={p.image_path} />
+                    <Card
+                      title={p.user_name}
+                      imageUrl={
+                        p.image_path.startsWith('storage')
+                          ? GetUrlOfImageFileInDataServer(p.image_path)
+                          : p.image_path
+                      }
+                    />
                   </a>
                 </Link>
               </Box>

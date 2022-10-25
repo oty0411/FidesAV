@@ -17,12 +17,11 @@ import PlayConditionSetting from '../PlayCondition'
 import Button from 'components/atoms/Button'
 import Text from 'components/atoms/Text'
 import Flex from 'components/layout/Flex'
+import { ApiContext, AppErrorCode, User } from 'types/userTypes'
+import { GetUserList } from 'api/users'
 
 interface SearchActorControlProps {
-  /**
-   * ユーザータイプ
-   */
-  userType?: 'actor' | 'maker'
+  refreshToSearchedActorList?: (actorList: User[]) => void
 }
 
 /**
@@ -30,6 +29,11 @@ interface SearchActorControlProps {
  */
 const SearchActorControl = (props: SearchActorControlProps) => {
   // #region Fields
+  const apiContext: ApiContext = {
+    apiRootUrl: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost/api',
+  }
+
+  const [searchName, setSearchName] = React.useState('');
   const [value, setValue] = React.useState<Dayjs | null>(
     dayjs('2014-08-18T21:11:54'),
   )
@@ -37,6 +41,31 @@ const SearchActorControl = (props: SearchActorControlProps) => {
   // #region Functions
   const handleChange = (newValue: Dayjs | null) => {
     setValue(newValue)
+  }
+
+  function searchActorsByName() {
+    // 女優一覧取得
+    GetUserList(apiContext).then((apiResult) => {
+      console.log(apiResult)
+      if (apiResult.result.Code == AppErrorCode.Success) {
+        
+        const filteredList = apiResult.data.filter(user => user.user_name.indexOf(searchName) > -1)
+
+        props.refreshToSearchedActorList &&
+        props.refreshToSearchedActorList(filteredList)
+      }
+    })
+  }
+
+  function searchActors() {
+    // 女優一覧取得
+    GetUserList(apiContext).then((apiResult) => {
+      console.log(apiResult)
+      if (apiResult.result.Code == AppErrorCode.Success) {
+        props.refreshToSearchedActorList &&
+        props.refreshToSearchedActorList(apiResult.data)
+      }
+    })
   }
   // #endregion Functions
   // #region Views
@@ -59,15 +88,16 @@ const SearchActorControl = (props: SearchActorControlProps) => {
             <Box margin={2}>
               <Flex justifyContent={'space-between'}>
                 <TextField
-                  label="NAME"
-                  value={''}
+                  label="名前"
+                  defaultValue={''}
                   variant="outlined"
+                  onChange={(event) => {
+                    setSearchName(event.target.value)
+                  }}
                   InputLabelProps={{ shrink: true }}
                 />
                 <Button
-                  onClick={() => {
-                    /*do nothing*/
-                  }}
+                  onClick={searchActorsByName}
                   backgroundColor={'#333333'}
                 >
                   <Text variant="small" color={'white'}>
@@ -139,7 +169,7 @@ const SearchActorControl = (props: SearchActorControlProps) => {
             <Box margin={2}>
               <Button
                 onClick={() => {
-                  /*do nothing*/
+                  searchActors()
                 }}
                 backgroundColor={'#333333'}
                 width={'100%'}

@@ -28,7 +28,7 @@ const Layout = ({ userType, children }: LayoutProps) => {
       <main
         style={{
           //background: `url(${'https://beiz.jp/images_T/white/white_00036.jpg'})`,
-          background: `url(${'https://beiz.jp/images_P/light/light_00040.jpg'})`, // 白系きらきら
+          //background: `url(${'https://beiz.jp/images_P/light/light_00040.jpg'})`, // 白系きらきら
           // background: `url(${'https://beiz.jp/images_T/white/white_00007.jpg'})`, // 白系テクスチャ
           //background: `url(${'https://beiz.jp/images_T/twinkle/twinkle_00001.jpg'})`, // ビーズきらきら
           backgroundSize:'cover',

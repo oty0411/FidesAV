@@ -71,28 +71,28 @@ const ActorSearchPage: NextPage = () => {
     //setIsLoading(true)
     const selected: string[] = []
 
-    const actorList: User[] = []
-    actorList.push(GetObj_User())
-    actorList[0].id = 1
-    actorList[0].user_name = '佐倉絆'
-    actorList[0].image_path = '/users/itou_mayuki.jpg'
-    actorList.push(GetObj_User())
-    actorList[1].id = 2
-    actorList[1].user_name = '佐倉絆2'
-    actorList[1].image_path = '/users/suzumura_airi.jpg'
-    actorList.push(GetObj_User())
-    actorList[2].id = 1
-    actorList[2].user_name = '佐倉絆'
-    actorList[2].image_path = '/users/itou_mayuki.jpg'
-    actorList.push(GetObj_User())
-    actorList[3].id = 2
-    actorList[3].user_name = '佐倉絆2'
-    actorList[3].image_path = '/users/suzumura_airi.jpg'
-    actorList.push(GetObj_User())
-    actorList[4].id = 1
-    actorList[4].user_name = '佐倉絆'
-    actorList[4].image_path = '/users/itou_mayuki.jpg'
-    setActors(actorList)
+    // const actorList: User[] = []
+    // actorList.push(GetObj_User())
+    // actorList[0].id = 1
+    // actorList[0].user_name = '佐倉絆'
+    // actorList[0].image_path = '/users/itou_mayuki.jpg'
+    // actorList.push(GetObj_User())
+    // actorList[1].id = 2
+    // actorList[1].user_name = '佐倉絆2'
+    // actorList[1].image_path = '/users/suzumura_airi.jpg'
+    // actorList.push(GetObj_User())
+    // actorList[2].id = 1
+    // actorList[2].user_name = '佐倉絆'
+    // actorList[2].image_path = '/users/itou_mayuki.jpg'
+    // actorList.push(GetObj_User())
+    // actorList[3].id = 2
+    // actorList[3].user_name = '佐倉絆2'
+    // actorList[3].image_path = '/users/suzumura_airi.jpg'
+    // actorList.push(GetObj_User())
+    // actorList[4].id = 1
+    // actorList[4].user_name = '佐倉絆'
+    // actorList[4].image_path = '/users/itou_mayuki.jpg'
+    // setActors(actorList)
 
     // SearchLectures(apiContext, selected).then((apiResult) => {
     //   //console.log(apiResult);
@@ -103,6 +103,11 @@ const ActorSearchPage: NextPage = () => {
     //   setIsLoading(false)
     // })
   }, [])
+
+  // 検索結果をリフレッシュ
+  function refreshToSearchedActorList(actorList: User[]) {
+    setActors([...actorList.filter(user => user.id > 5)])
+  }
   // #endregion Functions
 
   // #region View
@@ -112,7 +117,7 @@ const ActorSearchPage: NextPage = () => {
         <Separator />
         <Box>
           <Flex flexDirection={'column'}>
-            <SearchActorControl />
+            <SearchActorControl refreshToSearchedActorList={refreshToSearchedActorList} />
             {/* 女優カードリストコンテナ 検索結果からカードリストを表示 */}
             <Box marginLeft={2} marginTop={2}>
               <SnackbarContent

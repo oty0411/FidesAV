@@ -1,12 +1,12 @@
 import Avatar from '@mui/material/Avatar'
-import Box from '@material-ui/core/Box'
+import Box from '@mui/material/Box';
 import Divider from '@material-ui/core/Divider'
-import Fab from '@material-ui/core/Fab'
+import Fab from '@mui/material/Fab';
 import Grid from '@material-ui/core/Grid'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText';
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
 import { makeStyles } from '@material-ui/core/styles'
@@ -445,7 +445,7 @@ const ChatControl = () => {
   // #endregion Functions
 
   return (
-    <div>
+    <>
       <Grid container component={Paper} className={classes.chatSection}>
         {/* チャット相手リスト */}
         <Grid item xs={3} className={classes.borderRight500}>
@@ -462,7 +462,6 @@ const ChatControl = () => {
                       <Avatar
                         sx={{ width: 70, height: 70 }}
                         alt={item.pairName}
-                        //src={GetUrlOfImageFileInDataServer(item.pairImagePath)}
                         src={
                           item.pairImagePath.startsWith('storage')
                             ? GetUrlOfImageFileInDataServer(item.pairImagePath)
@@ -556,7 +555,8 @@ const ChatControl = () => {
                               {item.chat.send_time}
                             </Typography>
                           }
-                        ></ListItemText>
+                        >
+                        </ListItemText>
                       </Grid>
                     </Grid>
                   </ListItem>
@@ -578,20 +578,22 @@ const ChatControl = () => {
               />
             </Grid>
             <Grid item xs={1}>
-              <Fab
-                color="primary"
-                aria-label="add"
-                onClick={() => {
-                  sendButtonClickHandler()
-                }}
-              >
-                <SendIcon />
-              </Fab>
+              <Box sx={{ '& > :not(style)': { m: 1 } }}>
+                <Fab
+                  color="primary"
+                  aria-label="send"
+                  onClick={() => {
+                    sendButtonClickHandler()
+                  }}
+                >
+                  <SendIcon />
+                </Fab>
+              </Box>  
             </Grid>
           </Grid>
         </Grid>
       </Grid>
-    </div>
+    </>
   )
 }
 

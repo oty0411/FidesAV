@@ -19,7 +19,7 @@ import * as React from 'react'
 import { useAuthContext } from '../../../contexts/AuthContext'
 import { GetUrlOfImageFileInDataServer } from 'utils'
 import { GetAppearanceRequestList } from 'api/schedule'
-import { ApiContext, AppErrorCode } from 'types/userTypes'
+import { ApiContext, AppErrorCode, LoginUserType } from 'types/userTypes'
 
 interface ResponsiveAppBarProps {
   /**
@@ -116,17 +116,18 @@ const ResponsiveAppBar = (props: ResponsiveAppBarProps) => {
     <AppBar
       position="fixed"//"static"
       style={{
-        backgroundColor: props.userType == 'actor' ? '#FFFFFF' : '#FFFFFF',
+        backgroundColor: props.userType == 'actor'
+          ? '#FFDDFF'
+          : '#E6FFE9',
         color: '#333333',
       }}
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Typography
+          {/* <Typography
             variant="h6"
             noWrap
             component="a"
-            href="/"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -138,7 +139,15 @@ const ResponsiveAppBar = (props: ResponsiveAppBarProps) => {
             }}
           >
             Fides
-          </Typography>
+          </Typography> */}
+          <img
+            //`url(${'/common/app_title.png'})`
+            src={'/common/app_logo.png'}
+            height={'50px'}
+            // srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
+            // alt={item.title}
+            //loading="lazy"
+          />
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -190,7 +199,9 @@ const ResponsiveAppBar = (props: ResponsiveAppBarProps) => {
                   sx={{ my: 2, color: 'white', display: 'block' }}
                   style={{
                     backgroundColor:
-                      props.userType == 'actor' ? '#FFFFFF' : '#FFFFFF',
+                      props.userType == 'actor'
+                        ? '#FFDDFF'
+                        : '#E6FFE9',
                     color: '#333333',
                   }}
                 >
@@ -199,7 +210,7 @@ const ResponsiveAppBar = (props: ResponsiveAppBarProps) => {
               </Link>
             ))}
           </Box>
-          {/* 出演依頼バッジ */}
+          {/* メールINBOXバッジ */}
           <Box sx={{ flexGrow: 0 }} marginRight={2}>
             <Link href={'/message/inbox'} passHref>
               <Tooltip title="メール">
@@ -212,20 +223,22 @@ const ResponsiveAppBar = (props: ResponsiveAppBarProps) => {
             </Link>
           </Box>
           {/* 出演依頼バッジ */}
-          <Box sx={{ flexGrow: 0 }} marginRight={2}>
-            <Link href={'/message/appearancerequest/inbox'} passHref>
-              <Tooltip title="出演依頼">
-                <IconButton aria-label="appearance_request">
-                  <StyledBadge
-                    badgeContent={numberOfAppearanceRequests}
-                    color="primary"
-                  >
-                    <SensorOccupiedIcon />
-                  </StyledBadge>
-                </IconButton>
-              </Tooltip>
-            </Link>
-          </Box>
+          {authUser.type == LoginUserType.Actor && (
+            <Box sx={{ flexGrow: 0 }} marginRight={2}>
+              <Link href={'/message/appearancerequest/inbox'} passHref>
+                <Tooltip title="出演依頼">
+                  <IconButton aria-label="appearance_request">
+                    <StyledBadge
+                      badgeContent={numberOfAppearanceRequests}
+                      color="primary"
+                    >
+                      <SensorOccupiedIcon />
+                    </StyledBadge>
+                  </IconButton>
+                </Tooltip>
+              </Link>
+            </Box>
+          )}  
           {/* 設定メニュー */}
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="個人メニュー">

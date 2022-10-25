@@ -3,6 +3,14 @@ import Paper from '@mui/material/Paper'
 import SnackbarContent from '@mui/material/SnackbarContent'
 import TextField from '@mui/material/TextField'
 import { styled } from '@mui/material/styles'
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import dayjs, { Dayjs } from 'dayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import * as React from 'react'
@@ -32,6 +40,9 @@ import {
   AppErrorCode,
   ConvertToStringClothesSizeType,
   GetObj_User,
+  BloodType,
+  ClothesSizeType,
+  BreastSizeType,
 } from 'types/userTypes'
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -205,9 +216,6 @@ export default function UserProfileForEdit(props: UserProfileProps) {
           {/* 右側エリア */}
           <Box width={'50%'} /*minWidth={'300px'}*/ margin={2}>
             <Flex flexDirection={'column'}>
-              {/* <Text variant="large" color={'#333333'} padding={1}>
-                佐倉絆
-              </Text> */}
               <SnackbarContent
                 message="プロフィール"
                 sx={{ backgroundColor: '#333333', color: '#ffffff' }}
@@ -216,46 +224,49 @@ export default function UserProfileForEdit(props: UserProfileProps) {
                 <Flex>
                   <Box marginLeft={2}>
                     <Box>
-                      <TextField
-                        label="生年月日"
-                        id="text-birthday"
-                        value={userData?.birthday}
-                        onChange={(event) => {
-                          userData.birthday = event.target.value
-                          const newObj = GetObj_User()
-                          setUserData(Object.assign(newObj, userData))
-                        }}
-                        // sx={{ m: 1, width: '25ch' }}
-                        variant="standard"
-                        InputLabelProps={{ shrink: true }}
-                      />
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <MobileDatePicker
+                          label="誕生日"
+                          inputFormat="YYYY/MM/DD"
+                          value={userData.birthday}
+                          onChange={(newValue: Dayjs) => {
+                            userData.birthday = newValue?.toISOString()
+                            const newObj = GetObj_User()
+                            setUserData(Object.assign(newObj, userData))
+                          }}
+                          renderInput={(params) => <TextField {...params} />}
+                        />
+                      </LocalizationProvider>  
                     </Box>
                     <Box marginTop={1}>
-                      <TextField
-                        label="血液型"
-                        id="text-blood-type"
-                        value={ConvertToStringBloodType(userData?.blood_type)}
-                        onChange={(event) => {
-                          userData.blood_type = event.target.value
-                          const newObj = GetObj_User()
-                          setUserData(Object.assign(newObj, userData))
-                        }}
-                        // sx={{ m: 1, width: '25ch' }}
-                        variant="standard"
-                        InputLabelProps={{ shrink: true }}
-                      />
+                      <FormControl variant="standard" sx={{ m: 0, minWidth: 195 }}>
+                        <InputLabel id="Input-label-blood_type">血液型</InputLabel>
+                        <Select
+                          labelId="Select-label-blood_type"
+                          id="Id-blood_type"
+                          value={userData?.blood_type}
+                          label="BloodType"
+                        >
+                          {/* <MenuItem value={userData?.blood_type}>
+                            <em>不明</em>
+                          </MenuItem> */}
+                          <MenuItem value={BloodType.A}>A型</MenuItem>
+                          <MenuItem value={BloodType.B}>B型</MenuItem>
+                          <MenuItem value={BloodType.O}>O型</MenuItem>
+                          <MenuItem value={BloodType.AB}>AB型</MenuItem>
+                        </Select>
+                      </FormControl>
                     </Box>
                     <Box marginTop={1}>
                       <TextField
                         label="身長[cm]"
                         id="text-height"
-                        value={userData?.height}
+                        defaultValue={userData?.height}
                         onChange={(event) => {
-                          userData.height = event.target.value
+                          userData.height = Number(event.target.value)
                           const newObj = GetObj_User()
                           setUserData(Object.assign(newObj, userData))
                         }}
-                        // sx={{ m: 1, width: '25ch' }}
                         variant="standard"
                         InputLabelProps={{ shrink: true }}
                       />
@@ -264,13 +275,12 @@ export default function UserProfileForEdit(props: UserProfileProps) {
                       <TextField
                         label="体重[kg]"
                         id="text-weight"
-                        value={userData?.weight}
+                        defaultValue={userData?.weight}
                         onChange={(event) => {
-                          userData.weight = event.target.value
+                          userData.weight = Number(event.target.value)
                           const newObj = GetObj_User()
                           setUserData(Object.assign(newObj, userData))
                         }}
-                        // sx={{ m: 1, width: '25ch' }}
                         variant="standard"
                         InputLabelProps={{ shrink: true }}
                       />
@@ -278,51 +288,114 @@ export default function UserProfileForEdit(props: UserProfileProps) {
                   </Box>
                   <Box marginLeft={3}>
                     <Box>
-                      <TextField
-                        label="服サイズ"
-                        id="text-clothes_size"
-                        value={ConvertToStringClothesSizeType(userData?.clothes_size)}
-                        onChange={(event) => {
-                          userData.clothes_size = event.target.value
-                          const newObj = GetObj_User()
-                          setUserData(Object.assign(newObj, userData))
-                        }}
-                        // sx={{ m: 1, width: '25ch' }}
-                        variant="standard"
-                        InputLabelProps={{ shrink: true }}
-                      />
+                      <FormControl variant="standard" sx={{ m: 0, minWidth: 195 }}>
+                        <InputLabel id="Input-label-clothes_size">服サイズ</InputLabel>
+                        <Select
+                          labelId="Select-label-clothes_size"
+                          id="Id-clothes_size"
+                          value={userData?.clothes_size}
+                          label="clothes_size"
+                        >
+                          {/* <MenuItem value={userData?.clothes_size}>
+                            <em>不明</em>
+                          </MenuItem> */}
+                          <MenuItem value={ClothesSizeType.SS}>SS</MenuItem>
+                          <MenuItem value={ClothesSizeType.S}>S</MenuItem>
+                          <MenuItem value={ClothesSizeType.M}>M</MenuItem>
+                          <MenuItem value={ClothesSizeType.L}>L</MenuItem>
+                          <MenuItem value={ClothesSizeType.L2}>2L</MenuItem>
+                          <MenuItem value={ClothesSizeType.L3}>3L</MenuItem>
+                          <MenuItem value={ClothesSizeType.L4}>4L</MenuItem>
+                          <MenuItem value={ClothesSizeType.L5}>5L</MenuItem>
+                          <MenuItem value={ClothesSizeType.L6}>6L</MenuItem>
+                          <MenuItem value={ClothesSizeType.L7}>7L</MenuItem>
+                          <MenuItem value={ClothesSizeType.L8}>8L</MenuItem>
+                          <MenuItem value={ClothesSizeType.L9}>9L</MenuItem>
+                          <MenuItem value={ClothesSizeType.L10}>10L</MenuItem>
+                        </Select>
+                      </FormControl>
                     </Box>
                     <Box marginTop={1}>
                       <TextField
                         label="靴サイズ"
                         id="text-shoes_size"
-                        value={userData?.shoes_size}
+                        defaultValue={userData?.shoes_size}
                         onChange={(event) => {
-                          userData.shoes_size = event.target.value
+                          userData.shoes_size = Number(event.target.value)
                           const newObj = GetObj_User()
                           setUserData(Object.assign(newObj, userData))
                         }}
-                        // sx={{ m: 1, width: '25ch' }}
                         variant="standard"
                         InputLabelProps={{ shrink: true }}
                       />
                     </Box>
                     <Box marginTop={1}>
                       <TextField
-                        label="スリーサイズ[cm]"
-                        id="text-3size"
-                        value={`B${
-                          userData?.breast_top_size
-                        }(${ConvertToStringBreastSize(
-                          userData?.breast_size,
-                        )}カップ) W${userData?.waist_size} H${userData?.hip_size}`}
+                        label="バストサイズ[cm]"
+                        id="text-breast_top_size"
+                        defaultValue={userData?.breast_top_size}
                         onChange={(event) => {
-                          userData.waist_size = event.target.value
+                          userData.breast_top_size = Number(event.target.value)
                           const newObj = GetObj_User()
                           setUserData(Object.assign(newObj, userData))
                         }}
-                        //value={'B83(Dカップ) W59 H84'}
-                        // sx={{ m: 1, width: '25ch' }}
+                        variant="standard"
+                        InputLabelProps={{ shrink: true }}
+                      />
+                    </Box>
+                    <Box marginTop={1}>
+                      <FormControl variant="standard" sx={{ m: 0, minWidth: 195 }}>
+                        <InputLabel id="Input-label-breast_size">カップサイズ</InputLabel>
+                        <Select
+                          labelId="Select-label-breast_size"
+                          id="Id-breast_size"
+                          value={userData?.breast_size}
+                          label="breast_size"
+                        >
+                          {/* <MenuItem value={userData?.breast_size}>
+                            <em>不明</em>
+                          </MenuItem> */}
+                          <MenuItem value={BreastSizeType.A}>A</MenuItem>
+                          <MenuItem value={BreastSizeType.B}>B</MenuItem>
+                          <MenuItem value={BreastSizeType.C}>C</MenuItem>
+                          <MenuItem value={BreastSizeType.D}>D</MenuItem>
+                          <MenuItem value={BreastSizeType.E}>E</MenuItem>
+                          <MenuItem value={BreastSizeType.F}>F</MenuItem>
+                          <MenuItem value={BreastSizeType.G}>G</MenuItem>
+                          <MenuItem value={BreastSizeType.H}>H</MenuItem>
+                          <MenuItem value={BreastSizeType.I}>I</MenuItem>
+                          <MenuItem value={BreastSizeType.J}>J</MenuItem>
+                          <MenuItem value={BreastSizeType.K}>K</MenuItem>
+                          <MenuItem value={BreastSizeType.L}>L</MenuItem>
+                          <MenuItem value={BreastSizeType.M}>M</MenuItem>
+                          <MenuItem value={BreastSizeType.N}>N</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Box>
+                    <Box marginTop={1}>
+                      <TextField
+                        label="ウェストサイズ[cm]"
+                        id="text-waist_size"
+                        defaultValue={userData?.waist_size}
+                        onChange={(event) => {
+                          userData.waist_size = Number(event.target.value)
+                          const newObj = GetObj_User()
+                          setUserData(Object.assign(newObj, userData))
+                        }}
+                        variant="standard"
+                        InputLabelProps={{ shrink: true }}
+                      />
+                    </Box>
+                    <Box marginTop={1}>
+                      <TextField
+                        label="ヒップサイズ[cm]"
+                        id="text-hip_size"
+                        defaultValue={userData?.hip_size}
+                        onChange={(event) => {
+                          userData.hip_size = Number(event.target.value)
+                          const newObj = GetObj_User()
+                          setUserData(Object.assign(newObj, userData))
+                        }}
                         variant="standard"
                         InputLabelProps={{ shrink: true }}
                       />

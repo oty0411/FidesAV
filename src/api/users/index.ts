@@ -27,7 +27,7 @@ export const GetUserInformation = async (
 export const GetUserList = async (
   context: UserTypes.ApiContext,
 ): Promise<{ result: UserTypes.AppResult; data: UserTypes.User[] }> => {
-  const address = `${context.apiRootUrl.replace(/\/$/g, '')}/users`
+  const address = `${context.apiRootUrl.replace(/\/$/g, '')}/actor/users`
   const apiResult: {
     code: number
     message: string
@@ -45,7 +45,7 @@ export const UpdateUserInformation = async (
   context: UserTypes.ApiContext,
   postData: UserTypes.User,
 ): Promise<{ result: UserTypes.AppResult; data: UserTypes.User }> => {
-  const address = `${context.apiRootUrl.replace(/\/$/g, '')}/users/${
+  const address = `${context.apiRootUrl.replace(/\/$/g, '')}/actor/users/${
     postData.id
   }`
   const apiResult: {
