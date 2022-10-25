@@ -182,7 +182,7 @@ const ActorSchedulePage: NextPage = () => {
     <Layout userType={authUser.type == LoginUserType.Actor ? 'actor' : 'maker'}>
       <MainPartLayout>
         <Separator />
-        <Box marginLeft={2}>
+        <Box marginLeft={2} backgroundColor={'white'}>
           <FullCalendar
             plugins={[
               dayGridPlugin,

@@ -1,4 +1,5 @@
 import type { NextPage } from 'next'
+import { useRouter } from 'next/router'
 import * as React from 'react'
 import SnackbarContent from '@mui/material/SnackbarContent'
 import Button from '@mui/material/Button'
@@ -21,12 +22,21 @@ import Layout from 'components/templates/Layout'
 import * as ST_Button from 'components/atoms/Button'
 import MainPartLayout from 'components/templates/Layout/mainPartLayout'
 import { ApiContext } from 'types/userTypes'
+import { useAuthContext } from 'contexts/AuthContext'
 
 const ComplateTransactionPage: NextPage = () => {
   // #region Fields
   const apiContext: ApiContext = {
     apiRootUrl: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost/api',
   }
+  // ページルート
+  const router = useRouter()
+  // 認証済ユーザー
+  const { authUser } = useAuthContext()
+  // 通報対象のユーザータイプ
+  const target_user_type = Number(router.query.targetUserType)
+  // 通報対象のユーザーID
+  const target_user_id = Number(router.query.targetUserId)
   const [checked, setChecked] = React.useState(false)
 
   // 評価ボタン
@@ -64,6 +74,17 @@ const ComplateTransactionPage: NextPage = () => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked)
   }
+
+  // 取引完了投稿
+  function postCompleteTransaction() {
+    
+    // 投稿前確認
+    if (!confirm('取引完了をシステムへ報告しますか？')) { return }
+    
+    alert('システムへ取引完了を報告しました。')
+    // 女優のスケジュール管理画面へ戻る
+    router.push(`/actor/users/${target_user_id}`)
+  }
   // #endregion Functions
 
   // #region View
@@ -82,7 +103,7 @@ const ComplateTransactionPage: NextPage = () => {
             >
               取引完了
             </Text>
-            <Box width="100%" paddingLeft={2} paddingRight={2}>
+            <Box marginLeft={2} padding={2} backgroundColor={'white'} width="100%" paddingLeft={2} paddingRight={2}>
               <Flex
                 justifyContent={'flex-start'}
                 flexDirection={'column'}
@@ -209,10 +230,8 @@ const ComplateTransactionPage: NextPage = () => {
                 {/* 取引完了&評価投稿 */}
                 <Box width="100%" marginTop={2}>
                   <ST_Button.default
-                    onClick={() => {
-                      /*do nothing*/
-                    }}
-                    backgroundColor={'#333333'}
+                    onClick={() => {postCompleteTransaction()}}
+                    //backgroundColor={'#333333'}
                     width={'100%'}
                   >
                     <Text variant="medium" color={'white'}>

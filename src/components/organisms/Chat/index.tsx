@@ -462,7 +462,12 @@ const ChatControl = () => {
                       <Avatar
                         sx={{ width: 70, height: 70 }}
                         alt={item.pairName}
-                        src={GetUrlOfImageFileInDataServer(item.pairImagePath)}
+                        //src={GetUrlOfImageFileInDataServer(item.pairImagePath)}
+                        src={
+                          item.pairImagePath.startsWith('storage')
+                            ? GetUrlOfImageFileInDataServer(item.pairImagePath)
+                            : item.pairImagePath
+                        }
                       />
                     </ListItemIcon>
                     <ListItemText primary={item.pairName}>
@@ -508,12 +513,12 @@ const ChatControl = () => {
                             src={
                               item.chat.sender_dir ==
                               SendDirection.ToMakerFromActor
-                                ? GetUrlOfImageFileInDataServer(
-                                    item.actor.image_path,
-                                  )
-                                : GetUrlOfImageFileInDataServer(
-                                    item.maker.image_path,
-                                  )
+                                ? item.actor.image_path.startsWith('storage')
+                                    ? GetUrlOfImageFileInDataServer(item.actor.image_path)
+                                    : item.actor.image_path
+                                : item.maker.image_path.startsWith('storage')
+                                    ? GetUrlOfImageFileInDataServer(item.maker.image_path)
+                                    : item.maker.image_path
                             }
                           />
                         </ListItemIcon>
@@ -572,7 +577,7 @@ const ChatControl = () => {
                 style={{ backgroundColor: '#dddddd' }}
               />
             </Grid>
-            <Grid xs={1}>
+            <Grid item xs={1}>
               <Fab
                 color="primary"
                 aria-label="add"

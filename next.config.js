@@ -2,7 +2,11 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: [`${process.env.NEXT_PUBLIC_IMAGE_FILE_HOST}`],
+    domains: [
+      `${process.env.NEXT_PUBLIC_IMAGE_FILE_HOST}`,
+      'pics.dmm.co.jp',
+      'cdn.pan-pan.co',
+    ],
   },
   compiler: (() => {
     let compilerConfig = {

@@ -72,7 +72,7 @@ const SigninForm = ({ onSignin }: SigninFormProps) => {
           placeholder="Eメールアドレス"
           hasError={!!errors.email}
           style={{ backgroundColor: '#E7E7FF', color: '#333333' }}
-          value={'actoractoractor@gmaaaaaail.com'} // user id 5
+          value={'actor0@gmaaaaaail.com'} // user id 5
         />
         {errors.email && (
           <Text color="danger" variant="small" paddingLeft={1}>

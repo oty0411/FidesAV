@@ -164,7 +164,7 @@ export const AppearanceRequestPostForm = (
   }
 
   return (
-    <Box marginLeft={2}>
+    <Box padding={3} backgroundColor={'white'}>
       <Flex justifyContent={'center'} flexDirection={'column'}>
         {/*情報入力フォーム*/}
         <form onSubmit={handleSubmit(onSubmit)}>

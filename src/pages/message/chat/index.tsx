@@ -33,7 +33,7 @@ const UserChatPage: NextPage = () => {
     <Layout userType={authUser.type == LoginUserType.Actor ? 'actor' : 'maker'}>
       <MainPartLayout>
         <Separator />
-        <Box>
+        <Box height='100vh' marginLeft={2}>
           <Flex flexDirection={'column'}>
             <ChatControl />
           </Flex>

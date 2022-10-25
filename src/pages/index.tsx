@@ -59,7 +59,7 @@ const SigninPage: NextPage = () => {
         paddingLeft={{ base: 2, md: 0 }}
         paddingRight={{ base: 2, md: 0 }}
         justifyContent="center"
-        height={'570px'}
+        height={'100vh'}
         style={{
           backgroundImage: `url(${'/common/app_title.png'})`,
           backgroundSize: 'cover',

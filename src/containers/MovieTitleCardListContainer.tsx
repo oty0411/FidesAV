@@ -53,7 +53,12 @@ const MovieTitleCardListContainer = ({
                   {/* 動画タイトルカード */}
                   <Card
                     title={p.title}
-                    imageUrl={GetUrlOfImageFileInDataServer(p.image_path)}
+                    //imageUrl={GetUrlOfImageFileInDataServer(p.image_path)}
+                    imageUrl={
+                      p.image_path.startsWith('storage')
+                        ? GetUrlOfImageFileInDataServer(p.image_path)
+                        : p.image_path
+                    }
                     url={p.url}
                   />
                 </Button>

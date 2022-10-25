@@ -114,7 +114,7 @@ const ResponsiveAppBar = (props: ResponsiveAppBarProps) => {
   // #region Views
   return (
     <AppBar
-      position="static"
+      position="fixed"//"static"
       style={{
         backgroundColor: props.userType == 'actor' ? '#FFFFFF' : '#FFFFFF',
         color: '#333333',

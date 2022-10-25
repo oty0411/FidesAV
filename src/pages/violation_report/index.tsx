@@ -1,4 +1,5 @@
 import type { NextPage } from 'next'
+import { useRouter } from 'next/router'
 import * as React from 'react'
 import SnackbarContent from '@mui/material/SnackbarContent'
 import Button from '@mui/material/Button'
@@ -27,6 +28,8 @@ import Layout from 'components/templates/Layout'
 import * as ST_Button from 'components/atoms/Button'
 import MainPartLayout from 'components/templates/Layout/mainPartLayout'
 import { ApiContext } from 'types/userTypes'
+import { Alarm } from '@mui/icons-material'
+import { useAuthContext } from 'contexts/AuthContext'
 
 /**違反リスト */
 const violationList = [
@@ -42,6 +45,14 @@ const ViolationReportPage: NextPage = () => {
   const apiContext: ApiContext = {
     apiRootUrl: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost/api',
   }
+  // ページルート
+  const router = useRouter()
+  // 認証済ユーザー
+  const { authUser } = useAuthContext()
+  // 通報対象のユーザータイプ
+  const target_user_type = Number(router.query.targetUserType)
+  // 通報対象のユーザーID
+  const target_user_id = Number(router.query.targetUserId)
   const [checked, setChecked] = React.useState(false)
 
   // 評価ボタン
@@ -79,6 +90,17 @@ const ViolationReportPage: NextPage = () => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked)
   }
+
+  // 違反通報
+  function postViolationReport() {
+    
+    // 投稿前確認
+    if (!confirm('違反を通報しますか？')) { return }
+    
+    alert('違反内容が投稿されました。')
+    // 女優のスケジュール管理画面へ戻る
+    router.push(`/actor/users/${target_user_id}`)
+  }
   // #endregion Functions
 
   // #region View
@@ -86,7 +108,7 @@ const ViolationReportPage: NextPage = () => {
     <Layout userType={'actor'}>
       <MainPartLayout>
         <Separator />
-        <Box width="100%">
+        <Box height='100vh' width="100%">
           <Flex flexDirection={'column'}>
             <Text
               as="h3"
@@ -97,14 +119,14 @@ const ViolationReportPage: NextPage = () => {
             >
               違反行為通報
             </Text>
-            <Box width="100%" paddingLeft={2} paddingRight={2}>
+            <Box marginLeft={2} padding={2} backgroundColor={'white'} width="100%" paddingLeft={2} paddingRight={2}>
               <Flex
                 justifyContent={'flex-start'}
                 flexDirection={'column'}
                 alignItems={'flex-start'}
               >
                 {/* 違反内容 */}
-                <Box width="100%" marginTop={2}>
+                <Box width="100%" marginTop={0}>
                   <SnackbarContent
                     message="違反内容"
                     sx={{ backgroundColor: '#333333', color: '#ffffff' }}
@@ -160,10 +182,8 @@ const ViolationReportPage: NextPage = () => {
                   <Text>記載内容に偽りがないことを確認してください</Text>
                   <ST_Button.default
                     marginTop={1}
-                    onClick={() => {
-                      /*do nothing*/
-                    }}
-                    backgroundColor={'#333333'}
+                    onClick={() => {postViolationReport()}}
+                    //backgroundColor={'#333333'}
                     width={'100%'}
                   >
                     <Text variant="medium" color={'white'}>

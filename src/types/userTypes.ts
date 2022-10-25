@@ -124,16 +124,18 @@ export function GetObj_SystemAcount(): SystemAcount {
  * 血液型
  */
 export enum BloodType {
-  A = 0,
-  B = 1,
-  O = 2,
-  AB = 3,
+  Unknown = 0,
+  A = 1,
+  B = 2,
+  O = 3,
+  AB = 4,
 }
 
 /**
  * 血液型(文字列)
  */
 export enum BloodTypeString {
+  Unknown = '不定',
   A = 'A型',
   B = 'B型',
   O = 'O型',
@@ -149,8 +151,10 @@ export function ConvertToStringBloodType(status: number) {
     return BloodTypeString.B
   } else if (status == BloodType.O) {
     return BloodTypeString.O
-  } else {
+  } else if (status == BloodType.AB) {
     return BloodTypeString.AB
+  } else {
+    return BloodTypeString.Unknown
   }
 }
 
@@ -158,92 +162,93 @@ export function ConvertToStringBloodType(status: number) {
  * 洋服サイズ
  */
 export enum ClothesSizeType {
-  SS = 0,
-  S = 1,
-  M = 2,
-  L = 3,
-  L2 = 4,
-  L3 = 5,
-  L4 = 6,
-  L5 = 7,
-  L6 = 8,
-  L7 = 9,
-  L8 = 10,
-  L9 = 11,
-  L10 = 12,
+  Unknown = 0,
+  SS = 1,
+  S = 2,
+  M = 3,
+  L = 4,
+  L2 = 5,
+  L3 = 6,
+  L4 = 7,
+  L5 = 8,
+  L6 = 9,
+  L7 = 10,
+  L8 = 11,
+  L9 = 12,
+  L10 = 13,
 }
 
 /**
  * 洋服サイズ(文字列)
  */
 export const ClothesSizeTypeString = {
-  '0': 'SS',
-  '1': 'S',
-  '2': 'M',
-  '3': 'L',
-  '4': '2L',
-  '5': '3L',
-  '6': '4L',
-  '7': '5L',
-  '8': '6L',
-  '9': '7L',
-  '10': '8L',
-  '11': '9L',
-  '12': '10L',
+  '0': 'Unknown',
+  '1': 'SS',
+  '2': 'S',
+  '3': 'M',
+  '4': 'L',
+  '5': '2L',
+  '6': '3L',
+  '7': '4L',
+  '8': '5L',
+  '9': '6L',
+  '10': '7L',
+  '11': '8L',
+  '12': '9L',
+  '13': '10L',
+}
+
+// 数値の文字列化
+export function ConvertToStringClothesSizeType(status: number) {
+  // TODO：if使わずにスマートに書き換えたい
+  return ClothesSizeTypeString[String(status)]
 }
 
 /**
  * バストサイズ
  */
 export enum BreastSizeType {
-  A = 0,
-  B = 1,
-  C = 2,
-  D = 3,
-  E = 4,
-  F = 5,
-  G = 6,
-  H = 7,
-  I = 8,
-  J = 9,
-  K = 10,
-  L = 11,
-  M = 12,
-  N = 13,
+  Unknown = 0,
+  A = 1,
+  B = 2,
+  C = 3,
+  D = 4,
+  E = 5,
+  F = 6,
+  G = 7,
+  H = 8,
+  I = 9,
+  J = 10,
+  K = 11,
+  L = 12,
+  M = 13,
+  N = 14,
 }
 /**
  * バストサイズ(文字列)
  */
 export const BreastSizeTypeString = {
-  '0': 'A',
-  '1': 'B',
-  '2': 'C',
-  '3': 'D',
-  '4': 'E',
-  '5': 'F',
-  '6': 'G',
-  '7': 'H',
-  '8': 'I',
-  '9': 'J',
-  '10': 'K',
-  '11': 'L',
-  '12': 'M',
-  '13': 'N',
+  '0': 'Unknown',
+  '1': 'A',
+  '2': 'B',
+  '3': 'C',
+  '4': 'D',
+  '5': 'E',
+  '6': 'F',
+  '7': 'G',
+  '8': 'H',
+  '9': 'I',
+  '10': 'J',
+  '11': 'K',
+  '12': 'L',
+  '13': 'M',
+  '14': 'N',
 }
 
 // 数値の文字列化
 export function ConvertToStringBreastSize(status: number) {
   // TODO：if使わずにスマートに書き換えたい
-  return BreastSizeTypeString['3']
-}
-
-/**
- * プレイ条件選択肢
- */
-export enum PlayConditionChoice {
-  NG = 0,
-  OK = 1,
-  NEGOTIABLE = 2,
+  return BreastSizeTypeString[String(status)]
 }
 
 // ユーザー
@@ -265,17 +270,17 @@ export type User = {
   // 誕生日
   birthday: string
   // 血液型
-  blood_type: number
+  blood_type: BloodType
   // 身長
   height: number
   // 体重
   weight: number
   // 服サイズ
-  clothes_size: number
+  clothes_size: ClothesSizeType
   // 靴サイズ
   shoes_size: number
   // バストサイズ
-  breast_size: number
+  breast_size: BreastSizeType
   // バストトップサイズ
   breast_top_size: number
   // バストアンダーサイズ
@@ -408,6 +413,16 @@ export function GetCopyObj_MakerUser(src: MakerUser) {
   return obj
 }
 
+/**
+ * プレイ条件選択肢
+ */
+export enum PlayConditionChoice {
+  Unknown = 0,
+  OK = 1,
+  NG = 2,
+  NEGOTIABLE = 3,
+}
+
 // プレイ条件
 export type PlayCondition = {
   // ユーザーID
@@ -415,95 +430,95 @@ export type PlayCondition = {
   // ユーザーID
   user_id: number
   // 本番
-  honban: BoolWithInt
+  honban: PlayConditionChoice
   // ゴム無
-  gomunashi: BoolWithInt
+  gomunashi: PlayConditionChoice
   // 中出し
-  nakadashi: BoolWithInt
+  nakadashi: PlayConditionChoice
   // フェラチオ
-  ferachio: BoolWithInt
+  ferachio: PlayConditionChoice
   // イマラチオ
-  iramachio: BoolWithInt
+  iramachio: PlayConditionChoice
   // 口内発射
-  kounaihassha: BoolWithInt
+  kounaihassha: PlayConditionChoice
   // 顔射
-  gansha: BoolWithInt
+  gansha: PlayConditionChoice
   // ごっくん
-  gokkun: BoolWithInt
+  gokkun: PlayConditionChoice
   // ぶっかけ
-  bukkake: BoolWithInt
+  bukkake: PlayConditionChoice
   // アナル
-  anal: BoolWithInt
+  anal: PlayConditionChoice
   // アナル(指)
-  anal_finger: BoolWithInt
+  anal_finger: PlayConditionChoice
   // アナル(おもちゃ)
-  anal_toy: BoolWithInt
+  anal_toy: PlayConditionChoice
   // アナル(男根)
-  anal_dankon: BoolWithInt
+  anal_dankon: PlayConditionChoice
   // おもちゃ
-  toys: BoolWithInt
+  toys: PlayConditionChoice
   // ローター
-  rotar: BoolWithInt
+  rotar: PlayConditionChoice
   // 電マ
-  denma: BoolWithInt
+  denma: PlayConditionChoice
   // バイブ
-  vibe: BoolWithInt
+  vibe: PlayConditionChoice
   // マシンバイブ
-  machine_vibe: BoolWithInt
+  machine_vibe: PlayConditionChoice
   // 痴女
-  chizyo: BoolWithInt
+  chizyo: PlayConditionChoice
   // 露出
-  roshutsu: BoolWithInt
+  roshutsu: PlayConditionChoice
   // 外泊ロケ
-  gaihakuroke: BoolWithInt
+  gaihakuroke: PlayConditionChoice
   // 外国人
-  gaikokujin: BoolWithInt
+  gaikokujin: PlayConditionChoice
   // レズ(タチ)
-  les_tachi: BoolWithInt
+  les_tachi: PlayConditionChoice
   // レズ(ネコ)
-  les_neko: BoolWithInt
+  les_neko: PlayConditionChoice
   // 複数プレイ
-  multiplay: BoolWithInt
+  multiplay: PlayConditionChoice
   // オナニー
-  onani: BoolWithInt
+  onani: PlayConditionChoice
   // 剃毛
-  teimou: BoolWithInt
+  teimou: PlayConditionChoice
   // 放尿
-  hounyou: BoolWithInt
+  hounyou: PlayConditionChoice
   // 飲尿
-  innyou: BoolWithInt
+  innyou: PlayConditionChoice
   // 浴尿
-  yokunyou: BoolWithInt
+  yokunyou: PlayConditionChoice
   // 飲尿・浴尿（擬似）
-  giji_innyou: BoolWithInt
+  giji_innyou: PlayConditionChoice
   // レイプ
-  rape: BoolWithInt
+  rape: PlayConditionChoice
   // レイプ（ハード）
-  rape_head: BoolWithInt
+  rape_head: PlayConditionChoice
   // SM
-  sm: BoolWithInt
+  sm: PlayConditionChoice
   // スパンキング
-  spamking: BoolWithInt
+  spamking: PlayConditionChoice
   // ムチ（バラムチ）
-  bara_muchi: BoolWithInt
+  bara_muchi: PlayConditionChoice
   // ムチ（１本ムチ）
-  ippon_muchi: BoolWithInt
+  ippon_muchi: PlayConditionChoice
   // ろうそく
-  rousoku: BoolWithInt
+  rousoku: PlayConditionChoice
   // 緊縛
-  kinbaku: BoolWithInt
+  kinbaku: PlayConditionChoice
   // 鼻フック
-  hanahukku: BoolWithInt
+  hanahukku: PlayConditionChoice
   // 浣腸
-  kanchou: BoolWithInt
+  kanchou: PlayConditionChoice
   // ビンタ
-  binta: BoolWithInt
+  binta: PlayConditionChoice
   // 首しめ
-  kubisime: BoolWithInt
+  kubisime: PlayConditionChoice
   // フィスト
-  fist: BoolWithInt
+  fist: PlayConditionChoice
   // ダンス
-  dance: BoolWithInt
+  dance: PlayConditionChoice
 }
 // PlayCondition型初期化オブジェクト
 export function GetObj_PlayCondition() {
@@ -511,95 +526,95 @@ export function GetObj_PlayCondition() {
     id: 0,
     user_id: 0,
     // 本番
-    honban: BoolWithInt.False,
+    honban: PlayConditionChoice.NG,
     // ゴム無
-    gomunashi: BoolWithInt.False,
+    gomunashi: PlayConditionChoice.NG,
     // 中出し
-    nakadashi: BoolWithInt.False,
+    nakadashi: PlayConditionChoice.NG,
     // フェラチオ
-    ferachio: BoolWithInt.False,
+    ferachio: PlayConditionChoice.NG,
     // イマラチオ
-    iramachio: BoolWithInt.False,
+    iramachio: PlayConditionChoice.NG,
     // 口内発射
-    kounaihassha: BoolWithInt.False,
+    kounaihassha: PlayConditionChoice.NG,
     // 顔射
-    gansha: BoolWithInt.False,
+    gansha: PlayConditionChoice.NG,
     // ごっくん
-    gokkun: BoolWithInt.False,
+    gokkun: PlayConditionChoice.NG,
     // ぶっかけ
-    bukkake: BoolWithInt.False,
+    bukkake: PlayConditionChoice.NG,
     // アナル
-    anal: BoolWithInt.False,
+    anal: PlayConditionChoice.NG,
     // アナル(指)
-    anal_finger: BoolWithInt.False,
+    anal_finger: PlayConditionChoice.NG,
     // アナル(おもちゃ)
-    anal_toy: BoolWithInt.False,
+    anal_toy: PlayConditionChoice.NG,
     // アナル(男根)
-    anal_dankon: BoolWithInt.False,
+    anal_dankon: PlayConditionChoice.NG,
     // おもちゃ
-    toys: BoolWithInt.False,
+    toys: PlayConditionChoice.NG,
     // ローター
-    rotar: BoolWithInt.False,
+    rotar: PlayConditionChoice.NG,
     // 電マ
-    denma: BoolWithInt.False,
+    denma: PlayConditionChoice.NG,
     // バイブ
-    vibe: BoolWithInt.False,
+    vibe: PlayConditionChoice.NG,
     // マシンバイブ
-    machine_vibe: BoolWithInt.False,
+    machine_vibe: PlayConditionChoice.NG,
     // 痴女
-    chizyo: BoolWithInt.False,
+    chizyo: PlayConditionChoice.NG,
     // 露出
-    roshutsu: BoolWithInt.False,
+    roshutsu: PlayConditionChoice.NG,
     // 外泊ロケ
-    gaihakuroke: BoolWithInt.False,
+    gaihakuroke: PlayConditionChoice.NG,
     // 外国人
-    gaikokujin: BoolWithInt.False,
+    gaikokujin: PlayConditionChoice.NG,
     // レズ(タチ)
-    les_tachi: BoolWithInt.False,
+    les_tachi: PlayConditionChoice.NG,
     // レズ(ネコ)
-    les_neko: BoolWithInt.False,
+    les_neko: PlayConditionChoice.NG,
     // 複数プレイ
-    multiplay: BoolWithInt.False,
+    multiplay: PlayConditionChoice.NG,
     // オナニー
-    onani: BoolWithInt.False,
+    onani: PlayConditionChoice.NG,
     // 剃毛
-    teimou: BoolWithInt.False,
+    teimou: PlayConditionChoice.NG,
     // 放尿
-    hounyou: BoolWithInt.False,
+    hounyou: PlayConditionChoice.NG,
     // 飲尿
-    innyou: BoolWithInt.False,
+    innyou: PlayConditionChoice.NG,
     // 浴尿
-    yokunyou: BoolWithInt.False,
+    yokunyou: PlayConditionChoice.NG,
     // 飲尿・浴尿（擬似）
-    giji_innyou: BoolWithInt.False,
+    giji_innyou: PlayConditionChoice.NG,
     // レイプ
-    rape: BoolWithInt.False,
+    rape: PlayConditionChoice.NG,
     // レイプ（ハード）
-    rape_head: BoolWithInt.False,
+    rape_head: PlayConditionChoice.NG,
     // SM
-    sm: BoolWithInt.False,
+    sm: PlayConditionChoice.NG,
     // スパンキング
-    spamking: BoolWithInt.False,
+    spamking: PlayConditionChoice.NG,
     // ムチ（バラムチ）
-    bara_muchi: BoolWithInt.False,
+    bara_muchi: PlayConditionChoice.NG,
     // ムチ（１本ムチ）
-    ippon_muchi: BoolWithInt.False,
+    ippon_muchi: PlayConditionChoice.NG,
     // ろうそく
-    rousoku: BoolWithInt.False,
+    rousoku: PlayConditionChoice.NG,
     // 緊縛
-    kinbaku: BoolWithInt.False,
+    kinbaku: PlayConditionChoice.NG,
     // 鼻フック
-    hanahukku: BoolWithInt.False,
+    hanahukku: PlayConditionChoice.NG,
     // 浣腸
-    kanchou: BoolWithInt.False,
+    kanchou: PlayConditionChoice.NG,
     // ビンタ
-    binta: BoolWithInt.False,
+    binta: PlayConditionChoice.NG,
     // 首しめ
-    kubisime: BoolWithInt.False,
+    kubisime: PlayConditionChoice.NG,
     // フィスト
-    fist: BoolWithInt.False,
+    fist: PlayConditionChoice.NG,
     // ダンス
-    dance: BoolWithInt.False,
+    dance: PlayConditionChoice.NG,
   }
   return obj
 }

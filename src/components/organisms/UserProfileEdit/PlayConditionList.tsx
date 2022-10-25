@@ -84,6 +84,21 @@ const Item = styled(Paper)(({ theme }) => ({
 }))
 
 export default function PlayConditionList(props: PlayConditionListProps) {
+  // プレイ条件
+  const [state, setState] = React.useState<PlayCondition>(
+    GetObj_PlayCondition(),
+  )
+
+  React.useEffect(() => {
+    setState(props.conditions)
+  }, [props.conditions])
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setState({
+      ...state,
+      [event.target.name]: event.target.checked,
+    })
+  }
 
   return (
     <Box>
@@ -96,7 +111,7 @@ export default function PlayConditionList(props: PlayConditionListProps) {
             alignContent={'flex-start'}
             alignItems={'flex-start'}
           >
-            {Object.entries(props.conditions).map((pair) => {
+            {Object.entries(state).map((pair) => {
               if (
                 pair[0] == 'id' ||
                 pair[0] == 'user_id' ||
@@ -112,6 +127,7 @@ export default function PlayConditionList(props: PlayConditionListProps) {
                       control={
                         <Checkbox
                           checked={pair[1] == PlayConditionChoice.OK ? true : false}
+                          onChange={handleChange}
                           name={pair[0]}
                         />
                       }

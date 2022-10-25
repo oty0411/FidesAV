@@ -31,6 +31,7 @@ import {
   ApiContext,
   AppErrorCode,
   ConvertToStringClothesSizeType,
+  GetObj_User,
 } from 'types/userTypes'
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -79,7 +80,7 @@ interface ShowPasswordGroup {
   bank_number: boolean
 }
 
-export default function UserProfile(props: UserProfileProps) {
+export default function UserProfileForEdit(props: UserProfileProps) {
   // #region Fields
   const apiContext: ApiContext = {
     apiRootUrl: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost/api',
@@ -91,8 +92,6 @@ export default function UserProfile(props: UserProfileProps) {
   const [playConditions, setPlayConditions] = useState<PlayCondition>(
     GetObj_PlayCondition(),
   )
-  // 出演作
-  const [portfolios, setPortfolios] = useState<Portfolio[]>([])
   // 出演作ロード中
   const [isLoading, setIsLoading] = useState(false)
 
@@ -117,29 +116,8 @@ export default function UserProfile(props: UserProfileProps) {
         }
       },
     )
+  }, [])
 
-    // ポートフォリオ一覧取得
-    GetActorPortfolio(apiContext, userData?.id ? userData.id : 1).then(
-      (apiResult) => {
-        //console.log(apiResult);
-        if (apiResult.result.Code == AppErrorCode.Success) {
-          setPortfolios(apiResult.data)
-          console.log(portfolios)
-        }
-        setIsLoading(false)
-      },
-    )
-  }, [props.user])
-
-  // 編集モード遷移の確認
-  function confirmEntryToEditMode(): void {
-    const result = confirm('プロフィールを編集しますか？')
-    if (!result) {
-      return
-    }
-    // 編集モードへ遷移
-    props.onTransitToEdit && props.onTransitToEdit()
-  }
   // パラメータ保存の確認
   function confirmSaveProfile(): void {
     const result = confirm('プロフィールを保存しますか？')
@@ -208,67 +186,20 @@ export default function UserProfile(props: UserProfileProps) {
               ) : (
                 <PersonIcon size={profileImageSizeNumber} />
               )}
-              {props.view_mode_mine ? (
-                props.editMode ? (
-                  <>
-                    <Flex justifyContent={'flex-end'}>
-                      <ImageUploadButton onPost={uploadImageToImageServer} />
-                    </Flex>
-                    <Button
-                      onClick={confirmSaveProfile}
-                      backgroundColor={'#333333'}
-                      marginTop={2}
-                    >
-                      <Text variant="small" color={'white'}>
-                        プロフィールを保存
-                      </Text>
-                    </Button>
+              <>
+                <Flex justifyContent={'flex-end'}>
+                  <ImageUploadButton onPost={uploadImageToImageServer} />
+                </Flex>
+                <Button
+                  onClick={confirmSaveProfile}
+                  backgroundColor={'#333333'}
+                  marginTop={2}
+                >
+                  <Text variant="small" color={'white'}>
+                    プロフィールを保存
+                  </Text>
+                </Button>
                   </>
-                ) : (
-                  <>
-                    <Button
-                      onClick={confirmEntryToEditMode}
-                      backgroundColor={'#333333'}
-                      marginTop={2}
-                    >
-                      <Text variant="small" color={'white'}>
-                        プロフィールを編集
-                      </Text>
-                    </Button>
-                  </>
-                )
-              ) : (
-                <Box>
-                  <Flex flexDirection={'row'} justifyContent={'space-between'}>
-                    {/* スケジュールボタン */}
-                    <Button
-                      onClick={() => {
-                        router.push(`/actor/schedule/${props.user.id}`)
-                      }}
-                      backgroundColor={'#333333'}
-                      marginLeft={1}
-                      marginTop={2}
-                    >
-                      <Text variant="small" color={'white'}>
-                        スケジュール
-                      </Text>
-                    </Button>
-                    {/* メッセージボタン */}
-                    <Button
-                      onClick={() => {
-                        router.push(`/message/chat`)
-                      }}
-                      backgroundColor={'#333333'}
-                      marginLeft={1}
-                      marginTop={2}
-                    >
-                      <Text variant="small" color={'white'}>
-                        メッセージ
-                      </Text>
-                    </Button>
-                  </Flex>
-                </Box>
-              )}
             </Flex>
           </Box>
           {/* 右側エリア */}
@@ -288,7 +219,12 @@ export default function UserProfile(props: UserProfileProps) {
                       <TextField
                         label="生年月日"
                         id="text-birthday"
-                        value={new Date(userData?.birthday).toLocaleDateString()}
+                        value={userData?.birthday}
+                        onChange={(event) => {
+                          userData.birthday = event.target.value
+                          const newObj = GetObj_User()
+                          setUserData(Object.assign(newObj, userData))
+                        }}
                         // sx={{ m: 1, width: '25ch' }}
                         variant="standard"
                         InputLabelProps={{ shrink: true }}
@@ -299,6 +235,11 @@ export default function UserProfile(props: UserProfileProps) {
                         label="血液型"
                         id="text-blood-type"
                         value={ConvertToStringBloodType(userData?.blood_type)}
+                        onChange={(event) => {
+                          userData.blood_type = event.target.value
+                          const newObj = GetObj_User()
+                          setUserData(Object.assign(newObj, userData))
+                        }}
                         // sx={{ m: 1, width: '25ch' }}
                         variant="standard"
                         InputLabelProps={{ shrink: true }}
@@ -309,6 +250,11 @@ export default function UserProfile(props: UserProfileProps) {
                         label="身長[cm]"
                         id="text-height"
                         value={userData?.height}
+                        onChange={(event) => {
+                          userData.height = event.target.value
+                          const newObj = GetObj_User()
+                          setUserData(Object.assign(newObj, userData))
+                        }}
                         // sx={{ m: 1, width: '25ch' }}
                         variant="standard"
                         InputLabelProps={{ shrink: true }}
@@ -319,6 +265,11 @@ export default function UserProfile(props: UserProfileProps) {
                         label="体重[kg]"
                         id="text-weight"
                         value={userData?.weight}
+                        onChange={(event) => {
+                          userData.weight = event.target.value
+                          const newObj = GetObj_User()
+                          setUserData(Object.assign(newObj, userData))
+                        }}
                         // sx={{ m: 1, width: '25ch' }}
                         variant="standard"
                         InputLabelProps={{ shrink: true }}
@@ -331,6 +282,11 @@ export default function UserProfile(props: UserProfileProps) {
                         label="服サイズ"
                         id="text-clothes_size"
                         value={ConvertToStringClothesSizeType(userData?.clothes_size)}
+                        onChange={(event) => {
+                          userData.clothes_size = event.target.value
+                          const newObj = GetObj_User()
+                          setUserData(Object.assign(newObj, userData))
+                        }}
                         // sx={{ m: 1, width: '25ch' }}
                         variant="standard"
                         InputLabelProps={{ shrink: true }}
@@ -341,6 +297,11 @@ export default function UserProfile(props: UserProfileProps) {
                         label="靴サイズ"
                         id="text-shoes_size"
                         value={userData?.shoes_size}
+                        onChange={(event) => {
+                          userData.shoes_size = event.target.value
+                          const newObj = GetObj_User()
+                          setUserData(Object.assign(newObj, userData))
+                        }}
                         // sx={{ m: 1, width: '25ch' }}
                         variant="standard"
                         InputLabelProps={{ shrink: true }}
@@ -355,6 +316,11 @@ export default function UserProfile(props: UserProfileProps) {
                         }(${ConvertToStringBreastSize(
                           userData?.breast_size,
                         )}カップ) W${userData?.waist_size} H${userData?.hip_size}`}
+                        onChange={(event) => {
+                          userData.waist_size = event.target.value
+                          const newObj = GetObj_User()
+                          setUserData(Object.assign(newObj, userData))
+                        }}
                         //value={'B83(Dカップ) W59 H84'}
                         // sx={{ m: 1, width: '25ch' }}
                         variant="standard"
@@ -375,22 +341,6 @@ export default function UserProfile(props: UserProfileProps) {
           sx={{ backgroundColor: '#333333', color: '#ffffff' }}
         />
         <PlayConditionList conditions={playConditions} />
-      </Box>
-      {/* 出演作エリア */}
-      <Box>
-        {/* 女優カードリストコンテナ 検索結果からカードリストを表示 */}
-        <Box marginLeft={2} marginTop={2}>
-          <SnackbarContent
-            message="出演作"
-            sx={{ backgroundColor: '#333333', color: '#ffffff' }}
-          />
-          <Box marginTop={1}>
-            <MovieTitleCardListContainer
-              isLoading={isLoading}
-              portfolios={portfolios}
-            />
-          </Box>
-        </Box>
       </Box>
     </Flex>
   )

@@ -17,7 +17,9 @@ import {
   GetDefaultAuthUser,
   User,
   GetObj_User,
+  LoginUserType,
 } from 'types/userTypes'
+import UserProfileForEdit from 'components/organisms/UserProfileEdit'
 
 const ActorUserPage: NextPage = () => {
   // #region Fields
@@ -79,7 +81,7 @@ const ActorUserPage: NextPage = () => {
 
   // #region View
   return (
-    <Layout userType={view_mode_mine ? 'actor' : 'maker'}>
+    <Layout userType={authUser.type == LoginUserType.Actor ? 'actor' : 'maker'}>
       <MainPartLayout>
         <Separator />
         <Box>
@@ -95,15 +97,28 @@ const ActorUserPage: NextPage = () => {
             </Text>
             <Box width="100%" paddingLeft={2} paddingRight={2}>
               <Flex>
-                <UserProfile
-                  variant="normal"
-                  user={user}
-                  view_mode_mine={view_mode_mine}
-                  editMode={editMode}
-                  onTransitToEdit={transitToEditMode}
-                  onTransitToRef={transitToRefMode}
-                  updateUserData={updateUserData}
-                />
+                {editMode 
+                  ?
+                    <UserProfileForEdit
+                      variant="normal"
+                      user={user}
+                      view_mode_mine={view_mode_mine}
+                      editMode={editMode}
+                      onTransitToEdit={transitToEditMode}
+                      onTransitToRef={transitToRefMode}
+                      updateUserData={updateUserData}
+                    />
+                  :
+                    <UserProfile
+                      variant="normal"
+                      user={user}
+                      view_mode_mine={view_mode_mine}
+                      editMode={editMode}
+                      onTransitToEdit={transitToEditMode}
+                      onTransitToRef={transitToRefMode}
+                      updateUserData={updateUserData}
+                    />
+                }
               </Flex>
             </Box>
           </Flex>
