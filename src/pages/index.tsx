@@ -42,7 +42,7 @@ const SigninPage: NextPage = () => {
         (user.type == LoginUserType.Actor
           ? `/actor/users/${user.id}`
           : user.type == LoginUserType.Marker
-          ? `/maker/users/${user.id}`
+          ? `/maker/search`
           : '/')
 
       console.log('Redirecting', redurectTo)

@@ -55,7 +55,8 @@ const SigninForm = ({ onSignin }: SigninFormProps) => {
           placeholder="システムアカウントID"
           hasError={!!errors.system_acount_id}
           style={{ backgroundColor: '#E7E7FF', color: '#333333' }}
-          value={'sys1'}
+          defaultValue={'sys1'}
+          //value={'sys1'}
         />
         {errors.system_acount_id && (
           <Text color="danger" variant="small" paddingLeft={1}>
@@ -72,7 +73,8 @@ const SigninForm = ({ onSignin }: SigninFormProps) => {
           placeholder="Eメールアドレス"
           hasError={!!errors.email}
           style={{ backgroundColor: '#E7E7FF', color: '#333333' }}
-          value={'actor0@gmaaaaaail.com'} // user id 5
+          defaultValue={'actor0@gmaaaaaail.com'}
+          //value={'actor0@gmaaaaaail.com'} // user id 5
         />
         {errors.email && (
           <Text color="danger" variant="small" paddingLeft={1}>
@@ -89,7 +91,8 @@ const SigninForm = ({ onSignin }: SigninFormProps) => {
           placeholder="パスワード"
           hasError={!!errors.password}
           style={{ backgroundColor: '#E7E7FF', color: '#333333' }}
-          value={'password'}
+          defaultValue={'password'}
+          //value={'password'}
         />
         {errors.password && (
           <Text color="danger" variant="small" paddingLeft={1}>
