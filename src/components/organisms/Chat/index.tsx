@@ -379,8 +379,10 @@ const ChatControl = () => {
               pairImagePath: '',
               chats: GetObj_ChatWithUser(),
             }
-            setSellectedUserChatList(Object.assign(newObj, apiResult.data[0]))
-            //console.log('chats: ', sellectedUserChatList)
+            if (sellectedUserChatList.pairName === '') {
+              setSellectedUserChatList(Object.assign(newObj, apiResult.data[0]))
+              //console.log('chats: ', sellectedUserChatList)
+            }
           }
         },
       )
@@ -403,9 +405,7 @@ const ChatControl = () => {
 
     console.log('sellectedUserChatListPre', sellectedUserChatList)
     const sample = Object.assign(newObj, allUserChatList[selectedIndex])
-    setSellectedUserChatList(
-      Object.assign(newObj, allUserChatList[selectedIndex]),
-    )
+    setSellectedUserChatList(sample)
     console.log('selectedIndex: ', selectedIndex)
     console.log('partnerName: ', keyUser)
     console.log('sellectedUserChatListAfter', sellectedUserChatList)
