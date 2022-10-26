@@ -109,7 +109,7 @@ export default function UserProfile(props: UserProfileProps) {
     setUserData(props.user)
 
     // プレイ条件取得
-    GetActorPlayCondition(apiContext, userData?.id ? userData.id : 1).then(
+    GetActorPlayCondition(apiContext, props.user.id).then(
       (apiResult) => {
         //console.log(apiResult);
         if (apiResult.result.Code == AppErrorCode.Success) {
@@ -120,7 +120,7 @@ export default function UserProfile(props: UserProfileProps) {
     )
 
     // ポートフォリオ一覧取得
-    GetActorPortfolio(apiContext, userData?.id ? userData.id : 1).then(
+    GetActorPortfolio(apiContext, props.user.id).then(
       (apiResult) => {
         //console.log(apiResult);
         if (apiResult.result.Code == AppErrorCode.Success) {

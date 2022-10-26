@@ -122,7 +122,7 @@ export default function UserProfileForEdit(props: UserProfileProps) {
     setUserData(props.user)
 
     // プレイ条件取得
-    GetActorPlayCondition(apiContext, userData?.id ? userData.id : 1).then(
+    GetActorPlayCondition(apiContext, props.user.id).then(
       (apiResult) => {
         //console.log(apiResult);
         if (apiResult.result.Code == AppErrorCode.Success) {
