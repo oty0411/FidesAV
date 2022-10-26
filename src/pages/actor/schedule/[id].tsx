@@ -68,6 +68,9 @@ const ActorSchedulePage: NextPage = () => {
 
   // カレンダー日付選択時イベントハンドラ
   const handleDateSelect = (selectionInfo: DateSelectArg) => {
+    // ユーザータイプチェック(メーカーユーザーは選択操作してもスケジュール変更させない)
+    if (authUser.type == LoginUserType.Marker){ return }
+
     console.log('selectionInfo: ', selectionInfo)
     // 選択範囲を一時保存
     setAddEventSelectRange(selectionInfo)
@@ -115,7 +118,8 @@ const ActorSchedulePage: NextPage = () => {
   // #endregion Add Event Controls
 
   // #region Edit Event Controls
-  const [opeEventDialogOpen, setOpeEventDialogOpen] = React.useState(false)
+  const [opeEventForActorDialogOpen, setOpeEventForActorDialogOpen] = React.useState(false)
+  const [opeEventForMakerDialogOpen, setOpeEventForMakerDialogOpen] = React.useState(false)
   const [opeEventArg, setOpeEventArg] = React.useState<EventClickArg>()
   // 追加済イベントクリック時イベントハンドラ
   const handleEventClick = (eventInfo: EventClickArg) => {
@@ -128,8 +132,14 @@ const ActorSchedulePage: NextPage = () => {
     // イベント情報のバックアップ
     setOpeEventArg(eventInfo)
 
-    // ダイアログオープン
-    setOpeEventDialogOpen(true)
+    // ユーザータイプに従い表示するダイアログを切替
+    if (authUser.type == LoginUserType.Marker) { 
+      // メーカー向け
+      setOpeEventForMakerDialogOpen(true)
+    } else {
+      // 女優向け
+      setOpeEventForActorDialogOpen(true)
+    }
   }
 
   // ダイアログで”出演依頼へ進む”を選択したときのイベントハンドラ
@@ -137,7 +147,7 @@ const ActorSchedulePage: NextPage = () => {
     // 選択イベントの情報
     //console.log(opeEventArg)
 
-    setOpeEventDialogOpen(false)
+    setOpeEventForMakerDialogOpen(false)
 
     // 出演依頼ページへ遷移
     router.push(`/message/appearancerequest?targetId=${opeEventArg?.event.id}`)
@@ -146,7 +156,7 @@ const ActorSchedulePage: NextPage = () => {
   const handleDeleteEvent = () => {
     // イベント削除の確認
     if (!confirm('本当にイベントを削除しますか?')) {
-      setOpeEventDialogOpen(false)
+      setOpeEventForActorDialogOpen(false)
       return
     }
 
@@ -168,11 +178,12 @@ const ActorSchedulePage: NextPage = () => {
       }
     })
 
-    setOpeEventDialogOpen(false)
+    setOpeEventForActorDialogOpen(false)
   }
   // ダイアログで"中止"を選択したときのイベントハンドラ
   const handleOpeEventDialogClose = () => {
-    setOpeEventDialogOpen(false)
+    setOpeEventForActorDialogOpen(false)
+    setOpeEventForMakerDialogOpen(false)
   }
   // #endregion Edit Event Controls
   // #endregion Functions
@@ -261,8 +272,21 @@ const ActorSchedulePage: NextPage = () => {
             <Button onClick={handleAddEventDialogClose}>キャンセル</Button>
           </DialogActions>
         </Dialog>
-        {/* イベント操作用ダイアログ */}
-        <Dialog open={opeEventDialogOpen} onClose={handleOpeEventDialogClose}>
+        {/* イベント操作用ダイアログ(女優用) */}
+        <Dialog open={opeEventForActorDialogOpen} onClose={handleOpeEventDialogClose}>
+          <DialogTitle>イベント操作</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              イベントに対する操作を選択してください
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleDeleteEvent}>削除</Button>
+            <Button onClick={handleOpeEventDialogClose}>キャンセル</Button>
+          </DialogActions>
+        </Dialog>
+        {/* イベント操作用ダイアログ(メーカー用) */}
+        <Dialog open={opeEventForMakerDialogOpen} onClose={handleOpeEventDialogClose}>
           <DialogTitle>イベント操作</DialogTitle>
           <DialogContent>
             <DialogContentText>
@@ -273,7 +297,6 @@ const ActorSchedulePage: NextPage = () => {
             <Button onClick={handleGoToAppearanceRequest}>
               出演依頼へ進む
             </Button>
-            <Button onClick={handleDeleteEvent}>削除</Button>
             <Button onClick={handleOpeEventDialogClose}>キャンセル</Button>
           </DialogActions>
         </Dialog>

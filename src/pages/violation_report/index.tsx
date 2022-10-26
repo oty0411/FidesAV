@@ -93,10 +93,11 @@ const ViolationReportPage: NextPage = () => {
 
   // 違反通報
   function postViolationReport() {
-    
     // 投稿前確認
-    if (!confirm('違反を通報しますか？')) { return }
-    
+    if (!confirm('違反を通報しますか？')) {
+      return
+    }
+
     alert('違反内容が投稿されました。')
     // 女優のスケジュール管理画面へ戻る
     router.push(`/actor/users/${target_user_id}`)
@@ -108,7 +109,7 @@ const ViolationReportPage: NextPage = () => {
     <Layout userType={'actor'}>
       <MainPartLayout>
         <Separator />
-        <Box height='100vh' width="100%">
+        <Box height="100vh" width="100%">
           <Flex flexDirection={'column'}>
             <Text
               as="h3"
@@ -119,7 +120,14 @@ const ViolationReportPage: NextPage = () => {
             >
               違反行為通報
             </Text>
-            <Box marginLeft={2} padding={2} backgroundColor={'white'} width="100%" paddingLeft={2} paddingRight={2}>
+            <Box
+              marginLeft={2}
+              padding={2}
+              backgroundColor={'white'}
+              width="100%"
+              paddingLeft={2}
+              paddingRight={2}
+            >
               <Flex
                 justifyContent={'flex-start'}
                 flexDirection={'column'}
@@ -182,7 +190,9 @@ const ViolationReportPage: NextPage = () => {
                   <Text>記載内容に偽りがないことを確認してください</Text>
                   <ST_Button.default
                     marginTop={1}
-                    onClick={() => {postViolationReport()}}
+                    onClick={() => {
+                      postViolationReport()
+                    }}
                     //backgroundColor={'#333333'}
                     width={'100%'}
                   >

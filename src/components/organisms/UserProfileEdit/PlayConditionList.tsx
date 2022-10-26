@@ -126,7 +126,9 @@ export default function PlayConditionList(props: PlayConditionListProps) {
                     <FormControlLabel
                       control={
                         <Checkbox
-                          checked={pair[1] == PlayConditionChoice.OK ? true : false}
+                          checked={
+                            pair[1] == PlayConditionChoice.OK ? true : false
+                          }
                           onChange={handleChange}
                           name={pair[0]}
                         />

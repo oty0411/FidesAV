@@ -41,7 +41,7 @@ const pagesMaker = [
   { label: 'Search', link: '/maker/search', addUserId: false },
 ]
 const settingsMaker = [
-  { label: 'Profile', link: '/maker/users', addUserId: true },
+  //{ label: 'Profile', link: '/maker/users', addUserId: true },
   { label: 'Logout', link: '/', addUserId: false },
 ]
 
@@ -114,11 +114,9 @@ const ResponsiveAppBar = (props: ResponsiveAppBarProps) => {
   // #region Views
   return (
     <AppBar
-      position="fixed"//"static"
+      position="fixed" //"static"
       style={{
-        backgroundColor: props.userType == 'actor'
-          ? '#FFDDFF'
-          : '#E6FFE9',
+        backgroundColor: props.userType == 'actor' ? '#FFDDFF' : '#E6FFE9',
         color: '#333333',
       }}
     >
@@ -199,9 +197,7 @@ const ResponsiveAppBar = (props: ResponsiveAppBarProps) => {
                   sx={{ my: 2, color: 'white', display: 'block' }}
                   style={{
                     backgroundColor:
-                      props.userType == 'actor'
-                        ? '#FFDDFF'
-                        : '#E6FFE9',
+                      props.userType == 'actor' ? '#FFDDFF' : '#E6FFE9',
                     color: '#333333',
                   }}
                 >
@@ -238,7 +234,7 @@ const ResponsiveAppBar = (props: ResponsiveAppBarProps) => {
                 </Tooltip>
               </Link>
             </Box>
-          )}  
+          )}
           {/* 設定メニュー */}
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="個人メニュー">

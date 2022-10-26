@@ -33,7 +33,7 @@ const SearchActorControl = (props: SearchActorControlProps) => {
     apiRootUrl: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost/api',
   }
 
-  const [searchName, setSearchName] = React.useState('');
+  const [searchName, setSearchName] = React.useState('')
   const [value, setValue] = React.useState<Dayjs | null>(
     dayjs('2014-08-18T21:11:54'),
   )
@@ -48,11 +48,12 @@ const SearchActorControl = (props: SearchActorControlProps) => {
     GetUserList(apiContext).then((apiResult) => {
       console.log(apiResult)
       if (apiResult.result.Code == AppErrorCode.Success) {
-        
-        const filteredList = apiResult.data.filter(user => user.user_name.indexOf(searchName) > -1)
+        const filteredList = apiResult.data.filter(
+          (user) => user.user_name.indexOf(searchName) > -1,
+        )
 
         props.refreshToSearchedActorList &&
-        props.refreshToSearchedActorList(filteredList)
+          props.refreshToSearchedActorList(filteredList)
       }
     })
   }
@@ -63,7 +64,7 @@ const SearchActorControl = (props: SearchActorControlProps) => {
       console.log(apiResult)
       if (apiResult.result.Code == AppErrorCode.Success) {
         props.refreshToSearchedActorList &&
-        props.refreshToSearchedActorList(apiResult.data)
+          props.refreshToSearchedActorList(apiResult.data)
       }
     })
   }

@@ -3,14 +3,14 @@ import Paper from '@mui/material/Paper'
 import SnackbarContent from '@mui/material/SnackbarContent'
 import TextField from '@mui/material/TextField'
 import { styled } from '@mui/material/styles'
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import dayjs, { Dayjs } from 'dayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
+import FormControl from '@mui/material/FormControl'
+import Select, { SelectChangeEvent } from '@mui/material/Select'
+import dayjs, { Dayjs } from 'dayjs'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import * as React from 'react'
@@ -106,6 +106,10 @@ export default function UserProfileForEdit(props: UserProfileProps) {
   // 出演作ロード中
   const [isLoading, setIsLoading] = useState(false)
 
+  const [birthDayValue, setBirthDayValue] = React.useState<Dayjs | null>(
+    dayjs(new Date(props.user.birthday).toLocaleDateString()),
+  )
+
   const profileImageSize = props.variant === 'small' ? '200px' : '300px'
   const profileImageSizeNumber = props.variant === 'small' ? 200 : 240
   // #endregion Fields
@@ -172,7 +176,7 @@ export default function UserProfileForEdit(props: UserProfileProps) {
           alignItems={'flex-start'}
         >
           {/* 左側エリア */}
-          <Box width={'30%'}/*minWidth={'300px'}*/ margin={2}>
+          <Box width={'30%'} /*minWidth={'300px'}*/ margin={2}>
             <Flex
               flexDirection={'column'}
               flexWrap={'wrap'}
@@ -183,16 +187,16 @@ export default function UserProfileForEdit(props: UserProfileProps) {
               {props.user?.image_path !== null &&
               props.user?.image_path !== '' ? (
                 <ShapeImage
-                    shape="square"
-                    quality="100"
-                    src={
-                      props.user?.image_path.startsWith('storage')
-                        ? GetUrlOfImageFileInDataServer(props.user?.image_path)
-                        : props.user?.image_path
-                    }
-                    alt={props.user?.user_name}
-                    width={profileImageSize}
-                    height={profileImageSize}
+                  shape="square"
+                  quality="100"
+                  src={
+                    props.user?.image_path.startsWith('storage')
+                      ? GetUrlOfImageFileInDataServer(props.user?.image_path)
+                      : props.user?.image_path
+                  }
+                  alt={props.user?.user_name}
+                  width={profileImageSize}
+                  height={profileImageSize}
                 />
               ) : (
                 <PersonIcon size={profileImageSizeNumber} />
@@ -210,7 +214,7 @@ export default function UserProfileForEdit(props: UserProfileProps) {
                     プロフィールを保存
                   </Text>
                 </Button>
-                  </>
+              </>
             </Flex>
           </Box>
           {/* 右側エリア */}
@@ -228,19 +232,22 @@ export default function UserProfileForEdit(props: UserProfileProps) {
                         <MobileDatePicker
                           label="誕生日"
                           inputFormat="YYYY/MM/DD"
-                          value={userData.birthday}
-                          onChange={(newValue: Dayjs) => {
-                            userData.birthday = newValue?.toISOString()
-                            const newObj = GetObj_User()
-                            setUserData(Object.assign(newObj, userData))
+                          value={birthDayValue}
+                          onChange={(newValue: Dayjs | null) => {
+                            setBirthDayValue(newValue)
                           }}
                           renderInput={(params) => <TextField {...params} />}
                         />
-                      </LocalizationProvider>  
+                      </LocalizationProvider>
                     </Box>
                     <Box marginTop={1}>
-                      <FormControl variant="standard" sx={{ m: 0, minWidth: 195 }}>
-                        <InputLabel id="Input-label-blood_type">血液型</InputLabel>
+                      <FormControl
+                        variant="standard"
+                        sx={{ m: 0, minWidth: 195 }}
+                      >
+                        <InputLabel id="Input-label-blood_type">
+                          血液型
+                        </InputLabel>
                         <Select
                           labelId="Select-label-blood_type"
                           id="Id-blood_type"
@@ -288,8 +295,13 @@ export default function UserProfileForEdit(props: UserProfileProps) {
                   </Box>
                   <Box marginLeft={3}>
                     <Box>
-                      <FormControl variant="standard" sx={{ m: 0, minWidth: 195 }}>
-                        <InputLabel id="Input-label-clothes_size">服サイズ</InputLabel>
+                      <FormControl
+                        variant="standard"
+                        sx={{ m: 0, minWidth: 195 }}
+                      >
+                        <InputLabel id="Input-label-clothes_size">
+                          服サイズ
+                        </InputLabel>
                         <Select
                           labelId="Select-label-clothes_size"
                           id="Id-clothes_size"
@@ -344,8 +356,13 @@ export default function UserProfileForEdit(props: UserProfileProps) {
                       />
                     </Box>
                     <Box marginTop={1}>
-                      <FormControl variant="standard" sx={{ m: 0, minWidth: 195 }}>
-                        <InputLabel id="Input-label-breast_size">カップサイズ</InputLabel>
+                      <FormControl
+                        variant="standard"
+                        sx={{ m: 0, minWidth: 195 }}
+                      >
+                        <InputLabel id="Input-label-breast_size">
+                          カップサイズ
+                        </InputLabel>
                         <Select
                           labelId="Select-label-breast_size"
                           id="Id-breast_size"

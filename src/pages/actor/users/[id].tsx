@@ -32,6 +32,8 @@ const ActorUserPage: NextPage = () => {
   const { authUser, setAuthUser } = useAuthContext()
   // ユーザー情報
   const [user, setUser] = useState<User>(GetObj_User())
+  // 対象ユーザーID
+  const targetUserId = Number(router.query.id)
   // 表示モード
   const view_mode_mine: boolean = (() => {
     if (router.query.view_mode_mine === 'false') {
@@ -47,7 +49,7 @@ const ActorUserPage: NextPage = () => {
   // #region Functions
   // 初期化処理
   useEffect(() => {
-    GetUserInformation(apiContext, authUser.id).then((apiResult) => {
+    GetUserInformation(apiContext, targetUserId).then((apiResult) => {
       console.log(apiResult)
       if (apiResult.result.Code == AppErrorCode.Success) {
         setUser(apiResult.data)
@@ -97,28 +99,27 @@ const ActorUserPage: NextPage = () => {
             </Text>
             <Box width="100%" paddingLeft={2} paddingRight={2}>
               <Flex>
-                {editMode 
-                  ?
-                    <UserProfileForEdit
-                      variant="normal"
-                      user={user}
-                      view_mode_mine={view_mode_mine}
-                      editMode={editMode}
-                      onTransitToEdit={transitToEditMode}
-                      onTransitToRef={transitToRefMode}
-                      updateUserData={updateUserData}
-                    />
-                  :
-                    <UserProfile
-                      variant="normal"
-                      user={user}
-                      view_mode_mine={view_mode_mine}
-                      editMode={editMode}
-                      onTransitToEdit={transitToEditMode}
-                      onTransitToRef={transitToRefMode}
-                      updateUserData={updateUserData}
-                    />
-                }
+                {editMode ? (
+                  <UserProfileForEdit
+                    variant="normal"
+                    user={user}
+                    view_mode_mine={view_mode_mine}
+                    editMode={editMode}
+                    onTransitToEdit={transitToEditMode}
+                    onTransitToRef={transitToRefMode}
+                    updateUserData={updateUserData}
+                  />
+                ) : (
+                  <UserProfile
+                    variant="normal"
+                    user={user}
+                    view_mode_mine={view_mode_mine}
+                    editMode={editMode}
+                    onTransitToEdit={transitToEditMode}
+                    onTransitToRef={transitToRefMode}
+                    updateUserData={updateUserData}
+                  />
+                )}
               </Flex>
             </Box>
           </Flex>

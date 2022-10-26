@@ -1,12 +1,12 @@
 import Avatar from '@mui/material/Avatar'
-import Box from '@mui/material/Box';
+import Box from '@mui/material/Box'
 import Divider from '@material-ui/core/Divider'
-import Fab from '@mui/material/Fab';
+import Fab from '@mui/material/Fab'
 import Grid from '@material-ui/core/Grid'
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText';
+import ListItemText from '@mui/material/ListItemText'
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
 import { makeStyles } from '@material-ui/core/styles'
@@ -384,7 +384,7 @@ const ChatControl = () => {
           }
         },
       )
-    }, 2000)
+    }, 30000)
     return () => {
       clearInterval(intervalId)
     }
@@ -400,17 +400,24 @@ const ChatControl = () => {
       pairImagePath: '',
       chats: GetObj_ChatWithUser(),
     }
+
+    console.log('sellectedUserChatListPre', sellectedUserChatList)
+    const sample = Object.assign(newObj, allUserChatList[selectedIndex])
     setSellectedUserChatList(
       Object.assign(newObj, allUserChatList[selectedIndex]),
     )
-    // console.log('partnerName: ', keyUser)
-    // console.log(sellectedUserChatList)
+    console.log('selectedIndex: ', selectedIndex)
+    console.log('partnerName: ', keyUser)
+    console.log('sellectedUserChatListAfter', sellectedUserChatList)
+    console.log('sellectedUserChatList2', sample)
+    console.log('allUserChatList', allUserChatList)
   }
 
   // チャット送信ボタンクリック時のイベントハンドラ
   const sendButtonClickHandler = () => {
     /** do something */
     console.log(sendText)
+    if (sendText == ''){return}
 
     const chat = GetObj_Chat()
     chat.actor_user_id =
@@ -485,6 +492,12 @@ const ChatControl = () => {
               sellectedUserChatList.chats != null &&
               Array.isArray(sellectedUserChatList.chats) &&
               sellectedUserChatList.chats.map((item, index) => {
+
+                // 送信方向が双方向の場合は描画しない
+                if (item.chat.sender_dir == SendDirection.ToWay) {
+                  return <></>
+                }
+
                 return (
                   <ListItem key={index}>
                     <Grid container>
@@ -493,9 +506,9 @@ const ChatControl = () => {
                           className={
                             (authUser.type == LoginUserType.Actor &&
                               item.chat.sender_dir ==
-                                SendDirection.ToMakerFromActor) ||
-                            (authUser.type == LoginUserType.Marker &&
-                              item.chat.sender_dir ==
+                              SendDirection.ToMakerFromActor) ||
+                              (authUser.type == LoginUserType.Marker &&
+                                item.chat.sender_dir ==
                                 SendDirection.ToActorFromMaker)
                               ? classes.iconRight
                               : classes.iconLeft
@@ -505,19 +518,23 @@ const ChatControl = () => {
                             sx={{ width: 70, height: 70 }}
                             alt={
                               item.chat.sender_dir ==
-                              SendDirection.ToMakerFromActor
+                                SendDirection.ToMakerFromActor
                                 ? item.actor.user_name
                                 : item.maker.maker_name
                             }
                             src={
                               item.chat.sender_dir ==
-                              SendDirection.ToMakerFromActor
+                                SendDirection.ToMakerFromActor
                                 ? item.actor.image_path.startsWith('storage')
-                                    ? GetUrlOfImageFileInDataServer(item.actor.image_path)
-                                    : item.actor.image_path
+                                  ? GetUrlOfImageFileInDataServer(
+                                    item.actor.image_path,
+                                  )
+                                  : item.actor.image_path
                                 : item.maker.image_path.startsWith('storage')
-                                    ? GetUrlOfImageFileInDataServer(item.maker.image_path)
-                                    : item.maker.image_path
+                                  ? GetUrlOfImageFileInDataServer(
+                                    item.maker.image_path,
+                                  )
+                                  : item.maker.image_path
                             }
                           />
                         </ListItemIcon>
@@ -528,9 +545,9 @@ const ChatControl = () => {
                               textAlign={
                                 (authUser.type == LoginUserType.Actor &&
                                   item.chat.sender_dir ==
-                                    SendDirection.ToMakerFromActor) ||
-                                (authUser.type == LoginUserType.Marker &&
-                                  item.chat.sender_dir ==
+                                  SendDirection.ToMakerFromActor) ||
+                                  (authUser.type == LoginUserType.Marker &&
+                                    item.chat.sender_dir ==
                                     SendDirection.ToActorFromMaker)
                                   ? 'right'
                                   : 'left'
@@ -544,9 +561,9 @@ const ChatControl = () => {
                               textAlign={
                                 (authUser.type == LoginUserType.Actor &&
                                   item.chat.sender_dir ==
-                                    SendDirection.ToMakerFromActor) ||
-                                (authUser.type == LoginUserType.Marker &&
-                                  item.chat.sender_dir ==
+                                  SendDirection.ToMakerFromActor) ||
+                                  (authUser.type == LoginUserType.Marker &&
+                                    item.chat.sender_dir ==
                                     SendDirection.ToActorFromMaker)
                                   ? 'right'
                                   : 'left'
@@ -555,8 +572,7 @@ const ChatControl = () => {
                               {item.chat.send_time}
                             </Typography>
                           }
-                        >
-                        </ListItemText>
+                        ></ListItemText>
                       </Grid>
                     </Grid>
                   </ListItem>
@@ -588,7 +604,7 @@ const ChatControl = () => {
                 >
                   <SendIcon />
                 </Fab>
-              </Box>  
+              </Box>
             </Grid>
           </Grid>
         </Grid>

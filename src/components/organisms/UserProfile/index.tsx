@@ -183,7 +183,7 @@ export default function UserProfile(props: UserProfileProps) {
           alignItems={'flex-start'}
         >
           {/* 左側エリア */}
-          <Box width={'30%'}/*minWidth={'300px'}*/ margin={2}>
+          <Box width={'30%'} /*minWidth={'300px'}*/ margin={2}>
             <Flex
               flexDirection={'column'}
               flexWrap={'wrap'}
@@ -194,16 +194,16 @@ export default function UserProfile(props: UserProfileProps) {
               {props.user?.image_path !== null &&
               props.user?.image_path !== '' ? (
                 <ShapeImage
-                    shape="square"
-                    quality="100"
-                    src={
-                      props.user?.image_path.startsWith('storage')
-                        ? GetUrlOfImageFileInDataServer(props.user?.image_path)
-                        : props.user?.image_path
-                    }
-                    alt={props.user?.user_name}
-                    width={profileImageSize}
-                    height={profileImageSize}
+                  shape="square"
+                  quality="100"
+                  src={
+                    props.user?.image_path.startsWith('storage')
+                      ? GetUrlOfImageFileInDataServer(props.user?.image_path)
+                      : props.user?.image_path
+                  }
+                  alt={props.user?.user_name}
+                  width={profileImageSize}
+                  height={profileImageSize}
                 />
               ) : (
                 <PersonIcon size={profileImageSizeNumber} />
@@ -256,7 +256,7 @@ export default function UserProfile(props: UserProfileProps) {
                     {/* メッセージボタン */}
                     <Button
                       onClick={() => {
-                        router.push(`/message/chat`)
+                        router.push(`/message/chat?targetUserId=${Number(router.query.id)}`)
                       }}
                       backgroundColor={'#333333'}
                       marginLeft={1}
@@ -288,7 +288,9 @@ export default function UserProfile(props: UserProfileProps) {
                       <TextField
                         label="生年月日"
                         id="text-birthday"
-                        value={new Date(userData?.birthday).toLocaleDateString()}
+                        value={new Date(
+                          userData?.birthday,
+                        ).toLocaleDateString()}
                         // sx={{ m: 1, width: '25ch' }}
                         variant="standard"
                         InputLabelProps={{ shrink: true }}
@@ -330,7 +332,9 @@ export default function UserProfile(props: UserProfileProps) {
                       <TextField
                         label="服サイズ"
                         id="text-clothes_size"
-                        value={ConvertToStringClothesSizeType(userData?.clothes_size)}
+                        value={ConvertToStringClothesSizeType(
+                          userData?.clothes_size,
+                        )}
                         // sx={{ m: 1, width: '25ch' }}
                         variant="standard"
                         InputLabelProps={{ shrink: true }}
@@ -354,7 +358,9 @@ export default function UserProfile(props: UserProfileProps) {
                           userData?.breast_top_size
                         }(${ConvertToStringBreastSize(
                           userData?.breast_size,
-                        )}カップ) W${userData?.waist_size} H${userData?.hip_size}`}
+                        )}カップ) W${userData?.waist_size} H${
+                          userData?.hip_size
+                        }`}
                         //value={'B83(Dカップ) W59 H84'}
                         // sx={{ m: 1, width: '25ch' }}
                         variant="standard"

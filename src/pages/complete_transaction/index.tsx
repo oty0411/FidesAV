@@ -77,10 +77,11 @@ const ComplateTransactionPage: NextPage = () => {
 
   // 取引完了投稿
   function postCompleteTransaction() {
-    
     // 投稿前確認
-    if (!confirm('取引完了をシステムへ報告しますか？')) { return }
-    
+    if (!confirm('取引完了をシステムへ報告しますか？')) {
+      return
+    }
+
     alert('システムへ取引完了を報告しました。')
     // 女優のスケジュール管理画面へ戻る
     router.push(`/actor/users/${target_user_id}`)
@@ -103,7 +104,14 @@ const ComplateTransactionPage: NextPage = () => {
             >
               取引完了
             </Text>
-            <Box marginLeft={2} padding={2} backgroundColor={'white'} width="100%" paddingLeft={2} paddingRight={2}>
+            <Box
+              marginLeft={2}
+              padding={2}
+              backgroundColor={'white'}
+              width="100%"
+              paddingLeft={2}
+              paddingRight={2}
+            >
               <Flex
                 justifyContent={'flex-start'}
                 flexDirection={'column'}
@@ -230,7 +238,9 @@ const ComplateTransactionPage: NextPage = () => {
                 {/* 取引完了&評価投稿 */}
                 <Box width="100%" marginTop={2}>
                   <ST_Button.default
-                    onClick={() => {postCompleteTransaction()}}
+                    onClick={() => {
+                      postCompleteTransaction()
+                    }}
                     //backgroundColor={'#333333'}
                     width={'100%'}
                   >

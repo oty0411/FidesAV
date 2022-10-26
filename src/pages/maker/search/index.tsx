@@ -106,7 +106,7 @@ const ActorSearchPage: NextPage = () => {
 
   // 検索結果をリフレッシュ
   function refreshToSearchedActorList(actorList: User[]) {
-    setActors([...actorList.filter(user => user.id > 5)])
+    setActors([...actorList.filter((user) => user.id > 5)])
   }
   // #endregion Functions
 
@@ -117,7 +117,9 @@ const ActorSearchPage: NextPage = () => {
         <Separator />
         <Box>
           <Flex flexDirection={'column'}>
-            <SearchActorControl refreshToSearchedActorList={refreshToSearchedActorList} />
+            <SearchActorControl
+              refreshToSearchedActorList={refreshToSearchedActorList}
+            />
             {/* 女優カードリストコンテナ 検索結果からカードリストを表示 */}
             <Box marginLeft={2} marginTop={2}>
               <SnackbarContent

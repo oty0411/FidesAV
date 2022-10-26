@@ -36,7 +36,7 @@ const AppearanceRequestInboxPage: NextPage = () => {
     <Layout userType={authUser.type == LoginUserType.Actor ? 'actor' : 'maker'}>
       <MainPartLayout>
         <Separator />
-        <Box height='100vh'>
+        <Box height="100vh">
           <Flex flexDirection={'column'}>
             <Text
               as="h3"

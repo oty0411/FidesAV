@@ -84,7 +84,6 @@ const Item = styled(Paper)(({ theme }) => ({
 }))
 
 export default function PlayConditionList(props: PlayConditionListProps) {
-
   return (
     <Box>
       <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
@@ -111,7 +110,9 @@ export default function PlayConditionList(props: PlayConditionListProps) {
                     <FormControlLabel
                       control={
                         <Checkbox
-                          checked={pair[1] == PlayConditionChoice.OK ? true : false}
+                          checked={
+                            pair[1] == PlayConditionChoice.OK ? true : false
+                          }
                           name={pair[0]}
                         />
                       }

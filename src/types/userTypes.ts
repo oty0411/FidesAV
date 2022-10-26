@@ -200,8 +200,9 @@ export const ClothesSizeTypeString = {
 
 // 数値の文字列化
 export function ConvertToStringClothesSizeType(status: number) {
-  // TODO：if使わずにスマートに書き換えたい
-  return ClothesSizeTypeString[String(status)]
+  return ClothesSizeTypeString[
+    String(status) as keyof typeof ClothesSizeTypeString
+  ]
 }
 
 /**
@@ -247,8 +248,9 @@ export const BreastSizeTypeString = {
 
 // 数値の文字列化
 export function ConvertToStringBreastSize(status: number) {
-  // TODO：if使わずにスマートに書き換えたい
-  return BreastSizeTypeString[String(status)]
+  return BreastSizeTypeString[
+    String(status) as keyof typeof BreastSizeTypeString
+  ]
 }
 
 // ユーザー
