@@ -8,7 +8,13 @@ import Flex from 'components/layout/Flex'
 import Layout from 'components/templates/Layout'
 import MainPartLayout from 'components/templates/Layout/mainPartLayout'
 import { useAuthContext } from 'contexts/AuthContext'
-import { ApiContext, AppErrorCode, GetObj_Chat, LoginUserType, SendDirection } from 'types/userTypes'
+import {
+  ApiContext,
+  AppErrorCode,
+  GetObj_Chat,
+  LoginUserType,
+  SendDirection,
+} from 'types/userTypes'
 import { PostChatMessage } from 'api/message'
 
 const UserChatPage: NextPage = () => {
@@ -30,13 +36,9 @@ const UserChatPage: NextPage = () => {
 
     const chat = GetObj_Chat()
     chat.actor_user_id =
-      authUser.type == LoginUserType.Actor
-        ? authUser.id
-        : targetUserId
+      authUser.type == LoginUserType.Actor ? authUser.id : targetUserId
     chat.maker_user_id =
-      authUser.type == LoginUserType.Marker
-        ? authUser.id
-        : targetUserId
+      authUser.type == LoginUserType.Marker ? authUser.id : targetUserId
     chat.sender_dir = SendDirection.ToWay
     chat.comment = 'no comment'
     chat.send_time = new Date(Date.now()).toLocaleString() //'2022/9/30 14:10:00'
@@ -47,7 +49,6 @@ const UserChatPage: NextPage = () => {
     PostChatMessage(apiContext, chat).then((apiResult) => {
       console.log('api', apiResult)
     })
-
   }, [])
   // #endregion Functions
 

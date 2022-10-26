@@ -69,7 +69,9 @@ const ActorSchedulePage: NextPage = () => {
   // カレンダー日付選択時イベントハンドラ
   const handleDateSelect = (selectionInfo: DateSelectArg) => {
     // ユーザータイプチェック(メーカーユーザーは選択操作してもスケジュール変更させない)
-    if (authUser.type == LoginUserType.Marker){ return }
+    if (authUser.type == LoginUserType.Marker) {
+      return
+    }
 
     console.log('selectionInfo: ', selectionInfo)
     // 選択範囲を一時保存
@@ -118,8 +120,10 @@ const ActorSchedulePage: NextPage = () => {
   // #endregion Add Event Controls
 
   // #region Edit Event Controls
-  const [opeEventForActorDialogOpen, setOpeEventForActorDialogOpen] = React.useState(false)
-  const [opeEventForMakerDialogOpen, setOpeEventForMakerDialogOpen] = React.useState(false)
+  const [opeEventForActorDialogOpen, setOpeEventForActorDialogOpen] =
+    React.useState(false)
+  const [opeEventForMakerDialogOpen, setOpeEventForMakerDialogOpen] =
+    React.useState(false)
   const [opeEventArg, setOpeEventArg] = React.useState<EventClickArg>()
   // 追加済イベントクリック時イベントハンドラ
   const handleEventClick = (eventInfo: EventClickArg) => {
@@ -133,7 +137,7 @@ const ActorSchedulePage: NextPage = () => {
     setOpeEventArg(eventInfo)
 
     // ユーザータイプに従い表示するダイアログを切替
-    if (authUser.type == LoginUserType.Marker) { 
+    if (authUser.type == LoginUserType.Marker) {
       // メーカー向け
       setOpeEventForMakerDialogOpen(true)
     } else {
@@ -273,7 +277,10 @@ const ActorSchedulePage: NextPage = () => {
           </DialogActions>
         </Dialog>
         {/* イベント操作用ダイアログ(女優用) */}
-        <Dialog open={opeEventForActorDialogOpen} onClose={handleOpeEventDialogClose}>
+        <Dialog
+          open={opeEventForActorDialogOpen}
+          onClose={handleOpeEventDialogClose}
+        >
           <DialogTitle>イベント操作</DialogTitle>
           <DialogContent>
             <DialogContentText>
@@ -286,7 +293,10 @@ const ActorSchedulePage: NextPage = () => {
           </DialogActions>
         </Dialog>
         {/* イベント操作用ダイアログ(メーカー用) */}
-        <Dialog open={opeEventForMakerDialogOpen} onClose={handleOpeEventDialogClose}>
+        <Dialog
+          open={opeEventForMakerDialogOpen}
+          onClose={handleOpeEventDialogClose}
+        >
           <DialogTitle>イベント操作</DialogTitle>
           <DialogContent>
             <DialogContentText>

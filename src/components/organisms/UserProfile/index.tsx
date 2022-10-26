@@ -256,7 +256,11 @@ export default function UserProfile(props: UserProfileProps) {
                     {/* メッセージボタン */}
                     <Button
                       onClick={() => {
-                        router.push(`/message/chat?targetUserId=${Number(router.query.id)}`)
+                        router.push(
+                          `/message/chat?targetUserId=${Number(
+                            router.query.id,
+                          )}`,
+                        )
                       }}
                       backgroundColor={'#333333'}
                       marginLeft={1}

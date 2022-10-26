@@ -144,9 +144,7 @@ const ComplateTransactionPage: NextPage = () => {
                       <Box marginTop={1}>
                         <TextField
                           label="タイトル"
-                          value={
-                            'AV女優ありな先生のネチョネチョ、レロレロ 大人のベロキス誘惑接吻レクチャー'
-                          }
+                          value={'作品タイトル1'}
                           multiline
                           fullWidth
                           variant="standard"

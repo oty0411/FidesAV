@@ -417,7 +417,9 @@ const ChatControl = () => {
   const sendButtonClickHandler = () => {
     /** do something */
     console.log(sendText)
-    if (sendText == ''){return}
+    if (sendText == '') {
+      return
+    }
 
     const chat = GetObj_Chat()
     chat.actor_user_id =
@@ -492,7 +494,6 @@ const ChatControl = () => {
               sellectedUserChatList.chats != null &&
               Array.isArray(sellectedUserChatList.chats) &&
               sellectedUserChatList.chats.map((item, index) => {
-
                 // 送信方向が双方向の場合は描画しない
                 if (item.chat.sender_dir == SendDirection.ToWay) {
                   return <></>
@@ -506,9 +507,9 @@ const ChatControl = () => {
                           className={
                             (authUser.type == LoginUserType.Actor &&
                               item.chat.sender_dir ==
-                              SendDirection.ToMakerFromActor) ||
-                              (authUser.type == LoginUserType.Marker &&
-                                item.chat.sender_dir ==
+                                SendDirection.ToMakerFromActor) ||
+                            (authUser.type == LoginUserType.Marker &&
+                              item.chat.sender_dir ==
                                 SendDirection.ToActorFromMaker)
                               ? classes.iconRight
                               : classes.iconLeft
@@ -518,23 +519,23 @@ const ChatControl = () => {
                             sx={{ width: 70, height: 70 }}
                             alt={
                               item.chat.sender_dir ==
-                                SendDirection.ToMakerFromActor
+                              SendDirection.ToMakerFromActor
                                 ? item.actor.user_name
                                 : item.maker.maker_name
                             }
                             src={
                               item.chat.sender_dir ==
-                                SendDirection.ToMakerFromActor
+                              SendDirection.ToMakerFromActor
                                 ? item.actor.image_path.startsWith('storage')
                                   ? GetUrlOfImageFileInDataServer(
-                                    item.actor.image_path,
-                                  )
+                                      item.actor.image_path,
+                                    )
                                   : item.actor.image_path
                                 : item.maker.image_path.startsWith('storage')
-                                  ? GetUrlOfImageFileInDataServer(
+                                ? GetUrlOfImageFileInDataServer(
                                     item.maker.image_path,
                                   )
-                                  : item.maker.image_path
+                                : item.maker.image_path
                             }
                           />
                         </ListItemIcon>
@@ -545,9 +546,9 @@ const ChatControl = () => {
                               textAlign={
                                 (authUser.type == LoginUserType.Actor &&
                                   item.chat.sender_dir ==
-                                  SendDirection.ToMakerFromActor) ||
-                                  (authUser.type == LoginUserType.Marker &&
-                                    item.chat.sender_dir ==
+                                    SendDirection.ToMakerFromActor) ||
+                                (authUser.type == LoginUserType.Marker &&
+                                  item.chat.sender_dir ==
                                     SendDirection.ToActorFromMaker)
                                   ? 'right'
                                   : 'left'
@@ -561,9 +562,9 @@ const ChatControl = () => {
                               textAlign={
                                 (authUser.type == LoginUserType.Actor &&
                                   item.chat.sender_dir ==
-                                  SendDirection.ToMakerFromActor) ||
-                                  (authUser.type == LoginUserType.Marker &&
-                                    item.chat.sender_dir ==
+                                    SendDirection.ToMakerFromActor) ||
+                                (authUser.type == LoginUserType.Marker &&
+                                  item.chat.sender_dir ==
                                     SendDirection.ToActorFromMaker)
                                   ? 'right'
                                   : 'left'
