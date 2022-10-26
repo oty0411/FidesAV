@@ -35,7 +35,7 @@ const SearchActorControl = (props: SearchActorControlProps) => {
 
   const [searchName, setSearchName] = React.useState('')
   const [value, setValue] = React.useState<Dayjs | null>(
-    dayjs('2014-08-18T21:11:54'),
+    dayjs('2022-10-28T10:00:00'),
   )
   // #endregion Fields
   // #region Functions
