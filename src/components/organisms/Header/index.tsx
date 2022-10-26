@@ -108,6 +108,7 @@ const ResponsiveAppBar = (props: ResponsiveAppBarProps) => {
   }, [])
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+    console.log('handleOpenNavMenu', event)
     setAnchorElNav(event.currentTarget)
   }
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -115,6 +116,7 @@ const ResponsiveAppBar = (props: ResponsiveAppBarProps) => {
   }
 
   const handleCloseNavMenu = () => {
+    console.log('handleCloseNavMenu')
     setAnchorElNav(null)
   }
 
@@ -188,9 +190,17 @@ const ResponsiveAppBar = (props: ResponsiveAppBarProps) => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page.label} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page.label}</Typography>
-                </MenuItem>
+                <Link
+                  key={page.label}
+                  href={
+                    page.addUserId ? page.link + '/' + authUser.id : page.link
+                  }
+                  passHref
+                >
+                  <MenuItem key={page.label} onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center">{page.label}</Typography>
+                  </MenuItem>
+                </Link>
               ))}
             </Menu>
           </Box>
