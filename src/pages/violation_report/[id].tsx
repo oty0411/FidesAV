@@ -13,6 +13,12 @@ import RadioGroup from '@mui/material/RadioGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import FormControl from '@mui/material/FormControl'
 import FormLabel from '@mui/material/FormLabel'
+import FormGroup from '@mui/material/FormGroup'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
 import TextField from '@mui/material/TextField'
 import Separator from 'components/atoms/Separator'
 import Text from 'components/atoms/Text'
@@ -21,10 +27,20 @@ import Flex from 'components/layout/Flex'
 import Layout from 'components/templates/Layout'
 import * as ST_Button from 'components/atoms/Button'
 import MainPartLayout from 'components/templates/Layout/mainPartLayout'
-import { ApiContext } from 'types/userTypes'
+import { ApiContext, LoginUserType } from 'types/userTypes'
+import { Alarm } from '@mui/icons-material'
 import { useAuthContext } from 'contexts/AuthContext'
 
-const ComplateTransactionPage: NextPage = () => {
+/**違反リスト */
+const violationList = [
+  { label: 1, text: '契約違反' },
+  { label: 2, text: '引き抜き交渉' },
+  { label: 3, text: '営業妨害' },
+  { label: 4, text: '迷惑行為' },
+  { label: 5, text: 'その他' },
+]
+
+const ViolationReportPage: NextPage = () => {
   // #region Fields
   const apiContext: ApiContext = {
     apiRootUrl: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost/api',
@@ -36,7 +52,7 @@ const ComplateTransactionPage: NextPage = () => {
   // 通報対象のユーザータイプ
   const target_user_type = Number(router.query.targetUserType)
   // 通報対象のユーザーID
-  const target_user_id = Number(router.query.targetUserId)
+  const target_user_id = Number(router.query.id)
   const [checked, setChecked] = React.useState(false)
 
   // 評価ボタン
@@ -75,25 +91,29 @@ const ComplateTransactionPage: NextPage = () => {
     setChecked(event.target.checked)
   }
 
-  // 取引完了投稿
-  function postCompleteTransaction() {
+  // 違反通報
+  function postViolationReport() {
     // 投稿前確認
-    if (!confirm('取引完了をシステムへ報告しますか？')) {
+    if (!confirm('違反を通報しますか？')) {
       return
     }
 
-    alert('システムへ取引完了を報告しました。')
-    // 女優のスケジュール管理画面へ戻る
-    router.push(`/actor/users/${target_user_id}`)
+    alert('違反内容が投稿されました。')
+    // ログインユーザータイプごとに遷移先画面を切り替える
+    if (authUser.type == LoginUserType.Actor) {
+      router.push(`/actor/users/${target_user_id}`)
+    } else {
+      router.push(`/maker/search`)
+    }
   }
   // #endregion Functions
 
   // #region View
   return (
-    <Layout userType={'actor'}>
+    <Layout userType={authUser.type == LoginUserType.Actor ? 'actor' : 'maker'}>
       <MainPartLayout>
         <Separator />
-        <Box width="100%">
+        <Box height="100vh" width="100%">
           <Flex flexDirection={'column'}>
             <Text
               as="h3"
@@ -102,7 +122,7 @@ const ComplateTransactionPage: NextPage = () => {
               marginTop={0}
               paddingLeft={1}
             >
-              取引完了
+              違反行為通報
             </Text>
             <Box
               marginLeft={2}
@@ -117,75 +137,10 @@ const ComplateTransactionPage: NextPage = () => {
                 flexDirection={'column'}
                 alignItems={'flex-start'}
               >
-                {/* 撮影内容確認 */}
+                {/* 違反内容 */}
                 <Box width="100%" marginTop={0}>
                   <SnackbarContent
-                    message="撮影内容確認"
-                    sx={{ backgroundColor: '#333333', color: '#ffffff' }}
-                  />
-                  <Box margin={2}>
-                    <Flex
-                      justifyContent={'flex-start'}
-                      flexDirection={'column'}
-                    >
-                      {/*出演料*/}
-                      <Box marginTop={0}>
-                        <TextField
-                          label="出演料"
-                          value={'1,000,000円'}
-                          fullWidth
-                          variant="standard"
-                          color="primary"
-                          focused
-                          InputLabelProps={{ shrink: true }}
-                        />
-                      </Box>
-                      {/*タイトル*/}
-                      <Box marginTop={1}>
-                        <TextField
-                          label="タイトル"
-                          value={'作品タイトル1'}
-                          multiline
-                          fullWidth
-                          variant="standard"
-                          color="primary"
-                          focused
-                          InputLabelProps={{ shrink: true }}
-                        />
-                      </Box>
-                      {/*撮影日時*/}
-                      <Box marginTop={1}>
-                        <TextField
-                          label="撮影日時"
-                          value={'2022/10/28 10:00 - 2022/10/28 18:00'}
-                          fullWidth
-                          variant="standard"
-                          color="primary"
-                          focused
-                          InputLabelProps={{ shrink: true }}
-                        />
-                      </Box>
-                      <Box marginTop={1}>
-                        <Flex justifyContent={'center'}>
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                checked={checked}
-                                onChange={handleChange}
-                                inputProps={{ 'aria-label': 'controlled' }}
-                              />
-                            }
-                            label="撮影内容を確認しました"
-                          />
-                        </Flex>
-                      </Box>
-                    </Flex>
-                  </Box>
-                </Box>
-                {/* ユーザー評価(必須) */}
-                <Box width="100%" marginTop={2}>
-                  <SnackbarContent
-                    message="ユーザー評価"
+                    message="違反内容"
                     sx={{ backgroundColor: '#333333', color: '#ffffff' }}
                   />
                   <Box marginTop={2} marginLeft={2}>
@@ -195,31 +150,32 @@ const ComplateTransactionPage: NextPage = () => {
                       alignItems={'center'}
                       flexWrap={'wrap'}
                     >
-                      <FormControl>
-                        <RadioGroup
-                          row
-                          aria-labelledby="demo-radio-buttons-group-label"
-                          defaultValue="female"
-                          name="radio-buttons-group"
-                        >
-                          <ButtonGroup
-                            size="large"
-                            aria-label="large button group"
-                            variant="contained"
-                          >
-                            <Flex justifyContent={'center'} flexWrap={'wrap'}>
-                              {evaluationButtons}
-                            </Flex>
-                          </ButtonGroup>
-                        </RadioGroup>
-                      </FormControl>
-
+                      {violationList.map((item) => {
+                        return (
+                          <ListItem key={item.label} disablePadding>
+                            <ListItemButton role={undefined} dense>
+                              <ListItemIcon>
+                                <Checkbox
+                                  edge="start"
+                                  // checked={checked.indexOf('1') !== -1}
+                                  tabIndex={-1}
+                                  disableRipple
+                                  inputProps={{
+                                    'aria-labelledby': `checkbox-list-label-1`,
+                                  }}
+                                />
+                              </ListItemIcon>
+                              <ListItemText id={'1'} primary={item.text} />
+                            </ListItemButton>
+                          </ListItem>
+                        )
+                      })}
                       <Box width="100%" marginTop={2}>
                         <TextField
-                          label="評価コメント"
-                          value={
-                            'この度は数ある素敵な女優さんの中から私を選んでいただきありがとうございました。\n今後も現場にたくさん呼んでくださいね！'
-                          }
+                          label="違反行為の説明"
+                          // value={
+                          //   '出演料が振込期日までに振り込まれていません。\n担当者から遅延の連絡もなく、現在連絡がつかない状況です。'
+                          // }
                           multiline
                           fullWidth
                           variant="outlined"
@@ -235,15 +191,17 @@ const ComplateTransactionPage: NextPage = () => {
                 </Box>
                 {/* 取引完了&評価投稿 */}
                 <Box width="100%" marginTop={2}>
+                  <Text>記載内容に偽りがないことを確認してください</Text>
                   <ST_Button.default
+                    marginTop={1}
                     onClick={() => {
-                      postCompleteTransaction()
+                      postViolationReport()
                     }}
                     //backgroundColor={'#333333'}
                     width={'100%'}
                   >
                     <Text variant="medium" color={'white'}>
-                      評価を投稿し取引を完了する
+                      同意して通報する
                     </Text>
                   </ST_Button.default>
                 </Box>
@@ -257,4 +215,4 @@ const ComplateTransactionPage: NextPage = () => {
   // #endregion View
 }
 
-export default ComplateTransactionPage
+export default ViolationReportPage

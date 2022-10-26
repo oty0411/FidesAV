@@ -20,6 +20,7 @@ import { useAuthContext } from '../../../contexts/AuthContext'
 import { GetUrlOfImageFileInDataServer } from 'utils'
 import { GetAppearanceRequestList } from 'api/schedule'
 import { ApiContext, AppErrorCode, LoginUserType } from 'types/userTypes'
+import { GetNoticeList } from 'api/message'
 
 interface ResponsiveAppBarProps {
   /**
@@ -78,6 +79,8 @@ const ResponsiveAppBar = (props: ResponsiveAppBarProps) => {
   // 出演依頼件数
   const [numberOfAppearanceRequests, setNumberOfAppearanceRequests] =
     React.useState(0)
+  // メールINBOX件数
+  const [numberOfMails, setNumberOfMails] = React.useState(0)
 
   // #endregion Fields
 
@@ -91,6 +94,15 @@ const ResponsiveAppBar = (props: ResponsiveAppBarProps) => {
         setNumberOfAppearanceRequests(apiResult.data.length)
       } else {
         setNumberOfAppearanceRequests(0)
+      }
+    })
+    // メール一覧取得
+    GetNoticeList(apiContext, authUser.type, authUser.id).then((apiResult) => {
+      console.log(apiResult)
+      if (apiResult.result.Code == AppErrorCode.Success) {
+        setNumberOfMails(apiResult.data.length)
+      } else {
+        setNumberOfMails(0)
       }
     })
   }, [])
@@ -211,7 +223,7 @@ const ResponsiveAppBar = (props: ResponsiveAppBarProps) => {
             <Link href={'/message/inbox'} passHref>
               <Tooltip title="メール">
                 <IconButton aria-label="mail-box">
-                  <StyledBadge badgeContent={1} color="primary">
+                  <StyledBadge badgeContent={numberOfMails} color="primary">
                     <EmailIcon />
                   </StyledBadge>
                 </IconButton>

@@ -1,3 +1,4 @@
+import { styled } from '@mui/material/styles'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 import List from '@mui/material/List'
@@ -5,14 +6,23 @@ import ListItem from '@mui/material/ListItem'
 import Divider from '@mui/material/Divider'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
-import ListItemAvatar from '@mui/material/ListItemAvatar'
-import Avatar from '@mui/material/Avatar'
+import Badge, { BadgeProps } from '@mui/material/Badge'
+import EmailIcon from '@mui/icons-material/Email'
 import Typography from '@mui/material/Typography'
 import { useAuthContext } from '../../../contexts/AuthContext'
 import { ApiContext, AppErrorCode, UserNotice } from 'types/userTypes'
-import { GetAppearanceRequestList } from 'api/schedule'
-import { GetUrlOfImageFileInDataServer } from 'utils'
 import { GetNoticeList } from 'api/message'
+import { Box } from '@mui/material'
+
+// バッジのスタイルカスタム
+const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    right: -3,
+    top: 13,
+    border: `2px solid ${theme.palette.background.paper}`,
+    padding: '0 4px',
+  },
+}))
 
 export default function MailInbox() {
   // #region Fields
@@ -30,8 +40,8 @@ export default function MailInbox() {
   // #region Functions
   // 初期化処理
   React.useEffect(() => {
-    // 出演依頼一覧取得
-    GetNoticeList(apiContext, 6).then((apiResult) => {
+    // メール一覧取得
+    GetNoticeList(apiContext, authUser.type, authUser.id).then((apiResult) => {
       console.log(apiResult)
       if (apiResult.result.Code == AppErrorCode.Success) {
         setMails(apiResult.data)
@@ -49,50 +59,43 @@ export default function MailInbox() {
           <>
             <ListItem alignItems="flex-start">
               <ListItemButton
-              // onClick={() => {
-              //   router.push(`/message/appearancerequest/${item.offer.id}`)
-              // }}
+                // カテゴリに合わせてリンク先を切り替える
+                // 0:不定、1:ノーマル、2:出演依頼、3:出演依頼返信、4:取引完了確認依頼
+                onClick={() => {
+                  if (item.category == 4) {
+                    router.push(`/complete_transaction/${item.information_id}`)
+                  }
+                }}
               >
-                {/* <ListItemAvatar>
-                  <Avatar
-                    alt={item.maker_user.maker_name}
-                    src={GetUrlOfImageFileInDataServer(
-                      item.maker_user.image_path,
-                    )}
-                  />
-                </ListItemAvatar> */}
+                <Box marginRight={2}>
+                  <StyledBadge color="primary">
+                    <EmailIcon />
+                  </StyledBadge>
+                </Box>
                 <ListItemText
-                  primary={`カテゴリ:${item.category} `}
-                  // secondary={
-                  //   <React.Fragment>
-                  //     <Typography
-                  //       sx={{ display: 'inline' }}
-                  //       component="span"
-                  //       variant="caption"
-                  //       color="text.primary"
-                  //     >
-                  //       出演金額: {item.offer.fee}[円]
-                  //     </Typography>
-                  //     <Divider variant="inset" />
-                  //     <Typography
-                  //       sx={{ display: 'inline' }}
-                  //       component="span"
-                  //       variant="caption"
-                  //       color="text.primary"
-                  //     >
-                  //       タイトル: {item.offer.title}
-                  //     </Typography>
-                  //     <Divider variant="inset" />
-                  //     <Typography
-                  //       sx={{ display: 'inline' }}
-                  //       component="span"
-                  //       variant="caption"
-                  //       color="text.primary"
-                  //     >
-                  //       メッセージ: {item.offer.message}
-                  //     </Typography>
-                  //   </React.Fragment>
-                  // }
+                  primary={
+                    <React.Fragment>
+                      <Typography
+                        sx={{ display: 'inline' }}
+                        component="span"
+                        variant="h6"
+                        color="text.primary"
+                      >
+                        {item.title}
+                      </Typography>
+                      <Divider variant="inset" />
+                    </React.Fragment>
+                  }
+                  secondary={
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="subtitle1"
+                      color="text.primary"
+                    >
+                      {item.sub_title}
+                    </Typography>
+                  }
                 />
               </ListItemButton>
             </ListItem>

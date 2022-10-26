@@ -58,15 +58,17 @@ export const GetChatMessageForAllUsers = async (
 // 受信済み通知一覧取得
 export const GetNoticeList = async (
   context: UserTypes.ApiContext,
+  userType: UserTypes.LoginUserType,
   userId: number,
 ): Promise<{
   result: UserTypes.AppResult
   data: UserTypes.UserNotice[]
 }> => {
-  const address = `${context.apiRootUrl.replace(
-    /\/$/g,
-    '',
-  )}/user_notices${userId}`
+  const address =
+    userType == UserTypes.LoginUserType.Actor
+      ? `${context.apiRootUrl.replace(/\/$/g, '')}/actor/${userId}/user_notices`
+      : `${context.apiRootUrl.replace(/\/$/g, '')}/maker/${userId}/user_notices`
+
   const apiResult: {
     code: number
     message: string

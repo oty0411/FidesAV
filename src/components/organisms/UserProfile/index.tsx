@@ -31,6 +31,7 @@ import {
   ApiContext,
   AppErrorCode,
   ConvertToStringClothesSizeType,
+  LoginUserType,
 } from 'types/userTypes'
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -268,6 +269,21 @@ export default function UserProfile(props: UserProfileProps) {
                     >
                       <Text variant="small" color={'white'}>
                         メッセージ
+                      </Text>
+                    </Button>
+                    {/* 違反通報ボタン */}
+                    <Button
+                      onClick={() => {
+                        router.push(
+                          `/violation_report/${props.user.id}?targetUserType=${LoginUserType.Actor}`,
+                        )
+                      }}
+                      backgroundColor={'#aa3333'}
+                      marginLeft={1}
+                      marginTop={2}
+                    >
+                      <Text variant="small" color={'white'}>
+                        違反通報
                       </Text>
                     </Button>
                   </Flex>
