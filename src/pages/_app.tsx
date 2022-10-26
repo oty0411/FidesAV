@@ -2,8 +2,8 @@ import { AppProps } from 'next/app'
 import Head from 'next/head'
 import * as React from 'react'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
-// import { AuthContextProvider } from 'contexts/AuthContext'
-// import GlobalSpinnerContextProvider from 'contexts/GlobalSpinnerContext'
+import { AuthContextProvider } from 'contexts/AuthContext'
+import GlobalSpinnerContextProvider from 'contexts/GlobalSpinnerContext'
 import { theme } from 'themes'
 
 // グローバルのスタイル
@@ -25,7 +25,7 @@ a {
   cursor: pointer;
   text-decoration: none;
   transition: .25s;
-  color: #0000;
+  //color: #0000;
 }
 
 ol, ul {
@@ -47,11 +47,11 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       </Head>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
-        {/* <GlobalSpinnerContextProvider>
-          <AuthContextProvider> */}
-        <Component {...pageProps} />
-        {/* </AuthContextProvider>
-        </GlobalSpinnerContextProvider> */}
+        <GlobalSpinnerContextProvider>
+          <AuthContextProvider>
+            <Component {...pageProps} />
+          </AuthContextProvider>
+        </GlobalSpinnerContextProvider>
       </ThemeProvider>
     </>
   )

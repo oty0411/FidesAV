@@ -2,7 +2,11 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: [`${process.env.NEXT_PUBLIC_IMAGE_FILE_HOST}`],
+    domains: [
+      `${process.env.NEXT_PUBLIC_IMAGE_FILE_HOST}`,
+      'pics.dmm.co.jp',
+      'cdn.pan-pan.co',
+    ],
   },
   compiler: (() => {
     let compilerConfig = {
@@ -22,4 +26,14 @@ const nextConfig = {
   })(),
 }
 
-module.exports = nextConfig
+//module.exports = nextConfig
+
+const withTM = require("next-transpile-modules")([
+  "@fullcalendar/common",
+  "@fullcalendar/daygrid",
+  "@fullcalendar/react",
+  "@fullcalendar/interaction",
+  "@fullcalendar/timegrid",
+  "@fullcalendar/list",
+])
+module.exports = withTM(nextConfig)
