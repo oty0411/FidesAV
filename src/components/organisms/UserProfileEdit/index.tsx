@@ -122,15 +122,13 @@ export default function UserProfileForEdit(props: UserProfileProps) {
     setUserData(props.user)
 
     // プレイ条件取得
-    GetActorPlayCondition(apiContext, props.user.id).then(
-      (apiResult) => {
-        //console.log(apiResult);
-        if (apiResult.result.Code == AppErrorCode.Success) {
-          setPlayConditions(apiResult.data)
-          console.log(playConditions)
-        }
-      },
-    )
+    GetActorPlayCondition(apiContext, props.user.id).then((apiResult) => {
+      //console.log(apiResult);
+      if (apiResult.result.Code == AppErrorCode.Success) {
+        setPlayConditions(apiResult.data)
+        console.log(playConditions)
+      }
+    })
   }, [])
 
   // パラメータ保存の確認

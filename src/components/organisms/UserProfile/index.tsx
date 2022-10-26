@@ -109,27 +109,23 @@ export default function UserProfile(props: UserProfileProps) {
     setUserData(props.user)
 
     // プレイ条件取得
-    GetActorPlayCondition(apiContext, props.user.id).then(
-      (apiResult) => {
-        //console.log(apiResult);
-        if (apiResult.result.Code == AppErrorCode.Success) {
-          setPlayConditions(apiResult.data)
-          console.log(playConditions)
-        }
-      },
-    )
+    GetActorPlayCondition(apiContext, props.user.id).then((apiResult) => {
+      //console.log(apiResult);
+      if (apiResult.result.Code == AppErrorCode.Success) {
+        setPlayConditions(apiResult.data)
+        console.log(playConditions)
+      }
+    })
 
     // ポートフォリオ一覧取得
-    GetActorPortfolio(apiContext, props.user.id).then(
-      (apiResult) => {
-        //console.log(apiResult);
-        if (apiResult.result.Code == AppErrorCode.Success) {
-          setPortfolios(apiResult.data)
-          console.log(portfolios)
-        }
-        setIsLoading(false)
-      },
-    )
+    GetActorPortfolio(apiContext, props.user.id).then((apiResult) => {
+      //console.log(apiResult);
+      if (apiResult.result.Code == AppErrorCode.Success) {
+        setPortfolios(apiResult.data)
+        console.log(portfolios)
+      }
+      setIsLoading(false)
+    })
   }, [props.user])
 
   // 編集モード遷移の確認
