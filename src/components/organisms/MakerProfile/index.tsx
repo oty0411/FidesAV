@@ -1,10 +1,11 @@
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
+import SnackbarContent from '@mui/material/SnackbarContent'
 import TextField from '@mui/material/TextField'
-import Grid from '@mui/material/Unstable_Grid2'
 import { styled } from '@mui/material/styles'
+import { useRouter } from 'next/router'
+import { useState, useEffect } from 'react'
 import * as React from 'react'
-import { UpdateUserProfileImage } from '../../../api/users'
 import { GetUrlOfImageFileInDataServer } from '../../../utils'
 import Button from 'components/atoms/Button'
 import { PersonIcon } from 'components/atoms/IconButton'
@@ -12,12 +13,13 @@ import ImageUploadButton from 'components/atoms/ImageUploadButton'
 import ShapeImage from 'components/atoms/ShapeImage'
 import Text from 'components/atoms/Text'
 import Flex from 'components/layout/Flex'
+import MovieTitleCardListContainer from 'containers/MovieTitleCardListContainer'
 
 import {
-  User,
-  GetCopyObj_User,
+  MakerUser,
   ApiContext,
   AppErrorCode,
+  LoginUserType,
 } from 'types/userTypes'
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -28,7 +30,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }))
 
-interface MakerProfileProps {
+interface MakerUserProfileProps {
   /**
    * バリアント（表示スタイル）
    */
@@ -36,7 +38,11 @@ interface MakerProfileProps {
   /**
    * ユーザー情報
    */
-  user: User
+  user: MakerUser
+  /**
+   * 表示モード
+   */
+  view_mode_mine: boolean
   /**
    * 編集モードフラグ
    */
@@ -52,51 +58,30 @@ interface MakerProfileProps {
   /**
    * ユーザーデータ更新通知
    */
-  updateUserData?: (user: User) => void
+  updateUserData?: (user: MakerUser) => void
 }
 
-interface ShowPasswordGroup {
-  password: boolean
-  credit_card_number: boolean
-  financial_institution_id: boolean
-  bank_number: boolean
-}
-
-export default function MakerProfile(props: MakerProfileProps) {
+export default function MakerUserProfile(props: MakerUserProfileProps) {
   // #region Fields
   const apiContext: ApiContext = {
     apiRootUrl: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost/api',
   }
-  const userData = GetCopyObj_User(props.user)
-  const [values, setValues] = React.useState<User>(props.user)
-  const [showPasswords, setshowPasswords] = React.useState<ShowPasswordGroup>({
-    password: false,
-    credit_card_number: false,
-    financial_institution_id: false,
-    bank_number: false,
-  })
+  const router = useRouter()
+  const [userData, setUserData] = React.useState<MakerUser>(props.user)
 
-  const profileImageSize = props.variant === 'small' ? '200px' : '360px'
+  // 出演作ロード中
+  const [isLoading, setIsLoading] = useState(false)
+
+  const profileImageSize = props.variant === 'small' ? '200px' : '300px'
   const profileImageSizeNumber = props.variant === 'small' ? 200 : 240
   // #endregion Fields
 
-  const handleChange =
-    (prop: keyof User) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      setValues({ ...values, [prop]: event.target.value })
-    }
-
-  // const handleClickShowPassword = () => {
-  //   setValues({
-  //     ...values,
-  //     showPassword: !values.showPassword,
-  //   });
-  // };
-
-  // const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-  //   event.preventDefault();
-  // };
-
   // #region Functions
+  // 初期化処理
+  useEffect(() => {
+    setUserData(props.user)
+  }, [props.user])
+
   // 編集モード遷移の確認
   function confirmEntryToEditMode(): void {
     const result = confirm('プロフィールを編集しますか？')
@@ -115,110 +100,184 @@ export default function MakerProfile(props: MakerProfileProps) {
     // 参照モードへ遷移
     props.onTransitToRef && props.onTransitToRef()
   }
+
   // 画像ファイルアップロード
   function uploadImageToImageServer(formData: FormData) {
     console.log('image file received')
     console.log('form:', formData.get('file'))
-
-    // 画像アップロード
-    UpdateUserProfileImage(apiContext, props.user.id, formData).then(
-      (apiResult) => {
-        console.log(apiResult)
-        if (apiResult.result.Code == AppErrorCode.Success) {
-          // ユーザーデータ更新通知
-          props.updateUserData && props.updateUserData(apiResult.data)
-        }
-      },
-    )
   }
   // #endregion Functions
 
   return (
-    <Flex flexDirection={'row'}>
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={2}>
-          {/* プロフィールエリア */}
+    <Flex flexDirection={'column'} width={'100%'}>
+      {/* プロフィールエリア */}
+      <Box>
+        <Text variant="large" color={'#333333'} padding={1}>
+          {userData?.maker_name}
+        </Text>
+        <Flex
+          flexDirection={'row'}
+          flexWrap={'wrap'}
+          justifyContent={'space-around'}
+          alignContent={'flex-start'}
+          alignItems={'flex-start'}
+        >
           {/* 左側エリア */}
-          <Grid xs={4}>
-            {/* ユーザー画像 */}
-            {props.user?.image_path !== null &&
-            props.user?.image_path !== '' ? (
-              // <ShapeImage
-              //   shape="circle"
-              //   quality="85"
-              //   src={GetUrlOfImageFileInDataServer(props.user?.image_path)}
-              //   alt={props.user?.user_name}
-              //   height={profileImageSize}
-              //   width={profileImageSize}
-              // />
-              <PersonIcon size={profileImageSizeNumber} />
-            ) : (
-              <PersonIcon size={profileImageSizeNumber} />
-            )}
-            {props.editMode ? (
-              <>
-                <Flex justifyContent={'flex-end'}>
-                  <ImageUploadButton onPost={uploadImageToImageServer} />
-                </Flex>
-                <Button onClick={confirmSaveProfile} marginTop={2}>
-                  <Text variant="small" color={'white'}>
-                    プロフィールを保存
-                  </Text>
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button onClick={confirmEntryToEditMode} marginTop={2}>
-                  <Text variant="small" color={'white'}>
-                    プロフィールを編集
-                  </Text>
-                </Button>
-              </>
-            )}
-          </Grid>
-          {/* 右側エリア */}
-          <Grid xs={8}>
-            <Grid xs={12}>
-              <TextField
-                label="メーカー名"
-                id="text-user-name"
-                value={'SOFT ON DEMAND'}
-                sx={{ m: 1, width: '25ch' }}
-                variant="standard"
-                InputLabelProps={{ shrink: true }}
-              />
-            </Grid>
-            <Grid xs={12}>
-              <Box paddingLeft={2}>
-                <Grid xs={12}>
-                  <Text variant="large" color={'red'} padding={1}>
-                    ❤Profile
-                  </Text>
-                </Grid>
-                <Grid xs={6}>
-                  <TextField
-                    label="ホームページURL"
-                    id="text-home-url"
-                    value={'https://www.sod.co.jp/'}
-                    // sx={{ m: 1, width: '25ch' }}
-                    variant="standard"
-                    InputLabelProps={{ shrink: true }}
-                  />
-                  <Button
-                    onClick={() => {
-                      window.open('https://www.sod.co.jp/')
-                    }}
-                    marginTop={2}
+          <Box width={'30%'} /*minWidth={'300px'}*/ margin={2}>
+            <Flex
+              flexDirection={'column'}
+              flexWrap={'wrap'}
+              justifyContent={'center'}
+              alignContent={'center'}
+              alignItems={'center'}
+            >
+              {props.user?.image_path !== null &&
+              props.user?.image_path !== '' ? (
+                <ShapeImage
+                  shape="square"
+                  quality="100"
+                  src={
+                    props.user?.image_path.startsWith('storage')
+                      ? GetUrlOfImageFileInDataServer(props.user?.image_path)
+                      : props.user?.image_path
+                  }
+                  alt={props.user?.maker_name}
+                  width={profileImageSize}
+                  height={profileImageSize}
+                />
+              ) : (
+                <PersonIcon size={profileImageSizeNumber} />
+              )}
+              {props.view_mode_mine ? (
+                props.editMode ? (
+                  <>
+                    <Flex justifyContent={'flex-end'}>
+                      <ImageUploadButton onPost={uploadImageToImageServer} />
+                    </Flex>
+                    <Button
+                      onClick={confirmSaveProfile}
+                      backgroundColor={'#333333'}
+                      marginTop={2}
+                    >
+                      <Text variant="small" color={'white'}>
+                        プロフィールを保存
+                      </Text>
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      onClick={confirmEntryToEditMode}
+                      backgroundColor={'#333333'}
+                      marginTop={2}
+                    >
+                      <Text variant="small" color={'white'}>
+                        プロフィールを編集
+                      </Text>
+                    </Button>
+                  </>
+                )
+              ) : (
+                <Box>
+                  <Flex
+                    width={'100%'}
+                    flexDirection={'row'}
+                    justifyContent={'space-between'}
                   >
-                    <Text variant="small" color={'white'}>
-                      Link
-                    </Text>
-                  </Button>
-                </Grid>
+                    {/* メッセージボタン */}
+                    <Button
+                      onClick={() => {
+                        router.push(
+                          `/message/chat?targetUserId=${Number(
+                            router.query.id,
+                          )}`,
+                        )
+                      }}
+                      backgroundColor={'#333333'}
+                      marginLeft={1}
+                      marginTop={2}
+                    >
+                      <Text variant="small" color={'white'}>
+                        メッセージ
+                      </Text>
+                    </Button>
+                    {/* 違反通報ボタン */}
+                    <Button
+                      onClick={() => {
+                        router.push(
+                          `/violation_report/${props.user.id}?targetUserType=${LoginUserType.Marker}`,
+                        )
+                      }}
+                      backgroundColor={'#aa3333'}
+                      marginLeft={1}
+                      marginTop={2}
+                    >
+                      <Text variant="small" color={'white'}>
+                        違反通報
+                      </Text>
+                    </Button>
+                  </Flex>
+                </Box>
+              )}
+            </Flex>
+          </Box>
+          {/* 右側エリア */}
+          <Box width={'50%'} /*minWidth={'300px'}*/ margin={2}>
+            <Flex flexDirection={'column'}>
+              <SnackbarContent
+                message="プロフィール"
+                sx={{ backgroundColor: '#333333', color: '#ffffff' }}
+              />
+              <Box marginLeft={2} marginTop={2}>
+                <Flex>
+                  <Box marginLeft={2}>
+                    <Box>
+                      <TextField
+                        label="メールアドレス"
+                        id="text-email"
+                        value={userData?.email}
+                        variant="standard"
+                        InputLabelProps={{ shrink: true }}
+                      />
+                    </Box>
+                    <Box marginTop={1}>
+                      <TextField
+                        label="ホームページURL"
+                        id="text-home-url"
+                        value={userData?.url}
+                        variant="standard"
+                        InputLabelProps={{ shrink: true }}
+                      />
+                    </Box>
+                    <Box marginTop={1}>
+                      <Button
+                        onClick={() => {
+                          window.open(userData?.url)
+                        }}
+                        marginTop={2}
+                        width={'100%'}
+                      >
+                        <Text variant="small" color={'white'}>
+                          Link
+                        </Text>
+                      </Button>
+                    </Box>
+                  </Box>
+                </Flex>
               </Box>
-            </Grid>
-          </Grid>
-        </Grid>
+            </Flex>
+          </Box>
+        </Flex>
+      </Box>
+      {/* 作品エリア */}
+      <Box>
+        {/* 作品カードリストコンテナ 検索結果からカードリストを表示 */}
+        <Box marginLeft={2} marginTop={2}>
+          <SnackbarContent
+            message="作品一覧"
+            sx={{ backgroundColor: '#333333', color: '#ffffff' }}
+          />
+        </Box>
       </Box>
     </Flex>
   )

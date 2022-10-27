@@ -32,6 +32,7 @@ interface ResponsiveAppBarProps {
 const pagesActor = [
   { label: 'Message', link: '/message/chat', addUserId: false },
   { label: 'Schedule', link: '/actor/schedule', addUserId: true },
+  { label: 'Search', link: '/actor/search', addUserId: false },
 ]
 const settingsActor = [
   { label: 'Profile', link: '/actor/users', addUserId: true },

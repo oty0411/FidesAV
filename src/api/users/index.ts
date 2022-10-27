@@ -125,3 +125,41 @@ export const GetActorPortfolio = async (
     data: apiResult.data,
   }
 }
+
+// メーカーユーザー情報取得
+export const GetMakerUserInformation = async (
+  context: UserTypes.ApiContext,
+  user_id: number,
+): Promise<{ result: UserTypes.AppResult; data: UserTypes.MakerUser }> => {
+  const address = `${context.apiRootUrl.replace(
+    /\/$/g,
+    '',
+  )}/maker/users/${user_id}`
+  const apiResult: {
+    code: number
+    message: string
+    data: UserTypes.MakerUser
+  } = await ApiRequestFetcher(address, ApiRequestType.GET, null)
+  //console.log(apiResult)
+  return {
+    result: ErrorCodeTranslator.ToAppResult(apiResult.code),
+    data: apiResult.data,
+  }
+}
+
+// メーカーユーザーリスト取得
+export const GetMakerUserList = async (
+  context: UserTypes.ApiContext,
+): Promise<{ result: UserTypes.AppResult; data: UserTypes.MakerUser[] }> => {
+  const address = `${context.apiRootUrl.replace(/\/$/g, '')}/maker/users`
+  const apiResult: {
+    code: number
+    message: string
+    data: UserTypes.MakerUser[]
+  } = await ApiRequestFetcher(address, ApiRequestType.GET, null)
+  //console.log(apiResult)
+  return {
+    result: ErrorCodeTranslator.ToAppResult(apiResult.code),
+    data: apiResult.data,
+  }
+}

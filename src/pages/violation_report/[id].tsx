@@ -101,7 +101,7 @@ const ViolationReportPage: NextPage = () => {
     alert('違反内容が投稿されました。')
     // ログインユーザータイプごとに遷移先画面を切り替える
     if (authUser.type == LoginUserType.Actor) {
-      router.push(`/actor/users/${target_user_id}`)
+      router.push(`/actor/search`)
     } else {
       router.push(`/maker/search`)
     }
