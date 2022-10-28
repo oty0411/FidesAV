@@ -164,7 +164,7 @@ export const AppearanceRequestPostForm = (
   }
 
   return (
-    <Box padding={3} backgroundColor={'white'}>
+    <Box padding={2} paddingTop={0} backgroundColor={'white'}>
       <Flex justifyContent={'center'} flexDirection={'column'}>
         {/*情報入力フォーム*/}
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -276,7 +276,7 @@ export const AppearanceRequestPostForm = (
                   sx={{ backgroundColor: '#333333', color: '#ffffff' }}
                 />
                 <FormControl
-                  sx={{ m: 3 }}
+                  sx={{ m: 0 }}
                   component="fieldset"
                   variant="standard"
                 >
@@ -292,7 +292,7 @@ export const AppearanceRequestPostForm = (
                         return (
                           <MuiBox.default
                             key={item.id}
-                            minWidth={'180px'}
+                            minWidth={'150px'}
                             margin={1}
                           >
                             <Item>
@@ -305,6 +305,7 @@ export const AppearanceRequestPostForm = (
                                   />
                                 }
                                 label={item.label}
+                                componentsProps={{ typography: { variant: 'caption' } }}
                               />
                             </Item>
                           </MuiBox.default>

@@ -172,7 +172,7 @@ export const AppearanceRequestResponsePostForm = (
   }
 
   return (
-    <Box padding={3} backgroundColor={'white'}>
+    <Box padding={1} backgroundColor={'white'}>
       <Flex justifyContent={'center'} flexDirection={'column'}>
         {/*情報入力フォーム*/}
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -227,7 +227,7 @@ export const AppearanceRequestResponsePostForm = (
             message="出演依頼内容"
             sx={{ backgroundColor: '#333333', color: '#ffffff' }}
           />
-          <Box marginBottom={1} marginLeft={3}>
+          <Box marginBottom={1} marginLeft={1} marginRight={1}>
             <Flex justifyContent={'flex-start'} flexDirection={'column'}>
               {/*出演料*/}
               <Box marginTop={2}>
@@ -302,7 +302,7 @@ export const AppearanceRequestResponsePostForm = (
                   sx={{ backgroundColor: '#333333', color: '#ffffff' }}
                 />
                 <FormControl
-                  sx={{ m: 3 }}
+                  sx={{ m: 0 }}
                   component="fieldset"
                   variant="standard"
                 >
@@ -318,7 +318,7 @@ export const AppearanceRequestResponsePostForm = (
                         return (
                           <MuiBox.default
                             key={item.id}
-                            minWidth={'180px'}
+                            minWidth={'150px'}
                             margin={1}
                           >
                             <Item>
@@ -330,6 +330,7 @@ export const AppearanceRequestResponsePostForm = (
                                   />
                                 }
                                 label={item.label}
+                                componentsProps={{ typography: { variant: 'caption' } }}
                               />
                             </Item>
                           </MuiBox.default>
@@ -340,7 +341,7 @@ export const AppearanceRequestResponsePostForm = (
                 </FormControl>
               </Box>
               {/*メッセージ*/}
-              <Box marginTop={1}>
+              <Box marginTop={2}>
                 <TextField
                   id="outlined-multiline-flexible"
                   label="依頼者からのメッセージ"

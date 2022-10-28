@@ -93,7 +93,7 @@ const AppearanceRequestPage: NextPage = () => {
             >
               出演依頼
             </Text>
-            <Box width="100%" paddingLeft={2} paddingRight={2}>
+            <Box width="100%">
               <Flex
                 justifyContent={'center'}
                 flexDirection={'column'}

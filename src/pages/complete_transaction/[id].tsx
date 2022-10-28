@@ -127,12 +127,9 @@ const ComplateTransactionPage: NextPage = () => {
               取引完了
             </Text>
             <Box
-              marginLeft={2}
-              padding={2}
+              padding={1}
               backgroundColor={'white'}
               width="100%"
-              paddingLeft={2}
-              paddingRight={2}
             >
               <Flex
                 justifyContent={'flex-start'}
@@ -205,12 +202,12 @@ const ComplateTransactionPage: NextPage = () => {
                   </Box>
                 </Box>
                 {/* ユーザー評価(必須) */}
-                <Box width="100%" marginTop={2}>
+                <Box width="100%">
                   <SnackbarContent
                     message="ユーザー評価"
                     sx={{ backgroundColor: '#333333', color: '#ffffff' }}
                   />
-                  <Box marginTop={2} marginLeft={2}>
+                  <Box marginTop={2} marginLeft={1} marginRight={1}>
                     <Flex
                       flexDirection={'column'}
                       justifyContent={'center'}

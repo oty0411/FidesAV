@@ -66,9 +66,9 @@ const SigninPage: NextPage = () => {
         }}
       >
         <Flex
-          width="400px"
           flexDirection="column"
           justifyContent="center"
+          alignContent={'center'}
           alignItems="center"
         >
           <Box width="100%">
@@ -77,6 +77,10 @@ const SigninPage: NextPage = () => {
                 SigninFormのユーザー名・パスワードから認証APIを呼び出し、
                 onSigninコールバックが呼び出される
               */}
+            <img
+              src={'/common/app_logo.png'}
+              height={'100vw'}
+            />
             <SigninFormContainer onSignin={handleSignin} />
           </Box>
         </Flex>
