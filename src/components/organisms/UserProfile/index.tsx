@@ -180,7 +180,7 @@ export default function UserProfile(props: UserProfileProps) {
           alignItems={'flex-start'}
         >
           {/* 左側エリア */}
-          <Box sx={{ width: { xs:'100%', md:'30%'} }} margin={2}>
+          <Box sx={{ width: { xs: '100%', md: '30%' } }} margin={2}>
             <Flex
               flexDirection={'column'}
               flexWrap={'wrap'}
@@ -288,7 +288,7 @@ export default function UserProfile(props: UserProfileProps) {
             </Flex>
           </Box>
           {/* 右側エリア */}
-          <Box sx={{ width: { xs:'100%', md:'50%'} }} margin={2}>
+          <Box sx={{ width: { xs: '100%', md: '50%' } }} margin={2}>
             <Flex flexDirection={'column'}>
               {/* <Text variant="large" color={'#333333'} padding={1}>
                 佐倉絆
@@ -300,9 +300,7 @@ export default function UserProfile(props: UserProfileProps) {
               <Box marginLeft={2} marginTop={2}>
                 <Flex flexWrap={'wrap'}>
                   {/* 1列目 */}
-                  <Box
-                    marginLeft={2} marginRight={1} marginBottom={1}
-                  >
+                  <Box marginLeft={2} marginRight={1} marginBottom={1}>
                     <Box>
                       <TextField
                         label="生年月日"

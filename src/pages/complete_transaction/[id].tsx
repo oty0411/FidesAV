@@ -126,11 +126,7 @@ const ComplateTransactionPage: NextPage = () => {
             >
               取引完了
             </Text>
-            <Box
-              padding={1}
-              backgroundColor={'white'}
-              width="100%"
-            >
+            <Box padding={1} backgroundColor={'white'} width="100%">
               <Flex
                 justifyContent={'flex-start'}
                 flexDirection={'column'}

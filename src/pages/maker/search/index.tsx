@@ -138,7 +138,10 @@ const ActorSearchPage: NextPage = () => {
                     sx={{ backgroundColor: '#afb7c0', color: '#000000' }}
                   />
                   <Box marginTop={1}>
-                    <ActorCardListContainer isLoading={isLoading} actors={actors} />
+                    <ActorCardListContainer
+                      isLoading={isLoading}
+                      actors={actors}
+                    />
                   </Box>
                 </Box>
               </Flex>

@@ -330,7 +330,9 @@ export const AppearanceRequestResponsePostForm = (
                                   />
                                 }
                                 label={item.label}
-                                componentsProps={{ typography: { variant: 'caption' } }}
+                                componentsProps={{
+                                  typography: { variant: 'caption' },
+                                }}
                               />
                             </Item>
                           </MuiBox.default>

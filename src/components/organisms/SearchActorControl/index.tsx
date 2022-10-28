@@ -110,10 +110,7 @@ const SearchActorControl = (props: SearchActorControlProps) => {
           </Box>
         </Box>
         {/* 日時・プレイ条件で探す */}
-        <Box
-          marginTop={2}
-          sx={{ bgcolor: '#ffffff', width: '100%' }}
-        >
+        <Box marginTop={2} sx={{ bgcolor: '#ffffff', width: '100%' }}>
           <SnackbarContent
             message="撮影日・プレイ条件で探す"
             sx={{ backgroundColor: '#333333', color: '#ffffff' }}

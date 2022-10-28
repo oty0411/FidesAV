@@ -105,11 +105,7 @@ export default function PlayConditionList(props: PlayConditionListProps) {
                 return
               }
               return (
-                <Box
-                  key={pair[0]}
-                  minWidth={'150px'}
-                  margin={1}
-                >
+                <Box key={pair[0]} minWidth={'150px'} margin={1}>
                   <Item>
                     <FormControlLabel
                       control={
