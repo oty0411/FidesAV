@@ -180,7 +180,7 @@ export default function UserProfile(props: UserProfileProps) {
           alignItems={'flex-start'}
         >
           {/* 左側エリア */}
-          <Box width={'30%'} /*minWidth={'300px'}*/ margin={2}>
+          <Box sx={{ width: { xs:'100%', md:'30%'} }} margin={2}>
             <Flex
               flexDirection={'column'}
               flexWrap={'wrap'}
@@ -288,7 +288,7 @@ export default function UserProfile(props: UserProfileProps) {
             </Flex>
           </Box>
           {/* 右側エリア */}
-          <Box width={'50%'} /*minWidth={'300px'}*/ margin={2}>
+          <Box sx={{ width: { xs:'100%', md:'50%'} }} margin={2}>
             <Flex flexDirection={'column'}>
               {/* <Text variant="large" color={'#333333'} padding={1}>
                 佐倉絆
@@ -298,8 +298,11 @@ export default function UserProfile(props: UserProfileProps) {
                 sx={{ backgroundColor: '#333333', color: '#ffffff' }}
               />
               <Box marginLeft={2} marginTop={2}>
-                <Flex>
-                  <Box marginLeft={2}>
+                <Flex flexWrap={'wrap'}>
+                  {/* 1列目 */}
+                  <Box
+                    marginLeft={2} marginRight={1} marginBottom={1}
+                  >
                     <Box>
                       <TextField
                         label="生年月日"
@@ -343,7 +346,8 @@ export default function UserProfile(props: UserProfileProps) {
                       />
                     </Box>
                   </Box>
-                  <Box marginLeft={3}>
+                  {/* 2列目 */}
+                  <Box marginLeft={2}>
                     <Box>
                       <TextField
                         label="服サイズ"
@@ -401,7 +405,7 @@ export default function UserProfile(props: UserProfileProps) {
       {/* 出演作エリア */}
       <Box>
         {/* 女優カードリストコンテナ 検索結果からカードリストを表示 */}
-        <Box marginLeft={2} marginTop={2}>
+        <Box marginTop={2}>
           <SnackbarContent
             message="出演作"
             sx={{ backgroundColor: '#333333', color: '#ffffff' }}

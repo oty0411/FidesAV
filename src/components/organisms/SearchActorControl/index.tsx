@@ -80,7 +80,7 @@ const SearchActorControl = (props: SearchActorControlProps) => {
         alignItems={'flex-start'}
       >
         {/* 名前で探す */}
-        <Box marginLeft={2} sx={{ bgcolor: '#ffffff', width: '100%' }}>
+        <Box sx={{ bgcolor: '#ffffff', width: '100%' }}>
           <SnackbarContent
             message="名前で探す"
             sx={{ backgroundColor: '#333333', color: '#ffffff' }}
@@ -112,7 +112,6 @@ const SearchActorControl = (props: SearchActorControlProps) => {
         {/* 日時・プレイ条件で探す */}
         <Box
           marginTop={2}
-          marginLeft={2}
           sx={{ bgcolor: '#ffffff', width: '100%' }}
         >
           <SnackbarContent
@@ -163,7 +162,7 @@ const SearchActorControl = (props: SearchActorControlProps) => {
               <Text variant="small" color={'black'} padding={2} margin={1}>
                 プレイ条件
               </Text>
-              <Box marginLeft={2}>
+              <Box>
                 <PlayConditionSetting />
               </Box>
             </Box>

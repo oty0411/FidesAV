@@ -154,12 +154,8 @@ const ResponsiveAppBar = (props: ResponsiveAppBarProps) => {
             Fides
           </Typography> */}
           <img
-            //`url(${'/common/app_title.png'})`
             src={'/common/app_logo.png'}
-            height={'50px'}
-            // srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
-            // alt={item.title}
-            //loading="lazy"
+            height={'30vw'}
           />
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton

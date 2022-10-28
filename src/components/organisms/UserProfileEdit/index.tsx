@@ -174,7 +174,7 @@ export default function UserProfileForEdit(props: UserProfileProps) {
           alignItems={'flex-start'}
         >
           {/* 左側エリア */}
-          <Box width={'30%'} /*minWidth={'300px'}*/ margin={2}>
+          <Box sx={{ width: { xs:'100%', md:'30%'} }} margin={2}>
             <Flex
               flexDirection={'column'}
               flexWrap={'wrap'}
@@ -216,15 +216,20 @@ export default function UserProfileForEdit(props: UserProfileProps) {
             </Flex>
           </Box>
           {/* 右側エリア */}
-          <Box width={'50%'} /*minWidth={'300px'}*/ margin={2}>
+          <Box sx={{ width: { xs:'100%', md:'50%'} }} margin={2}>
             <Flex flexDirection={'column'}>
               <SnackbarContent
                 message="プロフィール"
                 sx={{ backgroundColor: '#333333', color: '#ffffff' }}
               />
               <Box marginLeft={2} marginTop={2}>
-                <Flex>
-                  <Box marginLeft={2}>
+                <Flex flexWrap={'wrap'}>
+                  {/* 1列目 */}
+                  <Box
+                    marginLeft={2}
+                    marginRight={1}
+                    marginBottom={1}
+                  >
                     <Box>
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <MobileDatePicker
@@ -291,7 +296,8 @@ export default function UserProfileForEdit(props: UserProfileProps) {
                       />
                     </Box>
                   </Box>
-                  <Box marginLeft={3}>
+                   {/* 2列目 */}
+                  <Box marginLeft={2}>
                     <Box>
                       <FormControl
                         variant="standard"

@@ -117,18 +117,31 @@ const ActorSearchPage: NextPage = () => {
         <Separator />
         <Box>
           <Flex flexDirection={'column'}>
-            <SearchActorControl
-              refreshToSearchedActorList={refreshToSearchedActorList}
-            />
-            {/* 女優カードリストコンテナ 検索結果からカードリストを表示 */}
-            <Box marginLeft={2} marginTop={2}>
-              <SnackbarContent
-                message="検索結果"
-                sx={{ backgroundColor: '#afb7c0', color: '#000000' }}
-              />
-              <Box marginTop={1}>
-                <ActorCardListContainer isLoading={isLoading} actors={actors} />
-              </Box>
+            <Text
+              as="h3"
+              fontWeight="bold"
+              variant="mediumLarge"
+              marginTop={0}
+              paddingLeft={1}
+            >
+              女優検索
+            </Text>
+            <Box width="100%" paddingLeft={2} paddingRight={2}>
+              <Flex flexDirection={'column'}>
+                <SearchActorControl
+                  refreshToSearchedActorList={refreshToSearchedActorList}
+                />
+                {/* 女優カードリストコンテナ 検索結果からカードリストを表示 */}
+                <Box marginLeft={2} marginTop={2}>
+                  <SnackbarContent
+                    message="検索結果"
+                    sx={{ backgroundColor: '#afb7c0', color: '#000000' }}
+                  />
+                  <Box marginTop={1}>
+                    <ActorCardListContainer isLoading={isLoading} actors={actors} />
+                  </Box>
+                </Box>
+              </Flex>
             </Box>
           </Flex>
         </Box>

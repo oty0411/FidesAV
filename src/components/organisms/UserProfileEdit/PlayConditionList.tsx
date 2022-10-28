@@ -102,7 +102,7 @@ export default function PlayConditionList(props: PlayConditionListProps) {
 
   return (
     <Box>
-      <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
+      <FormControl sx={{ m: 0 }} component="fieldset" variant="standard">
         <FormGroup row>
           <Flex
             flexDirection={'row'}
@@ -121,7 +121,7 @@ export default function PlayConditionList(props: PlayConditionListProps) {
                 return
               }
               return (
-                <Box key={pair[0]} minWidth={'180px'} margin={1}>
+                <Box key={pair[0]} minWidth={'150px'} margin={1}>
                   <Item>
                     <FormControlLabel
                       control={
@@ -136,6 +136,7 @@ export default function PlayConditionList(props: PlayConditionListProps) {
                       label={
                         ConditionList.find((item) => item.id == pair[0])?.label
                       }
+                      componentsProps={{ typography: { variant: 'caption' } }}
                     />
                   </Item>
                 </Box>

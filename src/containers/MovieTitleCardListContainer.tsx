@@ -43,7 +43,7 @@ const MovieTitleCardListContainer = ({
             alignItems={'flex-start'}
           >
             {portfolios.map((p) => (
-              <Box key={p.id} margin={1}>
+              <Box key={p.id} margin={0}>
                 <Button
                   onClick={() => {
                     window.open(p.url)

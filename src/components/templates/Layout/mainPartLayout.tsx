@@ -13,8 +13,10 @@ const MainPartLayout = ({ children }: MainPartLayoutProps) => {
   return (
     <>
       <Box width="100%">
-        <Flex>
-          <Box width="90%">
+        <Flex
+          justifyContent={'center'}
+        >
+          <Box width="100%">
             <Flex flexDirection={'column'}>{children}</Flex>
           </Box>
         </Flex>

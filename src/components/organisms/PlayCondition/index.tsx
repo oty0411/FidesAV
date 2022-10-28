@@ -95,7 +95,7 @@ const PlayConditionSetting = () => {
   // #region Views
   return (
     <Box>
-      <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
+      <FormControl sx={{ m: 1 }} component="fieldset" variant="standard">
         <FormGroup row>
           <Flex
             flexDirection={'row'}
@@ -106,7 +106,7 @@ const PlayConditionSetting = () => {
           >
             {ConditionList.map((item) => {
               return (
-                <Box key={item.id} minWidth={'180px'} margin={1}>
+                <Box key={item.id} minWidth={'150px'} margin={1}>
                   <Item>
                     <FormControlLabel
                       control={
@@ -116,6 +116,7 @@ const PlayConditionSetting = () => {
                         />
                       }
                       label={item.label}
+                      componentsProps={{ typography: { variant: 'caption' } }}
                     />
                   </Item>
                 </Box>
