@@ -33,7 +33,7 @@ const Layout = ({ userType, children }: LayoutProps) => {
           //background: `url(${'https://beiz.jp/images_T/twinkle/twinkle_00001.jpg'})`, // ビーズきらきら
           backgroundSize: 'cover',
           paddingTop: '55px',
-          paddingBottom: '75px',
+          //paddingBottom: '75px',
           width: '100%',
           height: 'auto',
         }}

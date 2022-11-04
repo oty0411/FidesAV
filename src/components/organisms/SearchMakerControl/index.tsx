@@ -62,7 +62,7 @@ const SearchMakerControl = (props: SearchMakerControlProps) => {
         alignItems={'flex-start'}
       >
         {/* 名前で探す */}
-        <Box marginLeft={2} sx={{ bgcolor: '#ffffff', width: '100%' }}>
+        <Box sx={{ bgcolor: '#ffffff', width: '100%' }}>
           <SnackbarContent
             message="名前で探す"
             sx={{ backgroundColor: '#333333', color: '#ffffff' }}
@@ -89,11 +89,7 @@ const SearchMakerControl = (props: SearchMakerControlProps) => {
           </Box>
         </Box>
         {/* 検索条件なしで一覧表示 */}
-        <Box
-          marginTop={2}
-          marginLeft={2}
-          sx={{ bgcolor: '#ffffff', width: '100%' }}
-        >
+        <Box marginTop={2} sx={{ bgcolor: '#ffffff', width: '100%' }}>
           <SnackbarContent
             message="全メーカー一覧"
             sx={{ backgroundColor: '#333333', color: '#ffffff' }}

@@ -87,18 +87,34 @@ const MakerSearchPage: NextPage = () => {
         <Separator />
         <Box>
           <Flex flexDirection={'column'}>
-            <SearchMakerControl
-              refreshToSearchedMakerList={refreshToSearchedMakerList}
-            />
-            {/* 女優カードリストコンテナ 検索結果からカードリストを表示 */}
-            <Box marginLeft={2} marginTop={2}>
-              <SnackbarContent
-                message="検索結果"
-                sx={{ backgroundColor: '#afb7c0', color: '#000000' }}
-              />
-              <Box marginTop={1}>
-                <MakerCardListContainer isLoading={isLoading} users={users} />
-              </Box>
+            <Text
+              as="h3"
+              fontWeight="bold"
+              variant="mediumLarge"
+              marginTop={0}
+              paddingLeft={1}
+            >
+              メーカー(制作会社)検索
+            </Text>
+            <Box width="100%" paddingLeft={2} paddingRight={2}>
+              <Flex flexDirection={'column'}>
+                <SearchMakerControl
+                  refreshToSearchedMakerList={refreshToSearchedMakerList}
+                />
+                {/* 女優カードリストコンテナ 検索結果からカードリストを表示 */}
+                <Box marginLeft={0} marginTop={2}>
+                  <SnackbarContent
+                    message="検索結果"
+                    sx={{ backgroundColor: '#afb7c0', color: '#000000' }}
+                  />
+                  <Box marginTop={1}>
+                    <MakerCardListContainer
+                      isLoading={isLoading}
+                      users={users}
+                    />
+                  </Box>
+                </Box>
+              </Flex>
             </Box>
           </Flex>
         </Box>
